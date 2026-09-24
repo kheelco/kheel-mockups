@@ -30,3 +30,9 @@ then ask for a screen:
 In Claude Code the skills are namespaced as `kheel-mockup:mockup-init`, `kheel-mockup:mockup-create` and so on.
 
 Install from <https://github.com/kheelco/kheel-mockups> — for example `npx skills add kheelco/kheel-mockups` for any agent, or `/plugin marketplace add kheelco/kheel-mockups` in Claude Code. The repository [README](../../README.md) has the details.
+
+## Licence
+
+Copyright © 2026 Jeremy Buckley. Source-available under the [PolyForm Shield License 1.0.0](../../LICENSE.md):
+free to use, including commercially, but not to build into a product that competes with it or with Kheel. Each
+skill folder includes a copy as `LICENSE.md`.

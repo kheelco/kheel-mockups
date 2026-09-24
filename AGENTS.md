@@ -46,11 +46,15 @@ skills folder), so each skill folder must stand alone:
 - Frontmatter holds only `name` and `description`. Keep `description` to **200 characters or fewer** — the
   Claude app's upload limit — and make it say both what the skill does and when to use it.
 - Write instructions that any agent with file access can follow; don't depend on tools specific to one agent.
+- Every skill folder carries `LICENSE.md`, an exact copy of the one at the repository root, so the licence
+  travels with the skill. Copy it into a new skill; `package-skills.sh` refuses to package if a copy is missing
+  or differs.
 
 ## Adding a skill
 
 1. Write or extend the specification in `specs/`.
-2. Create `plugins/kheel-mockup/skills/mockup-<name>/SKILL.md` (plus any assets).
+2. Create `plugins/kheel-mockup/skills/mockup-<name>/SKILL.md` (plus any assets), and copy the root
+   `LICENSE.md` into it.
 3. Add it to the skill tables in `README.md` and `plugins/kheel-mockup/README.md`.
 4. Bump `version` in `plugins/kheel-mockup/.claude-plugin/plugin.json`.
 5. Run `./scripts/package-skills.sh` to check it packages and passes the frontmatter checks.

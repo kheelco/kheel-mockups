@@ -19,6 +19,12 @@ for dir in "$skills"/*/assets/viewer; do
     echo "✗ $(basename "$(dirname "$(dirname "$dir")")"): viewer differs from mockup-init's — run scripts/sync-viewer.sh" >&2; status=1
   fi
 done
+# Every skill carries the repository's licence, since each is installed and redistributed on its own.
+for dir in "$skills"/*/; do
+  if ! cmp -s "$root/LICENSE.md" "$dir/LICENSE.md"; then
+    echo "✗ $(basename "$dir"): LICENSE.md missing or differs from the root one — cp LICENSE.md $dir" >&2; status=1
+  fi
+done
 for dir in "$skills"/*/; do
   name="$(basename "$dir")"
   skill_md="$dir/SKILL.md"

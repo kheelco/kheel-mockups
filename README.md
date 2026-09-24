@@ -9,12 +9,17 @@ properties, variants, states, slots, template and style), shared behaviours and 
 renders them straight from those files — no build step — with click-through navigation, dialogs, an inspect mode
 for specifications, and checks against the design system.
 
+Copyright © 2026 Jeremy Buckley. Source-available under the [PolyForm Shield License 1.0.0](LICENSE.md): free
+to use, including commercially, but not to build into a product that competes with it or with Kheel. See
+[Licence](#licence).
+
 ## Repository layout
 
 ```
 kheel-mockups/
 ├── .claude-plugin/
 │   └── marketplace.json        # makes this repo installable as a Claude Code plugin marketplace
+├── LICENSE.md                  # PolyForm Shield 1.0.0; copied into each skill folder
 ├── plugins/
 │   └── kheel-mockup/           # the plugin — the only part that is installed into an agent
 │       ├── .claude-plugin/
@@ -127,7 +132,31 @@ skill. Start with [specs/introduction.md](specs/introduction.md).
 
 ## Licence
 
-The icons in the starter design system are from [Lucide](https://lucide.dev), under the ISC licence
+Copyright © 2026 Jeremy Buckley. All rights not granted by the licence are reserved.
+
+This repository — the skills, their templates, the viewer runtime, the starter and JUI design systems, and the
+specifications — is source-available under the **[PolyForm Shield License 1.0.0](LICENSE.md)**. It is not
+open source, and it does not convert to an open-source licence later.
+
+In short (the [licence text](LICENSE.md) is what governs):
+
+- **You may** use it for any purpose that doesn't compete — creating mockups for your own products, internal
+  use, work you do for clients, education and research — and change it and share it for those purposes. The
+  mockups you create with the skills are yours.
+- **You may not** use it to provide a product or service that competes with it, or with any product the
+  licensor or its affiliates provides using it, such as Kheel. That includes bringing the skills, the viewer
+  runtime, the design systems or the specifications, changed or not, into another product. A product competes
+  even if it is free, runs on a different platform or is written in a different language.
+- **Permission** for anything outside those terms, including use in another product, is by separate written
+  agreement with the licensor — email [info@kheel.co](mailto:info@kheel.co) to ask.
+
+If you pass on any part of it, include the licence (or its URL) and the `Required Notice:` line at the top of
+[LICENSE.md](LICENSE.md). Each skill folder carries its own copy of `LICENSE.md`, so the terms travel with a
+skill however it is installed.
+
+### Third-party material
+
+The icons in the starter and JUI design systems are from [Lucide](https://lucide.dev), under the ISC licence
 (`…/design-system/assets/icons/LICENSE-lucide.txt`).
 
 ## Contributing

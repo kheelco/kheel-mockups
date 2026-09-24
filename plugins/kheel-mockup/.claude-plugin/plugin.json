@@ -13,5 +13,6 @@
     "ui"
   ],
   "homepage": "https://github.com/kheelco/kheel-mockups",
-  "repository": "https://github.com/kheelco/kheel-mockups"
+  "repository": "https://github.com/kheelco/kheel-mockups",
+  "license": "PolyForm-Shield-1.0.0"
 }
