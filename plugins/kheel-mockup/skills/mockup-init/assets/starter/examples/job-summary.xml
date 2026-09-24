@@ -1,0 +1,19 @@
+<mockup type="section" title="Job summary" design-system="0.1.0" width="large">
+  <specification>
+    The key facts of a job. Included in the job page; reusable anywhere a job needs summarising.
+  </specification>
+
+  <ui-panel title="Summary">
+    <div layout="grid" cols="2" gap="4">
+      <ui-text-field label="Scheduled" value="Tue 24 Sep, 9:00 am" readonly=""/>
+      <ui-text-field label="Technician" value="Sam Liu" readonly=""/>
+      <ui-text-field label="Estimated time" value="2 hours" readonly=""/>
+      <ui-text-field label="Quoted value" value="$180.00" readonly=""
+                     spec="From the accepted quote. Shows — when the job has no quote."/>
+    </div>
+    <ui-box padding="3" radius="medium" surface="sunken" layout="row" gap="2" align="center">
+      <ui-icon name="info" size="small"/>
+      <small>Customer asked for a call 30 minutes before arrival.</small>
+    </ui-box>
+  </ui-panel>
+</mockup>

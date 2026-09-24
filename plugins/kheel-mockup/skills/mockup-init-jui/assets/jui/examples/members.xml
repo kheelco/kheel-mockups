@@ -1,0 +1,42 @@
+<mockup type="page" title="Members" design-system="0.1.0">
+  <specification>
+    Everyone in the workspace, as a Table backed by a PaginatedStore of members, sorted by name.
+  </specification>
+
+  <jui-tab-navigator variant="vertical">
+    <jui-tab-navigator-tab group="Workspace" label="Projects" icon="folder" href="projects.xml"/>
+    <jui-tab-navigator-tab label="Members" icon="users" href="members.xml" active=""/>
+    <jui-tab-navigator-tab group="Account" label="Settings" icon="settings"/>
+    <jui-title-panel title="Members" subtitle="People with access to this workspace" icon="users" padding="4" layout="column" gap="4">
+      <jui-notice message="Members see every project in the workspace." icon="info"/>
+      <jui-action-bar-layout>
+        <jui-text-control slot="left" icon-left="search" placeholder="Search members"/>
+        <jui-btn slot="right" label="Invite member" icon="plus"/>
+      </jui-action-bar-layout>
+      <jui-table selectable="">
+        <jui-table-column label="Name" sortable="" sort="ascending" column-width="large"/>
+        <jui-table-column label="Email"/>
+        <jui-table-column label="Role" column-width="medium"/>
+        <jui-table-column label="" column-width="small"/>
+        <jui-table-row>
+          <jui-table-cell renderer="link">Ada Lovelace</jui-table-cell>
+          <jui-table-cell>ada@example.com</jui-table-cell>
+          <jui-table-cell><jui-pill label="Administrator" variant="info" no-icon=""/></jui-table-cell>
+          <jui-table-cell renderer="builder"><jui-icon-btn icon="trash-2" label="Remove member" opens="remove-member.xml"/></jui-table-cell>
+        </jui-table-row>
+        <jui-table-row>
+          <jui-table-cell renderer="link">Grace Hopper</jui-table-cell>
+          <jui-table-cell>grace@example.com</jui-table-cell>
+          <jui-table-cell><jui-pill label="Editor" no-icon=""/></jui-table-cell>
+          <jui-table-cell renderer="builder"><jui-icon-btn icon="trash-2" label="Remove member" opens="remove-member.xml"/></jui-table-cell>
+        </jui-table-row>
+        <jui-table-row>
+          <jui-table-cell renderer="link">Alan Turing</jui-table-cell>
+          <jui-table-cell>alan@example.com</jui-table-cell>
+          <jui-table-cell><jui-pill label="Invited" variant="warning" no-icon="" spec="Invitation not yet accepted; expires after seven days."/></jui-table-cell>
+          <jui-table-cell renderer="builder"><jui-icon-btn icon="trash-2" label="Remove member" opens="remove-member.xml"/></jui-table-cell>
+        </jui-table-row>
+      </jui-table>
+    </jui-title-panel>
+  </jui-tab-navigator>
+</mockup>

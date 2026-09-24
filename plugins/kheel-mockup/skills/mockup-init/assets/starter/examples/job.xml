@@ -1,0 +1,54 @@
+<mockup type="page" title="Job" design-system="0.1.0">
+  <specification>
+    One job: its details, the customer and the work history. Reached from the jobs list.
+  </specification>
+
+  <ui-shell product="Fieldwork" user="Mere Tipene">
+    <ui-nav>
+      <ui-nav-item icon="house" label="Home"/>
+      <ui-nav-item icon="briefcase" label="Jobs" href="jobs.xml" current="" count="12"/>
+      <ui-nav-item icon="layout-grid" label="Sites" href="sites.xml"/>
+      <ui-nav-group label="Records">
+        <ui-nav-item icon="users" label="Customers"/>
+        <ui-nav-item icon="file-text" label="Invoices"/>
+      </ui-nav-group>
+    </ui-nav>
+
+    <div layout="column" gap="2">
+      <a href="jobs.xml"><small>← Jobs</small></a>
+      <ui-panel variant="plain" title="Heat pump service" description="JOB-1042 · Sam Liu · 4 Rata Grove">
+        <ui-badge slot="actions" tone="danger" label="Overdue"/>
+        <ui-button slot="actions" icon="pencil" label="Edit"/>
+        <ui-button slot="actions" variant="primary" icon="check" label="Mark complete"
+                   spec="Only when every task is ticked. Otherwise disabled with the reason as a tooltip."/>
+      </ui-panel>
+    </div>
+
+    <div layout="grid" cols="3" gap="6" align="start">
+      <div span="2" layout="column" gap="6">
+        <include src="job-summary.xml"/>
+        <ui-panel title="Tasks">
+          <div layout="column" gap="3">
+            <ui-checkbox label="Isolate power to outdoor unit" checked=""/>
+            <ui-checkbox label="Clean filters and coil" checked=""/>
+            <ui-checkbox label="Check refrigerant pressure"/>
+            <ui-checkbox label="Test run and record temperatures"/>
+          </div>
+        </ui-panel>
+      </div>
+      <ui-panel title="Customer">
+        <ui-button slot="actions" size="small" variant="ghost" icon="external-link" aria-label="Open customer"/>
+        <div layout="column" gap="1">
+          <strong>Sam Liu</strong>
+          <small>021 555 0199</small>
+          <small>sam.liu@example.com</small>
+        </div>
+        <hr/>
+        <div layout="row" gap="2" align="center">
+          <ui-icon name="map-pin" size="small"/>
+          <small>4 Rata Grove, Hamilton</small>
+        </div>
+      </ui-panel>
+    </div>
+  </ui-shell>
+</mockup>

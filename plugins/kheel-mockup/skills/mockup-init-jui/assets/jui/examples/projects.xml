@@ -1,0 +1,31 @@
+<mockup type="page" title="Projects" design-system="0.1.0" states="empty">
+  <specification>
+    The projects the signed-in user can see, as a gallery. The page is a TabNavigator (VERTICAL) whose active tab
+    holds a TitlePanel; the toolbar is an ActionBarLayout; the gallery is backed by a PaginatedStore of projects.
+    - Search and the status filter reload the store from the first page (**Store-backed loading**).
+    - **New project** opens the new-project dialog.
+  </specification>
+
+  <jui-tab-navigator variant="vertical">
+    <jui-tab-navigator-tab group="Workspace" label="Projects" icon="folder" href="projects.xml" active=""/>
+    <jui-tab-navigator-tab label="Members" icon="users" href="members.xml"/>
+    <jui-tab-navigator-tab group="Account" label="Settings" icon="settings"/>
+    <jui-title-panel title="Projects" subtitle="Everything your team is working on" icon="folder" padding="4" layout="column" gap="4">
+      <jui-action-bar-layout>
+        <jui-text-control slot="left" icon-left="search" placeholder="Search projects" spec="Searches project names and descriptions."/>
+        <jui-selection-control slot="left" prompt="Status" value="Active"/>
+        <jui-btn slot="right" label="New project" icon="plus" opens="new-project.xml"/>
+      </jui-action-bar-layout>
+      <jui-gallery spec="PaginatedStore of projects, 12 per page; the next page loads on scrolling to the bottom.">
+        <jui-panel-gallery-item heading="Website refresh" subtitle="12 tasks · due Friday" title-icon="folder" title-link="" menu="" item-width="medium" href="members.xml"/>
+        <jui-panel-gallery-item heading="Mobile app" subtitle="4 tasks · due next week" title-icon="folder" title-link="" menu="" item-width="medium" href="members.xml"/>
+        <jui-panel-gallery-item heading="Brand guidelines" subtitle="Completed" title-icon="folder" title-link="" menu="" item-width="medium" href="members.xml"/>
+        <jui-panel-gallery-item heading="Quarterly report" subtitle="Draft" title-icon="file-text" title-link="" menu="" item-width="medium" href="members.xml"/>
+        <div slot="last" layout="row" gap="3" align="center" justify="center">
+          <small>Showing 4 of 27</small>
+          <jui-btn label="Load more" variant="outlined"/>
+        </div>
+      </jui-gallery>
+    </jui-title-panel>
+  </jui-tab-navigator>
+</mockup>

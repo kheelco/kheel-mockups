@@ -1,0 +1,11 @@
+{
+  "name": "kheel-mockup",
+  "owner": { "name": "Kheel" },
+  "plugins": [
+    {
+      "name": "kheel-mockup",
+      "source": "./plugins/kheel-mockup",
+      "description": "Agent skills for creating and maintaining design-system-bound mockups."
+    }
+  ]
+}

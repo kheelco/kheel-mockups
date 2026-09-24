@@ -1,0 +1,25 @@
+<mockup type="page" title="Jobs" design-system="0.1.0">
+  <specification>
+    Shown when the dispatcher's organisation has no jobs at all — typically on the first day. Not shown when
+    filters match nothing; that is the table's own empty state.
+  </specification>
+
+  <ui-shell product="Fieldwork" user="Mere Tipene">
+    <ui-nav>
+      <ui-nav-item icon="house" label="Home"/>
+      <ui-nav-item icon="briefcase" label="Jobs" href="jobs.xml" current=""/>
+      <ui-nav-item icon="layout-grid" label="Sites" href="sites.xml"/>
+      <ui-nav-group label="Records">
+        <ui-nav-item icon="users" label="Customers"/>
+        <ui-nav-item icon="file-text" label="Invoices"/>
+      </ui-nav-group>
+    </ui-nav>
+    <ui-text-field slot="header" icon="search" placeholder="Search everything" width="fit"/>
+
+    <ui-panel title="Jobs">
+      <ui-empty-state icon="briefcase" title="No jobs yet" description="Create a job to schedule work and assign it to a technician.">
+        <ui-button variant="primary" icon="plus" label="Create job" opens="new-job.xml"/>
+      </ui-empty-state>
+    </ui-panel>
+  </ui-shell>
+</mockup>

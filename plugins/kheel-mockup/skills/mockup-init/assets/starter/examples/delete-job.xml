@@ -1,0 +1,11 @@
+<mockup type="dialog" title="Delete job" design-system="0.1.0" width="small">
+  <specification>
+    Confirms deleting a job from the jobs list. Deleting removes the job for everyone and cannot be undone;
+    invoiced jobs cannot be deleted and do not show the delete action.
+  </specification>
+
+  <ui-dialog tone="danger" title="Delete this job?" description="Heat pump service for Sam Liu will be removed for everyone. This can't be undone.">
+    <ui-button label="Cancel" closes=""/>
+    <ui-button variant="danger" label="Delete job" closes=""/>
+  </ui-dialog>
+</mockup>

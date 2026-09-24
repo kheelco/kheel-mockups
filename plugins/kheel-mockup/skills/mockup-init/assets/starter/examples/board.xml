@@ -1,0 +1,76 @@
+<mockup type="page" title="Schedule board" design-system="0.1.0">
+  <specification>
+    The dispatcher's day at a glance: one lane per technician, one column per hour, jobs as blocks that can be
+    dragged to another time or technician. The board itself has no equivalent in the design system, so it is a
+    custom region; everything around it — and every control on it — comes from the design system.
+  </specification>
+
+  <style>
+    .board { overflow: auto; border-top: 1px solid var(--color-border); max-height: 420px; }
+    .board-grid { display: grid; grid-template-columns: 180px repeat(9, 120px); min-width: max-content; }
+    .board-head { position: sticky; top: 0; z-index: 2; background: var(--color-surface-sunken); padding: var(--space-2) var(--space-3);
+      font-size: var(--text-sm); color: var(--color-text-muted); border-bottom: 1px solid var(--color-border); }
+    .board-who { position: sticky; left: 0; z-index: 1; background: var(--color-surface); padding: var(--space-3);
+      border-bottom: 1px solid var(--color-border); border-right: 1px solid var(--color-border); }
+    .board-lane { grid-column: 2 / -1; position: relative; height: 64px; border-bottom: 1px solid var(--color-border);
+      background-image: linear-gradient(to right, var(--color-border) 1px, transparent 1px); background-size: 120px 100%; }
+    .job { position: absolute; top: 8px; bottom: 8px; padding: var(--space-1) var(--space-2); border-radius: var(--radius-md);
+      background: var(--color-action-subtle); border: 1px solid var(--color-action); cursor: grab; overflow: hidden;
+      font-size: var(--text-sm); display: flex; flex-direction: column; gap: 2px; }
+    .job.overdue { background: var(--color-danger-subtle); border-color: var(--color-danger); }
+    .job.dragging { box-shadow: var(--shadow-lg); transform: rotate(-1deg); opacity: 0.9; }
+  </style>
+
+  <ui-shell product="Fieldwork" user="Mere Tipene">
+    <ui-nav>
+      <ui-nav-item icon="house" label="Home"/>
+      <ui-nav-item icon="briefcase" label="Jobs" href="jobs.xml" count="12"/>
+      <ui-nav-item icon="calendar" label="Schedule" href="board.xml" current=""/>
+      <ui-nav-item icon="layout-grid" label="Sites" href="sites.xml"/>
+    </ui-nav>
+
+    <ui-panel title="Schedule" description="Tuesday 24 September" padding="none">
+      <ui-button slot="actions" icon="chevron-left" aria-label="Previous day"/>
+      <ui-button slot="actions" label="Today"/>
+      <ui-button slot="actions" icon="chevron-right" aria-label="Next day"/>
+      <ui-button slot="actions" variant="primary" icon="plus" label="New job" opens="new-job.xml"/>
+
+      <ui-box layout="row" gap="2" align="center" padding="3">
+        <ui-select placeholder="All technicians" icon="users"/>
+        <ui-chip label="Unassigned" count="2"/>
+        <ui-chip label="Overdue" count="1" selected=""/>
+      </ui-box>
+
+      <div class="board" custom="Schedule board: a scrollable, draggable time grid. No component for this yet — a candidate once a second screen needs it.">
+        <div class="board-grid">
+          <div class="board-head">Technician</div>
+          <div class="board-head">8 am</div><div class="board-head">9 am</div><div class="board-head">10 am</div>
+          <div class="board-head">11 am</div><div class="board-head">12 pm</div><div class="board-head">1 pm</div>
+          <div class="board-head">2 pm</div><div class="board-head">3 pm</div><div class="board-head">4 pm</div>
+
+          <div class="board-who" layout="column" gap="1"><strong>Sam Liu</strong><small>3 jobs · 6 h</small></div>
+          <div class="board-lane">
+            <div class="job overdue" style="left: 0; width: 230px" href="job.xml"
+                 spec="Dragging a block moves the job; dropping on another lane reassigns it. Snaps to 15 minutes.">
+              <strong>Heat pump service</strong>
+              <ui-badge tone="danger" label="Overdue"/>
+            </div>
+            <div class="job" style="left: 360px; width: 110px" href="job.xml"><strong>Leaking tap</strong><small>4 Rata Grove</small></div>
+          </div>
+
+          <div class="board-who" layout="column" gap="1"><strong>Aroha Ngata</strong><small>2 jobs · 4 h</small></div>
+          <div class="board-lane">
+            <div class="job dragging" style="left: 250px; width: 230px" href="job.xml"
+                 spec="While dragging: lifted, slightly rotated; the lane under the pointer highlights."><strong>Blocked drain</strong><small>12 Kauri St</small></div>
+            <div class="job" style="left: 720px; width: 230px" href="job.xml"><strong>Hot water cylinder</strong><small>Harbour Tower</small></div>
+          </div>
+
+          <div class="board-who" layout="column" gap="1"><strong>Priya Shah</strong><small>Free all day</small></div>
+          <div class="board-lane" layout="row" align="center" justify="center">
+            <ui-button size="small" variant="ghost" icon="plus" label="Assign a job" opens="new-job.xml"/>
+          </div>
+        </div>
+      </div>
+    </ui-panel>
+  </ui-shell>
+</mockup>

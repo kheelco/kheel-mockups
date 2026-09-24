@@ -1,0 +1,31 @@
+<mockup type="dialog" title="New project" design-system="0.1.0" width="medium">
+  <specification>
+    ModalDialogCreator.dialog(...) around a ControlForm; returns the created project (IProcessable). Follows
+    **Control values**: the name is required and validated on Create.
+  </specification>
+
+  <jui-modal-dialog title="New project" subtitle="Projects collect your team's work in one place." subtitle-icon="info">
+    <jui-control-form>
+      <jui-control-form-row>
+        <jui-control-form-cell label="Name" required="" grow="" error="please give the project a name">
+          <jui-text-control placeholder="e.g. Website refresh" invalid=""/>
+        </jui-control-form-cell>
+      </jui-control-form-row>
+      <jui-control-form-row>
+        <jui-control-form-cell label="Owner" grow="">
+          <jui-selection-control value="Ada Lovelace"/>
+        </jui-control-form-cell>
+        <jui-control-form-cell label="Due" grow="">
+          <jui-calendar-control placeholder="Pick a date"/>
+        </jui-control-form-cell>
+      </jui-control-form-row>
+      <jui-control-form-row>
+        <jui-control-form-cell label="Description" grow="" guidance="Shown to everyone who can see the project.">
+          <jui-text-area-control rows="3"/>
+        </jui-control-form-cell>
+      </jui-control-form-row>
+    </jui-control-form>
+    <jui-btn label="Cancel" variant="outlined" nature="grey" closes=""/>
+    <jui-btn label="Create" href="projects.xml"/>
+  </jui-modal-dialog>
+</mockup>

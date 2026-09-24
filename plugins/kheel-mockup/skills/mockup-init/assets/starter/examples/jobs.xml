@@ -1,0 +1,87 @@
+<mockup type="page" title="Jobs" design-system="0.1.0" states="empty">
+  <specification>
+    Every job the signed-in dispatcher can see, soonest due first. Follows the **Data table** pattern.
+    - Opening a row goes to the job's page.
+    - Only dispatchers see **New job**; technicians see the list without it.
+  </specification>
+
+  <ui-shell product="Fieldwork" user="Mere Tipene">
+    <ui-nav>
+      <ui-nav-item icon="house" label="Home"/>
+      <ui-nav-item icon="briefcase" label="Jobs" href="jobs.xml" current="" count="12"/>
+      <ui-nav-item icon="layout-grid" label="Sites" href="sites.xml"/>
+      <ui-nav-group label="Records">
+        <ui-nav-item icon="users" label="Customers"/>
+        <ui-nav-item icon="file-text" label="Invoices"/>
+      </ui-nav-group>
+    </ui-nav>
+    <ui-text-field slot="header" icon="search" placeholder="Search everything" width="fit"/>
+
+    <ui-panel title="Jobs" description="12 open · 3 overdue" padding="none">
+      <ui-button slot="actions" icon="download" label="Export"/>
+      <ui-button slot="actions" variant="primary" icon="plus" label="New job" opens="new-job.xml"
+                 spec="Dispatchers only. Opens the new-job dialog."/>
+
+      <ui-table caption="Jobs">
+        <ui-box slot="toolbar" layout="row" gap="2" align="center" wrap="">
+          <ui-text-field icon="search" placeholder="Search jobs" spec="Matches job title, customer and address."/>
+          <ui-select placeholder="Any status" icon="filter"/>
+          <ui-select placeholder="Anyone" icon="user"/>
+          <ui-chip label="Overdue" count="3" removable="" selected=""/>
+        </ui-box>
+
+        <ui-table-column shrink=""><ui-checkbox aria-label="Select all"/></ui-table-column>
+        <ui-table-column sortable="">Job</ui-table-column>
+        <ui-table-column sortable="">Customer</ui-table-column>
+        <ui-table-column sortable="" sort="ascending">Due</ui-table-column>
+        <ui-table-column>Status</ui-table-column>
+        <ui-table-column sortable="" align="end">Value</ui-table-column>
+        <ui-table-column shrink=""/>
+
+        <ui-table-row href="job.xml">
+          <ui-table-cell><ui-checkbox/></ui-table-cell>
+          <ui-table-cell tone="strong">Heat pump service</ui-table-cell>
+          <ui-table-cell>Sam Liu</ui-table-cell>
+          <ui-table-cell tone="muted">Yesterday</ui-table-cell>
+          <ui-table-cell>
+            <ui-badge tone="danger" label="Overdue" spec="Due date has passed and the job is not complete."/>
+          </ui-table-cell>
+          <ui-table-cell align="end">$180.00</ui-table-cell>
+          <ui-table-cell><ui-button variant="ghost" size="small" icon="trash-2" aria-label="Delete job" opens="delete-job.xml"/></ui-table-cell>
+        </ui-table-row>
+        <ui-table-row href="job.xml">
+          <ui-table-cell><ui-checkbox/></ui-table-cell>
+          <ui-table-cell tone="strong">Blocked drain</ui-table-cell>
+          <ui-table-cell>Aroha Ngata</ui-table-cell>
+          <ui-table-cell tone="muted">Today, 2:00 pm</ui-table-cell>
+          <ui-table-cell><ui-badge tone="info" label="Scheduled"/></ui-table-cell>
+          <ui-table-cell align="end">$240.00</ui-table-cell>
+          <ui-table-cell><ui-button variant="ghost" size="small" icon="trash-2" aria-label="Delete job" opens="delete-job.xml"/></ui-table-cell>
+        </ui-table-row>
+        <ui-table-row href="job.xml">
+          <ui-table-cell><ui-checkbox/></ui-table-cell>
+          <ui-table-cell tone="strong">Leaking tap</ui-table-cell>
+          <ui-table-cell>Priya Shah</ui-table-cell>
+          <ui-table-cell tone="muted">Thu 26 Sep</ui-table-cell>
+          <ui-table-cell><ui-badge tone="warning" label="Unassigned"/></ui-table-cell>
+          <ui-table-cell align="end">$95.00</ui-table-cell>
+          <ui-table-cell><ui-button variant="ghost" size="small" icon="trash-2" aria-label="Delete job" opens="delete-job.xml"/></ui-table-cell>
+        </ui-table-row>
+        <ui-table-row href="job.xml">
+          <ui-table-cell><ui-checkbox/></ui-table-cell>
+          <ui-table-cell tone="strong">Hot water cylinder replacement</ui-table-cell>
+          <ui-table-cell>Harbour Tower Ltd</ui-table-cell>
+          <ui-table-cell tone="muted">Mon 30 Sep</ui-table-cell>
+          <ui-table-cell><ui-badge tone="info" label="Scheduled"/></ui-table-cell>
+          <ui-table-cell align="end">$2,450.00</ui-table-cell>
+          <ui-table-cell><ui-button variant="ghost" size="small" icon="trash-2" aria-label="Delete job" opens="delete-job.xml"/></ui-table-cell>
+        </ui-table-row>
+
+        <ui-empty-state icon="search" title="No jobs match these filters" description="Try removing a filter or searching for something else.">
+          <ui-button label="Clear filters"/>
+        </ui-empty-state>
+        <ui-pagination page="1" pages="3" summary="1–4 of 12"/>
+      </ui-table>
+    </ui-panel>
+  </ui-shell>
+</mockup>

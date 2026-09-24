@@ -1,0 +1,49 @@
+<mockup type="page" title="Sites" design-system="0.1.0">
+  <specification>
+    All sites the organisation services, browsed as cards and narrowed with the filter bar. Follows the
+    **Card gallery** pattern and the shared **Filtering** behaviour.
+  </specification>
+
+  <ui-shell product="Fieldwork" user="Mere Tipene">
+    <ui-nav>
+      <ui-nav-item icon="house" label="Home"/>
+      <ui-nav-item icon="briefcase" label="Jobs" href="jobs.xml" count="12"/>
+      <ui-nav-item icon="layout-grid" label="Sites" href="sites.xml" current=""/>
+      <ui-nav-group label="Records">
+        <ui-nav-item icon="users" label="Customers"/>
+        <ui-nav-item icon="file-text" label="Invoices"/>
+      </ui-nav-group>
+    </ui-nav>
+
+    <ui-panel variant="plain" title="Sites" description="Every address you service.">
+      <ui-button slot="actions" variant="primary" icon="plus" label="Add site"/>
+      <ui-box layout="row" gap="2" align="center" wrap="">
+        <ui-text-field icon="search" placeholder="Search sites"/>
+        <ui-chip label="All"/>
+        <ui-chip label="Residential" count="14" selected=""/>
+        <ui-chip label="Commercial" count="6"/>
+        <ui-chip label="Industrial" count="2"/>
+        <a href="#" spec="Appears when any filter is active; resets every filter."><small>Clear filters</small></a>
+        <ui-select placeholder="Sort: recently serviced" ml="auto"/>
+      </ui-box>
+      <small>14 residential sites</small>
+      <ui-grid min="medium">
+        <ui-card title="12 Kauri St" subtitle="Aroha Ngata · Serviced 2 days ago" media="placeholder" href="jobs.xml">
+          <ui-badge tone="info" label="Job today"/>
+          <span>3 jobs this year</span>
+        </ui-card>
+        <ui-card title="4 Rata Grove" subtitle="Sam Liu · Serviced 3 weeks ago" media="placeholder" href="jobs.xml">
+          <ui-badge tone="danger" label="Overdue"/>
+          <span>Heat pump service due</span>
+        </ui-card>
+        <ui-card title="88 Tui Crescent" subtitle="Priya Shah · Serviced 2 months ago" media="placeholder" href="jobs.xml">
+          <span>1 job this year</span>
+        </ui-card>
+        <ui-card title="Loading…" subtitle="Loading" media="placeholder" state="loading"
+                 spec="Cards load in pages of 24; the next page loads when the user scrolls near the end.">
+          <span>—</span>
+        </ui-card>
+      </ui-grid>
+    </ui-panel>
+  </ui-shell>
+</mockup>

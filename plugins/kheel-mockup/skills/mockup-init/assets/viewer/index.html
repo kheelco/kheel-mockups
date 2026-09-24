@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockups</title>
+  <script type="module" src="_runtime.js"></script>
+</head>
+<body>
+  <div id="km-file-warning" style="max-width:640px;margin:64px auto;padding:0 24px;font:15px/1.6 system-ui,sans-serif;color:#1e293b">
+    <h1 style="font-size:22px">Serve this folder to view mockups</h1>
+    <p>Browsers do not let a page opened from disk read the design system and mockup files, so the project space
+      — the folder that holds <code>design-system/</code> and the mockups — needs to be served over HTTP.
+      In a terminal:</p>
+    <pre style="background:#f1f5f9;padding:12px 16px;border-radius:8px">cd &lt;the project space&gt;
+python3 -m http.server 8000</pre>
+    <p>then open <a href="http://localhost:8000/design-system/">http://localhost:8000/design-system/</a>.</p>
+    <p style="color:#64748b">If the page is already served and this message stays, the runtime failed to load — check
+      that <code>design-system/_runtime.js</code> exists.</p>
+  </div>
+</body>
+</html>

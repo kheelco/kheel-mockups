@@ -1,0 +1,7 @@
+<mockup type="dialog" title="Remove member" design-system="0.1.0" width="small">
+  <specification>
+    NotificationDialog.confirm(...). Removing a member takes away their access to every project; their work stays.
+  </specification>
+
+  <jui-notification-dialog title="Remove member" message="Remove this member from the workspace? They lose access to every project."/>
+</mockup>

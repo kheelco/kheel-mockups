@@ -1,0 +1,19 @@
+<mockup type="page" title="Projects" design-system="0.1.0">
+  <specification>
+    Shown when the user has no projects at all (the store is empty and unfiltered).
+  </specification>
+
+  <jui-tab-navigator variant="vertical">
+    <jui-tab-navigator-tab group="Workspace" label="Projects" icon="folder" href="projects.xml" active=""/>
+    <jui-tab-navigator-tab label="Members" icon="users" href="members.xml"/>
+    <jui-tab-navigator-tab group="Account" label="Settings" icon="settings"/>
+    <jui-title-panel title="Projects" subtitle="Everything your team is working on" icon="folder" padding="4" layout="column" gap="4">
+      <jui-gallery empty="unfiltered">
+        <jui-empty-notification heading="No projects yet">
+          <p>Projects collect your team's work in one place.</p>
+          <jui-btn slot="actions" label="Create a project" icon="plus" opens="new-project.xml"/>
+        </jui-empty-notification>
+      </jui-gallery>
+    </jui-title-panel>
+  </jui-tab-navigator>
+</mockup>

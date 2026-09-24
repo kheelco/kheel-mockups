@@ -1,0 +1,17 @@
+<mockup type="dialog" title="New job" design-system="0.1.0" width="medium">
+  <specification>
+    Creates a job with the minimum needed to schedule it. Everything else is added on the job's page.
+    Follows the shared **Field validation** behaviour.
+  </specification>
+
+  <ui-dialog title="New job" description="Add the essentials now; you can fill in the rest later.">
+    <ui-text-field label="Title" placeholder="e.g. Blocked drain" required=""/>
+    <div layout="grid" cols="2" gap="4">
+      <ui-select label="Customer" placeholder="Choose a customer" spec="Options load from the server — Remote list loading."/>
+      <ui-text-field label="Due" placeholder="dd/mm/yyyy" icon="calendar"/>
+    </div>
+    <ui-text-field label="Site address" value="12 Kau" error="Choose an address from the list"/>
+    <ui-button label="Cancel" closes=""/>
+    <ui-button variant="primary" label="Create job" href="job.xml"/>
+  </ui-dialog>
+</mockup>
