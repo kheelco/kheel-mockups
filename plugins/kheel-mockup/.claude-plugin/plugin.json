@@ -1,6 +1,6 @@
 {
   "name": "kheel-mockup",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Agent skills for creating design-system-bound mockups that render in the browser without a build: set up a project space (with a starter or JUI design system, or empty) and create mockups from the design system.",
   "author": {
     "name": "Kheel"

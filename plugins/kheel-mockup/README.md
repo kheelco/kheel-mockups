@@ -10,6 +10,7 @@ build step.
 | `mockup-init` | Initialises a folder as a mockup project space, either with a starter design system (tokens, 23 components, icons, patterns, shared behaviours) and example mockups, or empty, ready for a design system to be synchronised in. Both get the viewer. |
 | `mockup-create` | Creates or revises a mockup from the project's design system — components first, marked custom regions where it falls short — and checks it in the viewer. |
 | `mockup-init-jui` | Initialises a project space with a JUI design system: 74 mockup components for the standard `jui-ui` controls, components and fragments, in JUI's tokens, each with an implementation mapping to its JUI class. |
+| `mockup-publish` | Publishes chosen mockup folders as a private claude.ai artifact, or updates one, with the design system packed into a single bundle the viewer reads. |
 
 ## Using it
 

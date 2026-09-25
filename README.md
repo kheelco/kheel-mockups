@@ -32,11 +32,15 @@ kheel-mockups/
 │           │       ├── viewer/   #   index.html, _runtime.js, _guide.md → design-system/
 │           │       ├── starter/  #   the starter design-system/ and examples/
 │           │       └── empty/    #   an empty design-system/ manifest, ready to sync
-│           └── mockup-init-jui/
+│           ├── mockup-init-jui/
+│           │   ├── SKILL.md
+│           │   └── assets/
+│           │       ├── viewer/   #   a copy of mockup-init's viewer
+│           │       └── jui/      #   the JUI design-system/ (with implementations/jui/) and examples/
+│           └── mockup-publish/
 │               ├── SKILL.md
-│               └── assets/
-│                   ├── viewer/   #   a copy of mockup-init's viewer
-│                   └── jui/      #   the JUI design-system/ (with implementations/jui/) and examples/
+│               └── scripts/
+│                   └── mockup-bundle.py  # stages mockups and a design-system bundle for publishing
 ├── specs/                      # how the mockup mechanism works — not shipped with the skills
 └── scripts/
     ├── package-skills.sh       # builds uploadable skill zips into dist/
@@ -52,6 +56,7 @@ kheel-mockups/
 | `mockup-init` | Initialises a folder as a mockup project space — with the starter design system and example mockups, or empty, ready for a design system to be synchronised in. |
 | `mockup-create` | Creates or revises a mockup from the project's design system: components first, layout attributes, variants and states, page states, dialogs, specifications — and marked custom regions where the design system falls short. Carries the full mockup format in `reference.md`. |
 | `mockup-init-jui` | Initialises a project space with a design system of the standard [JUI](https://github.com/juiproject/jui-stack) (`jui-ui`) controls, components and fragments, styled with JUI's tokens, each with an implementation mapping to its JUI class. |
+| `mockup-publish` | Publishes chosen mockup folders as a private claude.ai artifact (or updates one), staging the viewer with the design system packed into a single `_bundle.json` so it fits the host's file limit. |
 
 ## Trying it without an agent
 
@@ -110,7 +115,7 @@ Skills**):
 
 ```
 ./scripts/package-skills.sh
-# → dist/mockup-init.zip, dist/mockup-init-jui.zip, dist/mockup-create.zip
+# → dist/mockup-init.zip, dist/mockup-init-jui.zip, dist/mockup-create.zip, dist/mockup-publish.zip
 ```
 
 Each zip holds a single skill folder with its `SKILL.md` at the top, which is the shape the upload expects.

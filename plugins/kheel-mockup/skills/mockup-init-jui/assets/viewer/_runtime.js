@@ -1,6 +1,6 @@
 // Mockup runtime — renders XML mockups from a markdown design system, in the browser, without a build.
 // Part of the mechanism, not the project: replaced as a unit when the mechanism is updated. Do not edit.
-export const VERSION = '0.5.1';
+export const VERSION = '0.6.0';
 
 // This file lives in the design system folder; the project space is the folder above it.
 const DS_URL = new URL('./', import.meta.url);
@@ -46,7 +46,26 @@ function describe(el) {
   return `<${el.localName}${attrs ? ' ' + attrs : ''}>`;
 }
 
+// Optional single-file copy of the design system: _bundle.json beside this file, made by the mockup-publish skill's script for
+// hosts that serve few files. When it's absent (the normal case) the separate files are read.
+let bundle = null;
+
+async function loadBundle() {
+  try {
+    const res = await fetch(new URL('_bundle.json', DS_URL), { cache: 'no-cache' });
+    if (res.ok) bundle = (await res.json()).files;
+  } catch { /* no bundle */ }
+}
+
+function fromBundle(url) {
+  const u = new URL(url);
+  if (!bundle || !u.href.startsWith(DS_URL.href)) return undefined;
+  return bundle[decodeURIComponent(u.pathname.slice(DS_URL.pathname.length))];
+}
+
 async function fetchText(url) {
+  const inBundle = fromBundle(url);
+  if (inBundle !== undefined) return inBundle;
   const res = await fetch(url, { cache: 'no-cache' });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText || ''} — ${url}`.trim());
   return res.text();
@@ -359,7 +378,7 @@ customElements.define('mockup-asset', class extends HTMLElement {
     const src = this.getAttribute('src') || '';
     if (!src || /\/\.svg$|\{\{/.test(src)) { this.innerHTML = ''; return; }
     const url = new URL('assets/' + src, DS_URL).href;
-    if (!assetCache.has(url)) assetCache.set(url, fetch(url).then((r) => (r.ok ? r.text() : Promise.reject(new Error(r.status)))));
+    if (!assetCache.has(url)) assetCache.set(url, fromBundle(url) !== undefined ? Promise.resolve(fromBundle(url)) : fetch(url).then((r) => (r.ok ? r.text() : Promise.reject(new Error(r.status)))));
     try {
       this.innerHTML = (await assetCache.get(url)).replace(/<!--[\s\S]*?-->/g, '').replace(/<\?xml[^>]*>/, '');
     } catch { this.innerHTML = ''; warn(`Missing asset ${src}`); }
@@ -970,6 +989,7 @@ async function showCatalogue() {
 async function start() {
   if (location.protocol === 'file:') return; // index.html shows serving instructions
   setupPage();
+  await loadBundle();
   try {
     state.ds = await loadDesignSystem();
   } catch (e) {
