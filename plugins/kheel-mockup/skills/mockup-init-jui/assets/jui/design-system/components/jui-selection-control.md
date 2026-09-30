@@ -1,6 +1,6 @@
 ---
 name: jui-selection-control
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: SelectionControl control — a single-select dropdown over a fixed or store-backed list, with keyword search in its menu.
@@ -42,6 +42,7 @@ two to five options that should all be visible, and `jui-text-search-control` wh
 | read-only | state | boolean | | Read-only: shows a lock and cannot be opened (JUI `readOnly`). |
 | invalid | state | boolean | | Failed validation: red border. |
 | waiting | state | boolean | | Waiting for its value: pulsing blank box. |
+| width | variant | text | | The control's width as a CSS length, such as `10em` or `200px` (JUI `width(Length)` on the control's config). Without it the control fills its cell. `full` and `fit` work as on any element. |
 
 ## Variants
 
@@ -127,6 +128,7 @@ selects. The label comes from the enclosing field or cell.
 ## Template
 
 ```html
+<style data-if="width">:host { width: {{width}}; max-width: 100%; }</style>
 <div class="control" tabindex="0">
   <div class="inner">
     <jui-icon data-if="icon-left" class="icon-left" name="{{icon-left}}"></jui-icon>

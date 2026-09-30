@@ -48,4 +48,6 @@ Controls.<String>radioGroup(cfg -> {
 
 ## Notes
 
+JUI has no token for the option labels' size: they inherit the surrounding text. Until JUI adds `--jui-selectiongroup-label-size` (see `CHANGELOG.md`), they match the design system when the surrounding text is `--jui-font-size-md`.
+
 The mockup draws checkboxes and radios in the control active colour; JUI renders native inputs.

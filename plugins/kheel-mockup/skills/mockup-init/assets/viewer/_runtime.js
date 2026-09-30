@@ -1,6 +1,6 @@
 // Mockup runtime — renders XML mockups from a markdown design system, in the browser, without a build.
 // Part of the mechanism, not the project: replaced as a unit when the mechanism is updated. Do not edit.
-export const VERSION = '0.6.0';
+export const VERSION = '0.7.0';
 
 // This file lives in the design system folder; the project space is the folder above it.
 const DS_URL = new URL('./', import.meta.url);
@@ -569,9 +569,19 @@ body{min-height:100vh}
 .km-cat-icon mockup-asset{width:22px;height:22px;color:var(--color-text,#111)}.km-cat-icon svg{width:100%;height:100%}
 .km-cat-swatch{border:1px solid var(--color-border,#e4e7ec);border-radius:8px;overflow:hidden;font:11px ui-monospace,monospace;background:var(--color-surface,#fff)}
 .km-cat-swatch div{height:44px;border-bottom:1px solid var(--color-border,#e4e7ec)}.km-cat-swatch span{display:block;padding:6px 8px;word-break:break-all}
+.km-cat-group{margin:0 0 22px;display:flex;flex-direction:column;gap:10px}
+.km-cat-group h3{display:flex;align-items:baseline;gap:10px;margin:0;font:600 15px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--color-text,#1e293b)}
+.km-cat-group h3 span{font:12px/1.3 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--color-text-muted,#667085)}
 .km-cat-mockups{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
-.km-cat-mockup{display:block;padding:12px 14px;border:1px solid var(--color-border,#e4e7ec);border-radius:8px;background:var(--color-surface,#fff);text-decoration:none;color:inherit}
-.km-cat-mockup strong{display:block}.km-cat-mockup span{font-size:12px;color:var(--color-text-muted,#667085)}
+.km-cat-mockup{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border:1px solid var(--color-border,#e4e7ec);border-radius:8px;background:var(--color-surface,#fff);text-decoration:none;color:inherit}
+.km-cat-mockup[data-type=page]{border-left:3px solid #2563eb}
+.km-cat-mockup-head{display:flex;align-items:center;gap:8px}
+.km-cat-mockup strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.km-cat-mockup>span{font-size:12px;color:var(--color-text-muted,#667085)}
+.km-cat-type{flex:none;padding:1px 7px;border-radius:9px;font:600 10px/16px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.04em;text-transform:uppercase;background:#f1f5f9;color:#475569}
+.km-cat-type[data-type=page]{background:#dbeafe;color:#1e40af}
+.km-cat-type[data-type=section]{background:#dcfce7;color:#166534}
+.km-cat-type[data-type=dialog]{background:#fef3c7;color:#92400e}
 `;
 
 const CHROME_CSS = `
@@ -937,6 +947,23 @@ async function listMockups() {
   return mockups.filter((i) => !siblings.has(i.path)).sort((a, b) => a.path.localeCompare(b.path));
 }
 
+// The catalogue groups mockups by folder (top level first, then folders alphabetically) and, within a folder,
+// lists pages, then sections, then dialogs (anything else last), each by title.
+const TYPE_ORDER = ['page', 'section', 'dialog'];
+const typeRank = (type) => { const r = TYPE_ORDER.indexOf(type); return r < 0 ? TYPE_ORDER.length : r; };
+
+function groupMockups(items) {
+  const groups = new Map();
+  for (const i of items) {
+    const folder = i.path.includes('/') ? i.path.slice(0, i.path.lastIndexOf('/')) : '';
+    if (!groups.has(folder)) groups.set(folder, []);
+    groups.get(folder).push(i);
+  }
+  return [...groups.entries()]
+    .sort(([a], [b]) => (a === '' ? -1 : b === '' ? 1 : a.localeCompare(b)))
+    .map(([folder, list]) => [folder, list.sort((a, b) => typeRank(a.type) - typeRank(b.type) || a.title.localeCompare(b.title))]);
+}
+
 async function showCatalogue() {
   state.current = null;
   document.title = `${state.ds.meta.name || 'Design system'} — catalogue`;
@@ -949,7 +976,7 @@ async function showCatalogue() {
   wrap.innerHTML = `
     <h1>${esc(ds.meta.name || 'Design system')}</h1>
     <p class="km-sub">Version ${esc(ds.meta.version || '—')} · source: ${esc(ds.meta.source || 'local')} · ${ds.components.size} components · ${ds.icons.length} icons · runtime ${VERSION}</p>
-    <h2>Mockups</h2><div class="km-cat-mockups" id="km-cat-mockups"><p>Looking for mockups…</p></div>
+    <h2>Mockups</h2><div id="km-cat-mockups"><p>Looking for mockups…</p></div>
     <h2>Components</h2><div id="km-cat-components"></div>
     <h2>Icons</h2><div class="km-cat-grid">${ds.icons.map((i) => `<div class="km-cat-icon"><mockup-asset src="icons/${esc(i)}.svg"></mockup-asset>${esc(i)}</div>`).join('')}</div>
     <h2>Colour tokens</h2><div class="km-cat-grid">${colours.map((c) => `<div class="km-cat-swatch"><div style="background:var(${c})"></div><span>${c}</span></div>`).join('')}</div>`;
@@ -979,7 +1006,12 @@ async function showCatalogue() {
   const items = await listMockups();
   const host = wrap.querySelector('#km-cat-mockups');
   host.innerHTML = items.length
-    ? items.map((i) => `<a class="km-cat-mockup" href="?m=${encodeURI(i.path)}"><strong>${esc(i.title)}</strong><span>${esc(i.type)} · ${esc(i.path)}${i.states.length ? ' · states: ' + esc(i.states.join(', ')) : ''}</span></a>`).join('')
+    ? groupMockups(items).map(([folder, list]) => {
+      const counts = [...TYPE_ORDER, 'other'].map((t, r) => [t, list.filter((i) => typeRank(i.type) === r).length])
+        .filter(([, n]) => n).map(([t, n]) => `${n} ${t}${n === 1 ? '' : 's'}`).join(' · ');
+      return `<section class="km-cat-group"><h3>${folder ? esc(folder) + '/' : 'Top level'}<span>${esc(counts)}</span></h3>${[...new Set(list.map((i) => typeRank(i.type)))].map((r) => `<div class="km-cat-mockups">${list.filter((i) => typeRank(i.type) === r).map((i) =>
+        `<a class="km-cat-mockup" data-type="${esc(i.type)}" href="?m=${encodeURI(i.path)}"><span class="km-cat-mockup-head"><span class="km-cat-type" data-type="${esc(i.type)}">${esc(i.type)}</span><strong>${esc(i.title)}</strong></span><span>${esc(i.path.slice(folder ? folder.length + 1 : 0))}${i.states.length ? ' · states: ' + esc(i.states.join(', ')) : ''}</span></a>`).join('')}</div>`).join('')}</section>`;
+    }).join('')
     : '<p>No mockups found. Mockups are <code>.xml</code> files anywhere in the project space outside <code>design-system/</code>. If there are some, the server may not list directories: open one with <code>?m=&lt;path&gt;.xml</code>.</p>';
   host.onclick = (e) => { const a = e.target.closest('a'); if (a) { e.preventDefault(); navigate(new URL(a.href).searchParams.get('m')); } };
 }

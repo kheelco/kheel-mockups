@@ -13,6 +13,9 @@ Guidance for agents and people working **on** this repository.
   read `# <JUI class> (control|component|fragment|layout)`; after adding or re-versioning a JUI component, run
   `scripts/jui-manifest.py` to regenerate its manifest. Check it with `./scripts/init-target.sh --reset --jui
   --serve`.
+- Record every change to the JUI design system (a `jui-*` component or its mapping, `tokens.md`, the icons) in
+  `mockup-init-jui/assets/jui/design-system/CHANGELOG.md`, saying whether it mirrors JUI or is for jui-stack (and
+  then what jui-stack needs), so it can be carried into [jui-stack](https://github.com/juiproject/jui-stack).
 - `plugins/kheel-mockup/skills/mockup-init/assets/` — the templates init copies: `viewer/` (`index.html`,
   `_runtime.js`, `_guide.md`), `starter/` (the starter design system and example mockups) and `empty/` (an empty
   manifest). Together they are the reference implementation of the specifications, so a change to a

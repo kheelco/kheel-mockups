@@ -5,7 +5,7 @@
   </specification>
 
   <jui-modal-dialog title="New project" subtitle="Projects collect your team's work in one place." subtitle-icon="info">
-    <jui-control-form>
+    <jui-control-form variant="dialog">
       <jui-control-form-row>
         <jui-control-form-cell label="Name" required="" grow="" error="please give the project a name">
           <jui-text-control placeholder="e.g. Website refresh" invalid=""/>

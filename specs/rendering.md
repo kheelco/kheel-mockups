@@ -48,6 +48,12 @@ lists only `.xml` files whose root element is `<mockup>`. A server without direc
 without that list. Page-state siblings
 are listed under their base mockup rather than on their own.
 
+The list is grouped by the folder each mockup is in, one heading per folder (its path from the project space's
+root; mockups at the root come first, under **Top level**), folders in alphabetical order. The heading counts the
+folder's mockups by type. Within a folder, pages come first, then sections, then dialogs (anything else last), each
+in order of title. Every mockup shows its type as a badge beside its title, with its file name and its page states
+beneath.
+
 ## Rendering a mockup
 
 1. Load the manifest, the token file's `css` blocks, and every component listed in the manifest.

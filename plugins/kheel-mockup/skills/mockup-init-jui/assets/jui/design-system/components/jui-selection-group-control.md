@@ -1,6 +1,6 @@
 ---
 name: jui-selection-group-control
-version: 1.0.0
+version: 1.1.0
 kind: elemental
 status: active
 summary: SelectionGroupControl control — a laid-out group of checkbox or radio options, each with a label and optional description.
@@ -91,6 +91,7 @@ arrow keys move between options.
 | Token | Kind | Default | Used for |
 | --- | --- | --- | --- |
 | `--jui-selectiongroup-text` | component | `--jui-ctl-text` | Label colour. |
+| `--jui-selectiongroup-label-size` | component | `--jui-comp-control-label-size` | Option label size (the input scales with it). |
 | `--jui-selectiongroup-itemgap` | component | `1em` | Gap between items; `0.5em` survey. |
 | `--jui-selectiongroup-labelgap` | component | `0.75em` | Gap between input and label; `1em` vertical and survey. |
 | `--jui-selectiongroup-inputsize` | component | `1em` | Input size. |
@@ -102,6 +103,7 @@ arrow keys move between options.
 | `--jui-ctl-focus-offset`, `--jui-ctl-err-focus` | semantic | | Focus ring; invalid outline. |
 | `--jui-ctl-text-disabled`, `--jui-ctl-text-readonly`, `--jui-ctl-bg-readonly` | semantic | | Disabled and read-only looks. |
 | `--jui-ctl-bg-wait`, `--jui-role-surface-muted`, `--jui-role-surface-raised` | semantic | | Waiting surface and its pulse. |
+| `--jui-comp-control-label-size` | semantic | | Size of a control's own option label, shared by the check, multi-check, toggle and selection-group controls. |
 
 ## Template
 
@@ -115,6 +117,7 @@ arrow keys move between options.
 :host {
   display: block; padding-top: 0.5em;
   --jui-selectiongroup-text: var(--jui-ctl-text);
+  --jui-selectiongroup-label-size: var(--jui-comp-control-label-size);
   --jui-selectiongroup-itemgap: 1em;
   --jui-selectiongroup-labelgap: 0.75em;
   --jui-selectiongroup-inputsize: 1em;
@@ -124,7 +127,7 @@ arrow keys move between options.
 }
 :host([variant="vertical"]) { --jui-selectiongroup-itemgap: 1em; --jui-selectiongroup-labelgap: 1em; }
 :host([variant="survey"]) { --jui-selectiongroup-itemgap: 0.5em; --jui-selectiongroup-labelgap: 1em; }
-.inner { outline: none; display: flex; flex-direction: column; flex-wrap: wrap; gap: var(--jui-selectiongroup-itemgap); color: var(--jui-selectiongroup-text); }
+.inner { font-size: var(--jui-selectiongroup-label-size); outline: none; display: flex; flex-direction: column; flex-wrap: wrap; gap: var(--jui-selectiongroup-itemgap); color: var(--jui-selectiongroup-text); }
 :host([type="radio"][variant="standard"]) .inner { flex-direction: row; }
 ::slotted(*) {
   display: block; position: relative; cursor: pointer; user-select: none; font-weight: 500;

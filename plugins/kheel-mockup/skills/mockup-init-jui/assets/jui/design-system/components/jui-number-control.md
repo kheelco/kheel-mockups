@@ -1,6 +1,6 @@
 ---
 name: jui-number-control
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: NumberControl control — a numeric input with decrement and increment steppers.
@@ -30,6 +30,7 @@ A bordered box (JUI `.inner`) holding the input and, flush against the right edg
 | read-only | state | boolean | | Read-only (JUI `readOnly`). |
 | invalid | state | boolean | | Failed validation (for example outside the minimum or maximum): red border. |
 | waiting | state | boolean | | Waiting for its value: pulsing blank box. |
+| width | variant | text | | The control's width as a CSS length, such as `10em` or `200px` (JUI `width(Length)` on the control's config). Without it the control fills its cell. `full` and `fit` work as on any element. |
 
 ## Variants
 
@@ -92,6 +93,7 @@ the value.
 ## Template
 
 ```html
+<style data-if="width">:host { width: {{width}}; max-width: 100%; }</style>
 <div class="inner">
   <input type="text" inputmode="numeric" value="{{value}}" placeholder="{{placeholder}}">
   <span class="steppers">

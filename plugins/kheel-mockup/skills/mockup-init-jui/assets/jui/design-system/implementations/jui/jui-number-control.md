@@ -24,6 +24,7 @@ Controls.number(cfg -> {
 | value | `ctl.setValue(…)` | The value type is numeric (check whether `Long`, `Integer` or `Double` for the JUI version in use). |
 | placeholder | `cfg.placeholder(…)` | |
 | disabled, read-only, invalid, waiting | as for `jui-text-control` | |
+| width | `width(Length.em(…))` or `width(Length.px(…))` on the control's config; e.g. `10em` is `cfg.width(Length.em(10))`. |
 
 Minimum, maximum and step are configured on `NumberControl.Config` (check the method names, for example
 `min(…)`, `max(…)`, `step(…)`); they don't change the mockup.

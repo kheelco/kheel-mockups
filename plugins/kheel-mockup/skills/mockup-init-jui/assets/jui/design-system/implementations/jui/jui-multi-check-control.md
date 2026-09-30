@@ -47,5 +47,7 @@ Controls.<String>checkMulti(cfg -> {
 
 ## Notes
 
+JUI has no token for the inline label's size: it inherits the surrounding text. Until JUI adds `--jui-multicheckctl-label-size` (see `CHANGELOG.md`), size it with CSS on the control (`.css("font-size: …")`) where it must differ from the surrounding text.
+
 JUI has variants beyond the standard look (`PANEL`, `SEGMENTED`, `INLINE`, per the stylesheet comments) that
 retune the `--jui-multicheckctl-*` tokens; `nowrap(true)` stops labels wrapping.

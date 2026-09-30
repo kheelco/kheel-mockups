@@ -1,6 +1,6 @@
 ---
 name: jui-modal-dialog
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: ModalDialog component — the dialog frame with a titled header, a body and a footer of actions.
@@ -39,7 +39,7 @@ The dialog has a 1 px border, large rounded corners and a raised shadow.
 | title-wrap | variant | boolean | | Let a long title wrap instead of being cut short with an ellipsis (JUI `titleWrap()`). |
 | variant | variant | standard, separated, uniform | standard | The header and footer treatment (JUI `ModalDialog.Config.Variant`). |
 | type | variant | center, top, slider | center | A centred dialog, one placed near the top of the page, or a full-height panel sliding in from the right (JUI `type(Modal.Type)`). |
-| padding | variant | 0, 1, 2, 3, 4, 6, 8 | 4 | Padding around the body's content (JUI `padding(Insets)`); `4` is 1em. |
+| padding | variant | 0, 1, 2, 3, 4, 5, 6, 8 | 0 | Padding around the body's content (JUI `padding(...)`; none by default). `4` is 1em. A form built with `ControlFormCreator.createForDialog()` pads itself (`jui-control-form variant="dialog"`), so leave this at `0` for form dialogs. |
 
 ## Variants
 
@@ -120,7 +120,7 @@ control needs an accessible name (`Close`).
 | `--cpt-modaldialog-description`, `--cpt-modaldialog-description-size`, `--cpt-modaldialog-description-margin-inline` | component | the subheading colour, `--jui-font-size-sm`, the heading's left margin | Description paragraph. |
 | `--cpt-modaldialog-icon`, `--cpt-modaldialog-icon-gap` | component | `--jui-comp-dialog-icon`, `--jui-space-3` | Subtitle icon. |
 | `--cpt-modaldialog-close`, `--cpt-modaldialog-close-top`, `--cpt-modaldialog-close-right` | component | `--jui-comp-dialog-close`, `14px`, `14px` | Close control. |
-| `--cpt-modaldialog-body-padding` | component | `--jui-space-4` | Padding around the body's content; `padding` sets it. |
+| `--cpt-modaldialog-body-padding` | component | `0` | Padding around the body's content; `padding` sets it. |
 | `--jui-comp-dialog-surface`, `--jui-comp-dialog-border`, `--jui-comp-dialog-radius`, `--jui-comp-dialog-shadow`, `--jui-comp-dialog-header-surface`, `--jui-comp-dialog-header-divider`, `--jui-comp-dialog-footer-surface`, `--jui-comp-dialog-footer-divider`, `--jui-comp-dialog-heading`, `--jui-comp-dialog-subheading`, `--jui-comp-dialog-icon`, `--jui-comp-dialog-close` | semantic | | The dialog family tokens the component tokens start from. |
 | `--jui-font-weight-semibold`, `--jui-font-size-sm`, `--jui-font-size-2xl` | semantic | | Title weight; description and uniform title sizes. |
 | `--jui-space-1`, `--jui-space-2`, `--jui-space-3`, `--jui-space-4`, `--jui-space-5`, `--jui-space-6`, `--jui-space-8` | semantic | | Insets and body padding steps. |
@@ -181,12 +181,14 @@ control needs an accessible name (`Close`).
   --cpt-modaldialog-close: var(--jui-comp-dialog-close);
   --cpt-modaldialog-close-top: 14px;
   --cpt-modaldialog-close-right: 14px;
-  --cpt-modaldialog-body-padding: var(--jui-space-4);
+  --cpt-modaldialog-body-padding: 0;
 }
 :host([padding="0"]) { --cpt-modaldialog-body-padding: 0; }
 :host([padding="1"]) { --cpt-modaldialog-body-padding: var(--jui-space-1); }
 :host([padding="2"]) { --cpt-modaldialog-body-padding: var(--jui-space-2); }
 :host([padding="3"]) { --cpt-modaldialog-body-padding: var(--jui-space-3); }
+:host([padding="4"]) { --cpt-modaldialog-body-padding: var(--jui-space-4); }
+:host([padding="5"]) { --cpt-modaldialog-body-padding: var(--jui-space-5); }
 :host([padding="6"]) { --cpt-modaldialog-body-padding: var(--jui-space-6); }
 :host([padding="8"]) { --cpt-modaldialog-body-padding: var(--jui-space-8); }
 :host([variant="separated"]), :host([variant="uniform"]) {
@@ -262,21 +264,21 @@ h2 jui-icon { color: var(--cpt-modaldialog-icon); position: relative; top: 0.2em
 
 ```xml
 <div layout="row" gap="6" align="start" wrap="">
-  <jui-modal-dialog title="Create a project" width="fit">
+  <jui-modal-dialog title="Create a project" width="fit" padding="4">
     <p>Give the project a name to get started.</p>
     <jui-btn label="Cancel" variant="outlined" nature="grey"/>
     <jui-btn label="Create"/>
   </jui-modal-dialog>
-  <jui-modal-dialog title="Invite members" subtitle="People you invite can see every project." subtitle-icon="info" description="Invitations expire after seven days." state="close-hover" width="fit">
+  <jui-modal-dialog title="Invite members" subtitle="People you invite can see every project." subtitle-icon="info" description="Invitations expire after seven days." state="close-hover" width="fit" padding="4">
     <p>Body content, such as a form.</p>
     <jui-btn slot="actions-left" label="Copy invite link" variant="text"/>
     <jui-btn label="Send invites"/>
   </jui-modal-dialog>
-  <jui-modal-dialog title="Uniform dialog" variant="uniform" width="fit">
+  <jui-modal-dialog title="Uniform dialog" variant="uniform" width="fit" padding="4">
     <p>Header, body and footer read as one surface.</p>
     <jui-btn label="Done"/>
   </jui-modal-dialog>
-  <jui-modal-dialog title="No actions" closable="false" width="fit">
+  <jui-modal-dialog title="No actions" closable="false" width="fit" padding="4">
     <p>Without actions there is no footer.</p>
   </jui-modal-dialog>
 </div>

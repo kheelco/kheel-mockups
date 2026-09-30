@@ -47,6 +47,8 @@ None.
 
 ## Notes
 
+JUI has no shared label token yet. Until it does, set `--jui-checkctl-size` in the application's theme to the same value as the other controls' label sizes (see `CHANGELOG.md`).
+
 In a form put it in a cell without a label (`row.control(null, Controls.check(…))`); its own label names it.
 Per-instance restyling: `cfg.css("--cpt-checkctl-text: …")` or `cfg.styles("my-checkctl")`. The mockup draws the
 checkbox in the control active colour; JUI renders a native checkbox.

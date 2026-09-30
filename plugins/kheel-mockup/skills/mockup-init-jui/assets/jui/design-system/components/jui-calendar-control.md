@@ -1,6 +1,6 @@
 ---
 name: jui-calendar-control
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: CalendarControl control — a date field that opens a month calendar to pick a date.
@@ -38,6 +38,7 @@ provides it. For a date that is really free text (such as "early March") use `ju
 | read-only | state | boolean | | Read-only: lock in place of the calendar icon (JUI `readOnly`). |
 | invalid | state | boolean | | Failed validation: red border. |
 | waiting | state | boolean | | Waiting for its value: pulsing blank box. |
+| width | variant | text | | The control's width as a CSS length, such as `10em` or `200px` (JUI `width(Length)` on the control's config). Without it the control fills its cell (the calendar is 16em). `full` and `fit` work as on any element. |
 
 ## Variants
 
@@ -117,6 +118,7 @@ from the enclosing field or cell.
 ## Template
 
 ```html
+<style data-if="width">:host { width: {{width}}; max-width: 100%; }</style>
 <div class="control" tabindex="0">
   <div class="inner">
     <jui-icon class="cal" name="calendar"></jui-icon>

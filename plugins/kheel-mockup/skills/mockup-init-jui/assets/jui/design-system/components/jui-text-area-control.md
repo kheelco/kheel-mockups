@@ -1,6 +1,6 @@
 ---
 name: jui-text-area-control
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: TextAreaControl control — a multi-line text input with a configurable number of rows and an optional character counter.
@@ -34,6 +34,7 @@ optional character counter right-aligned below the text, inside the box.
 | read-only | state | boolean | | Read-only (JUI `readOnly`). |
 | invalid | state | boolean | | Failed validation: red border. |
 | waiting | state | boolean | | Waiting for its value: pulsing blank box. |
+| width | variant | text | | The control's width as a CSS length, such as `10em` or `200px` (JUI `width(Length)` on the control's config). Without it the control fills its cell. `full` and `fit` work as on any element. |
 
 ## Variants
 
@@ -111,6 +112,7 @@ only sign of a length error — validation also reports it.
 ## Template
 
 ```html
+<style data-if="width">:host { width: {{width}}; max-width: 100%; }</style>
 <div class="inner">
   <textarea rows="{{rows}}" placeholder="{{placeholder}}">{{value}}</textarea>
   <jui-icon data-if="icon-right" class="right" name="{{icon-right}}"></jui-icon>

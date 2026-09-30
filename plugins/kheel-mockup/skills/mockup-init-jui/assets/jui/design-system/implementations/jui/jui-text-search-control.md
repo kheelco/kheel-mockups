@@ -32,6 +32,7 @@ Controls.<Suburb>textsearch(cfg -> cfg.store(suburbStore));
 | empty-message | — | Check how the search menu's empty text is configured. |
 | (default slot) | `cfg.store(…)` or the helper's varargs values | The listed matches are the store's filtered contents. |
 | disabled, read-only, invalid, waiting | as for `jui-text-control` | |
+| width | `width(Length.em(…))` or `width(Length.px(…))` on the control's config; e.g. `10em` is `cfg.width(Length.em(10))`. |
 
 ## Slots
 

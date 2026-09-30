@@ -1,6 +1,6 @@
 ---
 name: jui-notification-dialog
-version: 1.0.1
+version: 1.0.2
 kind: composed
 status: active
 summary: NotificationDialog component — a ready-made confirm, alert, error or save-changes dialog.
@@ -92,7 +92,7 @@ carries the meaning.
 ## Template
 
 ```html
-<jui-modal-dialog title="{{title}}">
+<jui-modal-dialog title="{{title}}" padding="5">
   <div class="outer">
     <jui-icon class="icon" data-if="type=confirm" name="circle-help"></jui-icon>
     <jui-icon class="icon" data-if="type=alert" name="circle-alert"></jui-icon>

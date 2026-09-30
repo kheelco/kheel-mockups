@@ -68,6 +68,10 @@ This file is the manifest: it lists everything the design system contains. `inde
 
 - [Shared behaviours](behaviours.md) — fragment events, control values and validation, store-backed loading.
 
+## Changes
+
+- [Changelog](CHANGELOG.md) — changes to the design system, and which of them jui-stack still needs.
+
 ## Patterns
 
 {('| Pattern | Summary |' + chr(10) + '| --- | --- |' + chr(10) + chr(10).join(pat_rows)) if pat_rows else 'None yet. Add patterns for arrangements your application repeats — a gallery with its filter bar, a form in a dialog.'}
@@ -78,7 +82,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 
 ## Icons
 
-From [Lucide](https://lucide.dev) (ISC licence, see assets/icons/LICENSE-lucide.txt). JUI uses FontAwesome; the
+From [Lucide](https://lucide.dev) (ISC licence, see assets/icons/LICENSE-lucide.txt), apart from the brand logos `google` and `microsoft`, which are from [Remix Icon](https://remixicon.com) (Apache 2.0, see assets/icons/LICENSE-remixicon.txt). JUI uses FontAwesome; the
 implementation mapping for the icon fragment gives the FontAwesome equivalent of each.
 
 """ + ' '.join(f'`{i}`' for i in icons) + '\n'

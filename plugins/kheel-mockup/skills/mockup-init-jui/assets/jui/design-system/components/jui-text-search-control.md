@@ -1,6 +1,6 @@
 ---
 name: jui-text-search-control
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: TextSearchControl control — a text input that offers matching values from a list or store as you type.
@@ -38,6 +38,7 @@ suburbs, tags or known names. Use `jui-selection-control` when the value must be
 | read-only | state | boolean | | Read-only: shows a lock (JUI `readOnly`). |
 | invalid | state | boolean | | Failed validation: red border. |
 | waiting | state | boolean | | Waiting for its value: pulsing blank box. |
+| width | variant | text | | The control's width as a CSS length, such as `10em` or `200px` (JUI `width(Length)` on the control's config). Without it the control fills its cell. `full` and `fit` work as on any element. |
 
 ## Variants
 
@@ -107,6 +108,7 @@ The label comes from the enclosing field or cell.
 ## Template
 
 ```html
+<style data-if="width">:host { width: {{width}}; max-width: 100%; }</style>
 <div class="inner">
   <jui-icon data-if="icon-left" class="left" name="{{icon-left}}"></jui-icon>
   <jui-icon class="lock" name="lock"></jui-icon>
