@@ -68,6 +68,10 @@ This file is the manifest: it lists everything the design system contains. `inde
 
 - [Shared behaviours](behaviours.md) — fragment events, control values and validation, store-backed loading.
 
+## Changes
+
+- [Changelog](CHANGELOG.md) — changes to the design system, and which of them jui-stack still needs.
+
 ## Patterns
 
 {('| Pattern | Summary |' + chr(10) + '| --- | --- |' + chr(10) + chr(10).join(pat_rows)) if pat_rows else 'None yet. Add patterns for arrangements your application repeats — a gallery with its filter bar, a form in a dialog.'}

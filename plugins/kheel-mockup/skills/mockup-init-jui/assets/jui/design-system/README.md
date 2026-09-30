@@ -36,14 +36,14 @@ This file is the manifest: it lists everything the design system contains. `inde
 | --- | --- | --- | --- | --- |
 | [jui-avatar-selector-control](components/jui-avatar-selector-control.md) | 1.0.0 | composed | control `AvatarSelectorControl` | AvatarSelectorControl control — shows the current avatar with change and remove actions, and a panel to pick a stock avatar or upload and crop an image. |
 | [jui-calendar-control](components/jui-calendar-control.md) | 1.1.0 | composed | control `CalendarControl` | CalendarControl control — a date field that opens a month calendar to pick a date. |
-| [jui-check-control](components/jui-check-control.md) | 1.0.0 | composed | control `CheckControl` | CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean. |
+| [jui-check-control](components/jui-check-control.md) | 1.1.0 | composed | control `CheckControl` | CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean. |
 | [jui-file-upload-control](components/jui-file-upload-control.md) | 1.0.0 | composed | control `FileUploadControl` | FileUploadControl control — a drag-and-drop region for uploading files, with the attached files listed beneath it. |
-| [jui-multi-check-control](components/jui-multi-check-control.md) | 1.0.0 | elemental | control `MultiCheckControl` | MultiCheckControl control — a compact pill of options, any of which can be switched on, yielding a set of values. |
+| [jui-multi-check-control](components/jui-multi-check-control.md) | 1.1.0 | elemental | control `MultiCheckControl` | MultiCheckControl control — a compact pill of options, any of which can be switched on, yielding a set of values. |
 | [jui-multi-selection-control](components/jui-multi-selection-control.md) | 1.1.0 | composed | control `MultiSelectionControl` | MultiSelectionControl control — a dropdown for picking several values, shown as text or as chips, with a checkbox list menu. |
 | [jui-number-control](components/jui-number-control.md) | 1.1.0 | composed | control `NumberControl` | NumberControl control — a numeric input with decrement and increment steppers. |
 | [jui-panel-selection-control](components/jui-panel-selection-control.md) | 1.0.0 | elemental | control `PanelSelectionControl` | PanelSelectionControl control — a multi-selection drawn as a grid of selectable tiles. |
 | [jui-selection-control](components/jui-selection-control.md) | 1.1.0 | composed | control `SelectionControl` | SelectionControl control — a single-select dropdown over a fixed or store-backed list, with keyword search in its menu. |
-| [jui-selection-group-control](components/jui-selection-group-control.md) | 1.0.0 | elemental | control `SelectionGroupControl` | SelectionGroupControl control — a laid-out group of checkbox or radio options, each with a label and optional description. |
+| [jui-selection-group-control](components/jui-selection-group-control.md) | 1.1.0 | elemental | control `SelectionGroupControl` | SelectionGroupControl control — a laid-out group of checkbox or radio options, each with a label and optional description. |
 | [jui-text-area-control](components/jui-text-area-control.md) | 1.1.0 | composed | control `TextAreaControl` | TextAreaControl control — a multi-line text input with a configurable number of rows and an optional character counter. |
 | [jui-text-control](components/jui-text-control.md) | 1.1.0 | composed | control `TextControl` | TextControl control — a single-line text input with optional icons, clear action and the standard control states. |
 | [jui-text-search-control](components/jui-text-search-control.md) | 1.1.0 | composed | control `TextSearchControl` | TextSearchControl control — a text input that offers matching values from a list or store as you type. |
@@ -106,12 +106,16 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-popup](components/jui-popup.md) | 1.0.0 | composed | fragment `Popup` | Popup fragment — a simple overlay panel over a grey mask, with a close button and a scrolling body. |
 | [jui-progress-bar](components/jui-progress-bar.md) | 1.0.0 | elemental | fragment `ProgressBar` | ProgressBar fragment — a bar filled to a percentage, with the percentage and optional commentary. |
 | [jui-stack](components/jui-stack.md) | 1.0.0 | elemental | fragment `Stack` | Stack fragment — lays its children out in a column or a row with a gap, alignment and wrapping. |
-| [jui-toggle-btn](components/jui-toggle-btn.md) | 1.0.0 | elemental | fragment `ToggleBtn` | ToggleBtn fragment — a small on/off switch with an optional label, toggled by the enclosing component. |
+| [jui-toggle-btn](components/jui-toggle-btn.md) | 1.1.0 | elemental | fragment `ToggleBtn` | ToggleBtn fragment — a small on/off switch with an optional label, toggled by the enclosing component. |
 | [jui-typography](components/jui-typography.md) | 1.0.0 | elemental | fragment `Typography` | Typography fragment — applies JUI's Material-style type scale to headings and text. |
 
 ## Behaviours
 
 - [Shared behaviours](behaviours.md) — fragment events, control values and validation, store-backed loading.
+
+## Changes
+
+- [Changelog](CHANGELOG.md) — changes to the design system, and which of them jui-stack still needs.
 
 ## Patterns
 

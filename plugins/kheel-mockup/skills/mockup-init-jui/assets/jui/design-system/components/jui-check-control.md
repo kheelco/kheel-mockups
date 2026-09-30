@@ -1,6 +1,6 @@
 ---
 name: jui-check-control
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean.
@@ -92,17 +92,18 @@ hidden under the track. Space toggles it.
 | `--cpt-checkctl-text` | component | `--jui-comp-control-text` | Label colour. |
 | `--cpt-checkctl-description` | component | `--jui-comp-control-text` | Description colour. |
 | `--cpt-checkctl-labelgap` | component | `--jui-space-3` | Gap between box and label. |
-| `--cpt-checkctl-size` | component | `--jui-font-size-md` | Control text size (the box is `1em`). |
+| `--cpt-checkctl-size` | component | `--jui-comp-control-label-size` | Control text size: the label (the box is `1em`). |
 | `--cpt-checkctl-toggle-track` | component | `--jui-comp-control-surface-offset` | Toggle track when off. |
 | `--cpt-checkctl-toggle-track-active` | component | `--jui-comp-control-active` | Toggle track when on; checked box fill. |
 | `--cpt-checkctl-toggle-thumb` | component | `--jui-comp-control-surface` | Toggle thumb. |
 | `--frag-icon-size` | component | `0.75em` | Size of the tick (`jui-icon`) inside a checked box. |
-| `--jui-comp-control-text`, `--jui-comp-control-surface-offset`, `--jui-comp-control-active`, `--jui-comp-control-surface`, `--jui-space-3`, `--jui-font-size-md` | semantic | | The defaults above. |
+| `--jui-comp-control-text`, `--jui-comp-control-surface-offset`, `--jui-comp-control-active`, `--jui-comp-control-surface`, `--jui-space-3` | semantic | | The defaults above. |
 | `--jui-font-weight-medium`, `--jui-font-weight-semibold`, `--jui-font-weight-regular` | semantic | | Label, bold label and description weights. |
 | `--jui-role-border-strong`, `--jui-color-aux-white`, `--jui-ctl-action` | semantic | | Checkbox border and surface; thumb shadow. |
 | `--jui-ctl-focus-offset`, `--jui-ctl-err-focus`, `--jui-ctl-err-focus-offset` | semantic | | Focus ring; invalid border and ring. |
 | `--jui-ctl-text-disabled`, `--jui-ctl-opacity-disabled`, `--jui-ctl-bg-disabled`, `--jui-ctl-bg-readonly`, `--jui-ctl-opacity-readonly` | semantic | | Disabled and read-only looks. |
 | `--jui-ctl-bg-wait`, `--jui-role-surface-muted`, `--jui-role-surface-raised` | semantic | | Waiting surface and its pulse. |
+| `--jui-comp-control-label-size` | semantic | | Size of a control's own option label, shared by the check, multi-check, toggle and selection-group controls. |
 
 ## Template
 
@@ -127,7 +128,7 @@ hidden under the track. Space toggles it.
   --cpt-checkctl-text: var(--jui-comp-control-text);
   --cpt-checkctl-description: var(--jui-comp-control-text);
   --cpt-checkctl-labelgap: var(--jui-space-3);
-  --cpt-checkctl-size: var(--jui-font-size-md);
+  --cpt-checkctl-size: var(--jui-comp-control-label-size);
   --cpt-checkctl-toggle-track: var(--jui-comp-control-surface-offset);
   --cpt-checkctl-toggle-track-active: var(--jui-comp-control-active);
   --cpt-checkctl-toggle-thumb: var(--jui-comp-control-surface);

@@ -1,6 +1,6 @@
 ---
 name: jui-multi-check-control
-version: 1.0.0
+version: 1.1.0
 kind: elemental
 status: active
 summary: MultiCheckControl control — a compact pill of options, any of which can be switched on, yielding a set of values.
@@ -104,12 +104,14 @@ Space toggles the focused one.
 | `--jui-multicheckctl-item-selected-bg` | component | `--jui-ctl-active` | Selected segment fill. |
 | `--jui-multicheckctl-item-selected-text` | component | `--jui-color-aux-white` | Selected segment text. |
 | `--jui-multicheckctl-item-selected-shadow` | component | `none` | Lift on the selected segment. |
+| `--jui-multicheckctl-label-size` | component | `--jui-comp-control-label-size` | Inline label size. |
 | `--jui-multicheckctl-label-weight` | component | `500` | Inline label weight. |
 | `--jui-multicheckctl-label-weight-bold` | component | `600` | Bold inline label weight. |
 | `--jui-color-neutral30`, `--jui-color-aux-white`, `--jui-ctl-active`, `--jui-ctl-text` | semantic | | Defaults above; label colour. |
 | `--jui-ctl-focus`, `--jui-ctl-focus-offset`, `--jui-ctl-err-focus-offset` | semantic | | Focus and invalid rings. |
 | `--jui-ctl-bg-disabled`, `--jui-ctl-opacity-disabled`, `--jui-ctl-bg-readonly`, `--jui-ctl-opacity-readonly` | semantic | | Disabled and read-only looks. |
 | `--jui-ctl-bg-wait`, `--jui-role-surface-muted`, `--jui-role-surface-raised` | semantic | | Waiting surface and its pulse. |
+| `--jui-comp-control-label-size` | semantic | | Size of a control's own option label, shared by the check, multi-check, toggle and selection-group controls. |
 
 ## Template
 
@@ -146,13 +148,14 @@ Space toggles the focused one.
   --jui-multicheckctl-item-selected-bg: var(--jui-ctl-active);
   --jui-multicheckctl-item-selected-text: var(--jui-color-aux-white);
   --jui-multicheckctl-item-selected-shadow: none;
+  --jui-multicheckctl-label-size: var(--jui-comp-control-label-size);
   --jui-multicheckctl-label-weight: 500;
   --jui-multicheckctl-label-weight-bold: 600;
 }
 .inner { margin: 2px 0; display: flex; flex-direction: column; gap: 0.75em; color: var(--jui-ctl-text); border-radius: var(--jui-multicheckctl-border-radius); }
 .item { display: flex; flex-direction: row; align-items: center; }
 :host([reverse]) .item { flex-direction: row-reverse; }
-.label { user-select: none; white-space: nowrap; font-weight: var(--jui-multicheckctl-label-weight); }
+.label { user-select: none; white-space: nowrap; font-size: var(--jui-multicheckctl-label-size); font-weight: var(--jui-multicheckctl-label-weight); }
 :host([bold]) .label { font-weight: var(--jui-multicheckctl-label-weight-bold); }
 .spacer { display: inline-block; width: 1em; }
 :host([expand]) .spacer { flex-grow: 1; }

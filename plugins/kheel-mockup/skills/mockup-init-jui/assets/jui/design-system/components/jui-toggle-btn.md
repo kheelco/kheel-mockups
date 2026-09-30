@@ -1,6 +1,6 @@
 ---
 name: jui-toggle-btn
-version: 1.0.0
+version: 1.1.0
 kind: elemental
 status: active
 summary: ToggleBtn fragment — a small on/off switch with an optional label, toggled by the enclosing component.
@@ -81,11 +81,12 @@ The tokens the style uses: its own component tokens (points of variation a theme
 | `--jui-toggle-btn-knob-bg` | component | `#fff` | Knob colour. |
 | `--jui-toggle-btn-label-gap` | component | `0.5em` | Gap between switch and label. |
 | `--jui-toggle-btn-padding` | component | `1px` | Space between track border and knob. |
-| `--jui-toggle-btn-label-size` | component | `0.95em` | Label size. |
+| `--jui-toggle-btn-label-size` | component | `--jui-comp-control-label-size` | Label size (JUI: `0.95em`). |
 | `--jui-toggle-btn-label-color` | component | `#666` | Label colour. |
 | `--jui-toggle-btn-label-weight` | component | `500` | Label weight. |
 | `--jui-color-primary30`, `--jui-color-primary50` | semantic | | The on colours. |
 | `--jui-role-focus-ring` | semantic | | Focus ring. |
+| `--jui-comp-control-label-size` | semantic | | Size of a control's own option label, shared by the check, multi-check, toggle and selection-group controls. |
 
 ## Template
 
@@ -110,7 +111,7 @@ The tokens the style uses: its own component tokens (points of variation a theme
   --jui-toggle-btn-knob-bg: #fff;
   --jui-toggle-btn-label-gap: 0.5em;
   --jui-toggle-btn-padding: 1px;
-  --jui-toggle-btn-label-size: 0.95em;
+  --jui-toggle-btn-label-size: var(--jui-comp-control-label-size);
   --jui-toggle-btn-label-color: #666;
   --jui-toggle-btn-label-weight: 500;
 }

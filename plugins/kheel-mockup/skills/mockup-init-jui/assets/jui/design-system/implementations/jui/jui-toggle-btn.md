@@ -38,6 +38,8 @@ update the state and re-render. There is no hover style in JUI.
 
 ## Notes
 
+JUI's default label size is `0.95em`; the design system uses `--jui-comp-control-label-size`. Until JUI does (see `CHANGELOG.md`), set `--juiToggleBtn-label-size` (JUI's name for it) in the application's theme.
+
 JUI's CSS variables are camel-cased: `--juiToggleBtn-width`, `--juiToggleBtn-bg`, `--juiToggleBtn-border`,
 `--juiToggleBtn-active-bg`, `--juiToggleBtn-active-border`, `--juiToggleBtn-knob-bg`, `--juiToggleBtn-label-gap`,
 `--juiToggleBtn-padding`, `--juiToggleBtn-label-size`, `--juiToggleBtn-label-color`, `--juiToggleBtn-label-weight`

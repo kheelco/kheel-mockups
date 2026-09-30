@@ -307,6 +307,7 @@ retuned in one place.
 :root {
     /* Component-family defaults */
     --jui-comp-control-font-family: var(--jui-font-family-control);
+    --jui-comp-control-label-size: var(--jui-font-size-md);   /* a control's own option label: check, multi-check, toggle, selection group (design system; not yet in JUI) */
     --jui-comp-control-height: var(--jui-control-height);
     --jui-comp-control-surface: var(--jui-role-surface-raised);
     --jui-comp-control-surface-disabled: var(--jui-role-surface-sunken);
