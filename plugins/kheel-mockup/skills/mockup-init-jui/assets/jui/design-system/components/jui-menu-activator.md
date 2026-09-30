@@ -1,6 +1,6 @@
 ---
 name: jui-menu-activator
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: MenuActivator fragment — a vertical-ellipsis trigger that opens a menu on hover or click.
@@ -122,7 +122,9 @@ The tokens the style uses: its own component tokens (points of variation a theme
   cursor: pointer;
   line-height: 1;
 }
-.trigger { display: inline-flex; color: var(--frag-menu-activator-color); transform: rotate(90deg); }
+/* Laid out as narrow as JUI's FontAwesome ellipsis-v glyph (0.25em), so the padded box (and its hover background) is
+   as near square as JUI's and the radius makes it a circle; the rotated Lucide dots are drawn centred over it. */
+.trigger { display: inline-flex; justify-content: center; width: 0.25em; color: var(--frag-menu-activator-color); transform: rotate(90deg); }
 .panel {
   display: none;
   position: absolute;

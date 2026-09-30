@@ -13,6 +13,13 @@ removing it.
 
 ## Unreleased
 
+### Menu activator shape — Mirrors JUI
+
+`jui-menu-activator` 1.0.1: the hover and open background is a circle, as in JUI, not an oval. JUI's trigger is
+FontAwesome's `ellipsisV` glyph, about 0.25em wide, so its `6px 11px` padding makes a near-square box that the 30px
+radius rounds into a circle; the mockup's rotated Lucide `ellipsis` took a full 1em of width. The trigger is now laid
+out 0.25em wide, as JUI's glyph.
+
 ### Control label size: `--jui-comp-control-label-size` — For jui-stack
 
 A control's own option label (not the field label from a form cell) was sized differently by each control: the

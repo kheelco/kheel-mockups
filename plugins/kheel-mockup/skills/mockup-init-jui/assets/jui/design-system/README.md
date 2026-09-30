@@ -95,7 +95,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-icon-btn](components/jui-icon-btn.md) | 1.0.0 | composed | fragment `IconBtn` | IconBtn fragment — a round, borderless button showing only an icon. |
 | [jui-loading](components/jui-loading.md) | 1.0.0 | elemental | fragment `Loading` | Loading fragment — a pulsing grey placeholder bar shown where content is still loading. |
 | [jui-menu](components/jui-menu.md) | 1.0.0 | elemental | fragment `Menu` | Menu fragment — a floating list of menu items with an outlined, shadowed surface. |
-| [jui-menu-activator](components/jui-menu-activator.md) | 1.0.0 | composed | fragment `MenuActivator` | MenuActivator fragment — a vertical-ellipsis trigger that opens a menu on hover or click. |
+| [jui-menu-activator](components/jui-menu-activator.md) | 1.0.1 | composed | fragment `MenuActivator` | MenuActivator fragment — a vertical-ellipsis trigger that opens a menu on hover or click. |
 | [jui-menu-item](components/jui-menu-item.md) | 1.0.0 | composed | fragment `MenuItem` | MenuItem fragment — one action in a menu, with an optional icon and a label. |
 | [jui-notice](components/jui-notice.md) | 1.0.0 | composed | fragment `Notice` | Notice fragment — an inline callout with an icon and a message, in four tones and three styles. |
 | [jui-paper](components/jui-paper.md) | 1.0.0 | elemental | fragment `Paper` | Paper fragment — an unframed content block that gives the headings inside it JUI's heading style. |
