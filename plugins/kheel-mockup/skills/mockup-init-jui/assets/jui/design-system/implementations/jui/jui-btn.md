@@ -44,3 +44,6 @@ asynchronous `onclick` callback: call `cb.complete()` when the action finishes.
 Theme through the `--frag-btn-*` tokens (for one button, `.css("--frag-btn-…: …")`) or the `--jui-comp-button-*`
 family tokens. If the button needs to exist on its own as a component — its own events and lifecycle — map to
 `jui-button` (the Button component) instead.
+
+A button laid out with `width="full"` or `grow` (two actions sharing a card's width) fills its space: give the
+fragment's button `width: 100%` (`.css("width: 100%")`) and let the enclosing flex row share the width.

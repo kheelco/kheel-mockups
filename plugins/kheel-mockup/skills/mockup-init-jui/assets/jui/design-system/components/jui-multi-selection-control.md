@@ -1,6 +1,6 @@
 ---
 name: jui-multi-selection-control
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: MultiSelectionControl control — a dropdown for picking several values, shown as text or as chips, with a checkbox list menu.
@@ -39,6 +39,7 @@ checkbox `jui-selection-group-control` when there are only a few options that sh
 | read-only | state | boolean | | Read-only: lock shown, cannot open (JUI `readOnly`). |
 | invalid | state | boolean | | Failed validation: red border. |
 | waiting | state | boolean | | Waiting for its value: pulsing blank box. |
+| width | variant | text | | The control's width as a CSS length, such as `10em` or `200px` (JUI `width(Length)` on the control's config). Without it the control fills its cell. `full` and `fit` work as on any element. |
 
 ## Variants
 
@@ -114,6 +115,7 @@ Each chip's remove action needs an accessible name (`Remove Design`).
 ## Template
 
 ```html
+<style data-if="width">:host { width: {{width}}; max-width: 100%; }</style>
 <div class="control" tabindex="0">
   <div class="inner">
     <span class="content chips"><slot name="chips"></slot></span>

@@ -28,6 +28,7 @@ Controls.<String>multiselector(cfg -> {
 | hide-search | `cfg.allowSearch(false)` | Check for this control. |
 | keywords, empty-message | as for `jui-selection-control` | |
 | disabled, read-only, invalid, waiting | as for `jui-text-control` | |
+| width | `width(Length.em(…))` or `width(Length.px(…))` on the control's config; e.g. `10em` is `cfg.width(Length.em(10))`. |
 
 ## Slots
 

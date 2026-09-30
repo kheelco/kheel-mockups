@@ -36,6 +36,7 @@ ctl.setValue("Jill Jones");
 | read-only | `cfg.readOnly()` | |
 | invalid | validators / `invalidator().invalidate(…)` | Not a configuration property; see States. |
 | waiting | `ctl.waiting(true)` | |
+| width | `width(Length.em(…))` or `width(Length.px(…))` on the control's config; e.g. `10em` is `cfg.width(Length.em(10))`. |
 
 ## Slots
 

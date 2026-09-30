@@ -1,6 +1,6 @@
 ---
 name: jui-control-form
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: ControlForm component — a form of labelled controls laid out in groups and rows, with a form-level error block.
@@ -47,12 +47,17 @@ The mockup represents the form builder's parts as four tags:
 | instruction | content | text | | Header instruction text (JUI `header.instruction(…)`). |
 | guidance | content | text | | Footer guidance (JUI `footer(f -> f.guidance(…))`). |
 | error | content | text | | The form-level error message; puts the form in the invalid state (JUI: shown by `validate()` failing or `invalidate(…)`). |
+| variant | variant | standard, dialog | standard | `dialog` is the form as `ControlFormCreator.createForDialog()` builds it for a dialog: compact, groups starting at depth 1 (so rows and groups sit closer), and padded 2em top and bottom, 2.5em at the sides. |
 
 ## Variants
 
-None in the mockup. JUI's `ControlForm.Config` also offers a maximum width, a dialog configuration
-(`ControlFormCreator.createForDialog()`) and boxed variants that frame nested groups; the mockup frame and the
-`width` attribute stand in for width.
+| Property | Value | Use |
+| --- | --- | --- |
+| variant | standard | A form on a page (`ControlFormCreator.create()`). |
+| variant | dialog | A form in a dialog (`ControlFormCreator.createForDialog()`, the `DIALOG_CONFIG` variant: `COMPACT`, `startingDepth(1)`, `padding(Insets.em(2.5, 2))`). Put it in a `jui-modal-dialog` with no padding of its own; its nested groups are `depth="2"`. |
+
+JUI's `ControlForm.Config` also offers a maximum width and boxed variants that frame nested groups; the mockup
+frame and the `width` attribute stand in for width.
 
 ## States
 
@@ -101,6 +106,7 @@ The form sets JUI's `--cpt-form-*` tokens; groups, rows and cells read them.
 
 | Token | Kind | Default | Used for |
 | --- | --- | --- | --- |
+| `--cpt-form-padding` | component | `0` | Padding round the form; `2em 2.5em` for the `dialog` variant (JUI `padding(Insets)`). |
 | `--cpt-form-row-gap` | component | `--jui-space-6` | Gap between the cells of a row (read by rows) and after an open conditional group. |
 | `--cpt-form-group-depth0-gap` | component | `--jui-space-12` | Gap between the form body's items and below the error block. |
 | `--cpt-form-group-depth1-gap`, `--cpt-form-group-depth2-gap`, `--cpt-form-group-depth3-gap`, `--cpt-form-group-depth4-gap` | component | `--jui-space-6`, `--jui-space-6`, `--jui-space-5`, `--jui-space-4` | Gap between a nested group's body items, by depth (read by groups). |
@@ -199,7 +205,19 @@ The form sets JUI's `--cpt-form-*` tokens; groups, rows and cells read them.
   --cpt-form-error-item-gap: var(--jui-space-6);
   --cpt-form-separator: var(--jui-comp-form-separator);
   --cpt-form-separator-gap: var(--jui-space-6);
+  --cpt-form-padding: 0;
 }
+/* createForDialog(): COMPACT, startingDepth(1), padding 2em top and bottom, 2.5em at the sides */
+:host([variant="dialog"]) {
+  --cpt-form-group-depth0-gap: 2em;
+  --cpt-form-error-icon-size: 2em;
+  --cpt-form-error-text-size: 0.98em;
+  --cpt-form-error-margin-v: 1em;
+  --cpt-form-padding: 2em 2.5em;
+}
+.form { padding: var(--cpt-form-padding); }
+:host([variant="dialog"]) .body { gap: var(--cpt-form-group-depth1-gap); }
+:host([variant="dialog"]) h3 { font-size: var(--cpt-form-header-depth1-size); }
 .errors_inner {
   background: var(--cpt-form-error-bg); border-radius: var(--cpt-form-error-radius);
   padding: var(--cpt-form-error-margin-v) var(--cpt-form-error-margin-h); margin-bottom: var(--cpt-form-group-depth0-gap);

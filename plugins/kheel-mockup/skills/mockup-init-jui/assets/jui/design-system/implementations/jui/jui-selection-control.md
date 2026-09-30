@@ -39,6 +39,7 @@ Controls.<Person>selector(cfg -> {
 | keywords | — | Typed by the user; filters an `IFilteredStore`, or is passed to an `ISearchStore` via `filter(keywords)`. |
 | empty-message | `cfg.emptyUnfiltered(…)` / `cfg.emptyFiltered(…)` | Check these exist on this control's configuration; the store's `onSuccess(…, filtered)` flag decides which applies. |
 | disabled, read-only, invalid, waiting | as for `jui-text-control` | |
+| width | `width(Length.em(…))` or `width(Length.px(…))` on the control's config; e.g. `10em` is `cfg.width(Length.em(10))`. |
 
 ## Slots
 

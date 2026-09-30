@@ -1,6 +1,6 @@
 ---
 name: jui-text-control
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: TextControl control — a single-line text input with optional icons, clear action and the standard control states.
@@ -37,6 +37,7 @@ an optional trailing icon, which the clear action replaces while it is shown.
 | read-only | state | boolean | | Read-only: presents a value that cannot be edited; shows a lock (JUI `readOnly`). |
 | invalid | state | boolean | | Failed validation: red border (JUI invalidation). The message is shown by the enclosing field or cell. |
 | waiting | state | boolean | | Waiting for its value to load: a pulsing blank box (JUI `waiting(true)`). |
+| width | variant | text | | The control's width as a CSS length, such as `10em` or `200px` (JUI `width(Length)` on the control's config). Without it the control fills its cell. `full` and `fit` work as on any element. |
 
 ## Variants
 
@@ -131,6 +132,7 @@ The tokens the style uses: its own component tokens (JUI's `--cpt-textctl-*` lay
 ## Template
 
 ```html
+<style data-if="width">:host { width: {{width}}; max-width: 100%; }</style>
 <div class="inner">
   <jui-icon data-if="icon-left" class="left" name="{{icon-left}}"></jui-icon>
   <jui-icon class="lock" name="lock"></jui-icon>

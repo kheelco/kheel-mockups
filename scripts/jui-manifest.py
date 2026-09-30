@@ -78,7 +78,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 
 ## Icons
 
-From [Lucide](https://lucide.dev) (ISC licence, see assets/icons/LICENSE-lucide.txt). JUI uses FontAwesome; the
+From [Lucide](https://lucide.dev) (ISC licence, see assets/icons/LICENSE-lucide.txt), apart from the brand logos `google` and `microsoft`, which are from [Remix Icon](https://remixicon.com) (Apache 2.0, see assets/icons/LICENSE-remixicon.txt). JUI uses FontAwesome; the
 implementation mapping for the icon fragment gives the FontAwesome equivalent of each.
 
 """ + ' '.join(f'`{i}`' for i in icons) + '\n'

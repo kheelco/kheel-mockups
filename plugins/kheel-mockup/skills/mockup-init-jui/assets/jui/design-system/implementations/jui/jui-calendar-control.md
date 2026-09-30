@@ -26,6 +26,7 @@ Controls.calendar(cfg -> {
 | clear-action | `cfg.clearAction()` | The stylesheet has a `clear` action; check the method name. |
 | month, selected-day, today | — | Illustrate the open calendar only; JUI opens at the value's month and marks today itself. |
 | disabled, read-only, invalid, waiting | as for `jui-text-control` | |
+| width | `width(Length.em(…))` or `width(Length.px(…))` on the control's config; e.g. `10em` is `cfg.width(Length.em(10))`. |
 
 ## Slots
 

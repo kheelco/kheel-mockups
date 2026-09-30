@@ -1,6 +1,6 @@
 ---
 name: jui-btn
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: Btn fragment — a lightweight inline button with a label, an icon and a click action.
@@ -68,6 +68,8 @@ JUI's named variants combine these: `STANDARD_ROUNDED` is `variant="standard" ro
 
 A click runs the button's action through the enclosing component (see **Fragment events**). When the action is
 asynchronous, the button shows the waiting state until it completes, unless JUI's `immediate()` is set.
+With the layout attribute `width="full"` or `grow`, the button itself fills the width it is given (JUI:
+`.css("width: 100%")` on the fragment's button), as when two actions share a card's width.
 
 ## Content rules
 
@@ -161,6 +163,7 @@ The tokens the style uses: its own component tokens (points of variation a theme
 :host([expanded]) { --frag-btn-padding-lr: 1em; }
 :host([rounded]) { --frag-btn-radius: 16px; }
 :host([compact]) { --frag-btn-padding-lr: 0; }
+:host([width="full"]) .btn, :host([grow]) .btn { width: 100%; }
 .btn {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
   margin: var(--frag-btn-margin); padding: var(--frag-btn-padding-tb) var(--frag-btn-padding-lr);
