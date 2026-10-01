@@ -13,6 +13,12 @@ removing it.
 
 ## Unreleased
 
+### Card navigator header slot — Mirrors JUI
+
+`jui-card-navigator` 1.1.0: an optional `header` slot replaces the standard header (crumb trail, back button and
+title) with the application's own top, at the top level and for an open card. JUI allows the same by subclassing
+`CardNavigator` and overriding `buildBreadcrumb(…)`; the mapping says how.
+
 ### Interactions — Mirrors JUI
 
 Components can now carry an `Interactions` table the viewer (0.9.0) acts out, so mockups respond as JUI does

@@ -38,6 +38,7 @@ CardNavigator settings = new CardNavigator.Config()
 | --- | --- |
 | cards | `card(reference, component, c -> c.label(…).description(…))` per `jui-card-navigator-card`, in order. |
 | default | The open card's component (the `component` passed to its `card(...)`). |
+| header | A subclass of `CardNavigator` overriding `buildBreadcrumb(header, context, path)` to build the application's own top into `header` instead of the crumbs and title; at the top level JUI shows the header only when the style's `showHeaderAtTop()` holds and `titleOnlyInBreadcrumb` is off. |
 
 ## States
 

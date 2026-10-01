@@ -1,6 +1,6 @@
 ---
 name: jui-card-navigator
-version: 1.0.1
+version: 1.1.0
 kind: composed
 status: active
 summary: CardNavigator component — a grid of cards leading to sections, each shown under a breadcrumb back to the grid.
@@ -62,6 +62,7 @@ A mockup shows one of its two states: the **top level** (no `current`; the cards
 | --- | --- | --- | --- | --- |
 | cards | jui-card-navigator-card | jui-card-navigator-card | A wrapping row of fixed-size cards. | The cards of the top level (JUI `card(reference, component, config)`). Placed here without `slot`. |
 | default | any | jui-panel | configurable | The open card's content, shown when `current` is set. |
+| header | any | | Full width, in place of the standard header. | Optional: the application's own top, replacing the crumb trail, back button and title (JUI: a subclass overriding `buildBreadcrumb`). Shown at the top level and for an open card alike. |
 
 ## Behaviour
 
@@ -85,6 +86,8 @@ and in the application should be links or buttons with visible focus.
 - Show either the top level or one open card per mockup; use a separate mockup for each.
 - Keep descriptions short: cards have a fixed size and scroll their content.
 - Use `parent` only for segmented cards (an entity within a section).
+- Use the `header` slot when the application navigates by other means (an app bar's breadcrumb) and wants the top
+  only to say where you are.
 
 ## Tokens
 
@@ -105,6 +108,7 @@ and in the application should be links or buttons with visible focus.
 
 ```html
 <div class="wrap">
+  <div class="custom"><slot name="header"></slot></div>
   <header class="header top" data-if="!current"><h2>{{title}}</h2></header>
   <header class="header open" data-if="current">
     <div class="crumb">
@@ -136,6 +140,9 @@ and in the application should be links or buttons with visible focus.
 }
 .wrap { height: 100%; display: flex; flex-direction: column; min-width: var(--jui-cardnavigator-maxwidth); }
 .header { padding: 1em 2em; }
+.custom { display: none; }
+:host([data-filled~="header"]) .custom { display: block; }
+:host([data-filled~="header"]) .header { display: none; }
 .header.open { border-bottom: 1px solid var(--jui-cardnavigator-header-border); background: var(--jui-cardnavigator-header-bg); color: var(--jui-cardnavigator-header-color); }
 h2 { margin: 0; font-size: 1.5em; font-weight: 600; line-height: 1.3; display: flex; gap: 0.25em; align-items: center; color: var(--jui-role-text-heading); }
 .crumb { margin-bottom: 0.5em; display: flex; align-items: center; position: relative; gap: 0.25em; left: -0.5em; }
