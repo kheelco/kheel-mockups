@@ -30,7 +30,10 @@ the components, the specifications and any warnings.
 | `assets/icons/` | The icon set. |
 | `index.html`, `_runtime.js`, `_guide.md` | The viewer and this guide. Anything here whose name starts with `_`, and `index.html`, belongs to the mechanism: don't edit it, don't name design-system files that way. |
 
-Change the design system by editing its files — the next page load uses the change. A component copied from another
+Change the design system by editing its files — the next page load uses the change. A component's
+**Interactions** table (Trigger `click` / `click-outside` / `escape`, Target, When, Effect, Value) is what the viewer
+acts out when the component is used: effects add, remove or toggle a state, set, unset or toggle a property, or
+`select` one among same-tag siblings. A component copied from another
 source (such as the JUI design system's `jui-*` components) is changed at that source and copied in again, never
 edited here: give it the looks the project needs with an **extension**, `extensions/<tag>.md`, listed in the
 manifest's `Extensions` table. Its `Variants` table names each value it `adds` or `overrides`; its `Style` is added
@@ -76,7 +79,10 @@ suit the project:
   `spec="…"` is the one-line form. They are what an implementer reads — say where data comes from, what actions
   do, and when things appear.
 - **Interaction.** `href="other.xml"` navigates, `opens="dialog.xml"` opens a dialog, `closes=""` closes it.
-  Paths are relative to the mockup's own file.
+  Paths are relative to the mockup's own file. Components with an **Interactions** table also respond on their
+  own — a menu opens on a click and closes on a click elsewhere or Escape, a box ticks, an option is chosen —
+  starting from the mockup as written (a menu written `state="open"` starts open). Anything that changes other
+  content is a page state.
 - The file must be well-formed XML: use characters directly or numeric references (`&#160;`), not `&nbsp;`.
 
 The viewer lists anything that doesn't fit the design system — unknown components or properties, values out of

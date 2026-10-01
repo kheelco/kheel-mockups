@@ -33,6 +33,7 @@ summary: Triggers an action.
 ## States            ← read by the renderer
 ## Slots             ← read by the renderer
 ## Behaviour
+## Interactions      ← read by the renderer
 ## Content rules
 ## Accessibility
 ## Rules of use
@@ -43,8 +44,8 @@ summary: Triggers an action.
 ```
 
 Sections appear in this order. A section that has nothing to say says so in one line ("None — built from
-tokens.") rather than being left out, except `Slots`, `Tokens`, `Style` and `Example`, which may be omitted —
-`Tokens` only when there is no `Style`.
+tokens.") rather than being left out, except `Slots`, `Interactions`, `Tokens`, `Style` and `Example`, which may be
+omitted — `Tokens` only when there is no `Style`.
 
 ### Front matter
 
@@ -126,6 +127,46 @@ The places a consumer puts other content. One table with exactly these columns:
 | Description | What the slot is for. |
 
 A component with no slots omits the section.
+
+### Interactions
+
+What the viewer does when someone uses the component in a mockup: changes to the component's own states and
+properties, so that a menu opens on a click, a box ticks or an option is chosen, with no script in the mockup.
+It covers only what changes the component itself (and, for a choice, its siblings); anything that changes other
+content — filtering a table, switching a tab's panel — is a page state ([mockups.md](mockups.md#page-states)).
+`Behaviour` still describes the component's behaviour in full; this table is the part of it the viewer acts out.
+One table with exactly these columns:
+
+| Column | Meaning |
+| --- | --- |
+| Trigger | `click` on the component; `click-outside`, a click anywhere else in the mockup; or `escape`, the Escape key. |
+| Target | For a click, a CSS selector into the component's template: only a click on that part counts. Blank for the whole component. |
+| When | Conditions on the component's properties, in the template's `data-if` form, separated by spaces, all of which must hold (`click-to-activate !disabled`). Blank for always. |
+| Effect | What changes (below). |
+| Value | The state or property it changes. |
+
+| Effect | Value | Does |
+| --- | --- | --- |
+| `add-state`, `remove-state`, `toggle-state` | a state | Adds the state to the `state` attribute, removes it, or either. |
+| `set` | `property` or `property=value` | Sets a boolean property on, or a property to a value. |
+| `unset` | a boolean property | Removes it. |
+| `toggle` | a boolean property | Turns it on or off. |
+| `select` | a boolean property | Turns it on here and off on the siblings of the same tag: one chosen among several. |
+
+```markdown
+| Trigger | Target | When | Effect | Value |
+| --- | --- | --- | --- | --- |
+| click | `.trigger` | click-to-activate | toggle-state | open |
+| click | `.panel` | | remove-state | open |
+| click-outside | | | remove-state | open |
+| escape | | | remove-state | open |
+```
+
+The viewer starts from the mockup as written — a menu written `state="open"` starts open — and changes it from
+there; reloading the mockup restores it. Navigation comes first: a click on an element with `href` or `opens`
+follows it (and before opening a dialog, applies every `click-outside` row, so an open menu closes) instead of any
+interaction. Escape applies the `escape` rows before it closes a dialog, and closes the dialog only if none of them
+changed anything. States the browser already shows, `:hover` and `:focus-within`, need no rows.
 
 ### Tokens
 
@@ -270,7 +311,7 @@ A mockup chooses an extension's values like any other: `variant="quiet"`. A new 
 attribute the component looks as it does without the extension.
 
 An extension changes looks only. It cannot remove a value, change a default, or add content or state properties,
-states, slots or template: those change the component itself, and are made at its source.
+states, slots, interactions or template: those change the component itself, and are made at its source.
 
 ### Style
 

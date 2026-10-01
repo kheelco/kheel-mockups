@@ -28,7 +28,7 @@ are the viewer and its guide — part of the mockup mechanism, not of the design
 | [ui-button](components/ui-button.md) | 1.0.0 | composed | Triggers an action. |
 | [ui-badge](components/ui-badge.md) | 1.0.0 | composed | Shows a short status or category label. |
 | [ui-chip](components/ui-chip.md) | 1.0.0 | composed | A compact option the user can select or remove, typically a filter. |
-| [ui-checkbox](components/ui-checkbox.md) | 1.0.0 | composed | A yes/no choice, alone or in a group, and row selection in tables. |
+| [ui-checkbox](components/ui-checkbox.md) | 1.0.1 | composed | A yes/no choice, alone or in a group, and row selection in tables. |
 | [ui-text-field](components/ui-text-field.md) | 1.0.0 | composed | A labelled single-line text input with helper and error messages. |
 | [ui-select](components/ui-select.md) | 1.0.0 | composed | Chooses one option from a list that opens on demand. |
 | [ui-option](components/ui-option.md) | 1.0.0 | composed | One choice inside a select's list. |

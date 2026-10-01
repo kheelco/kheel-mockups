@@ -13,6 +13,18 @@ removing it.
 
 ## Unreleased
 
+### Interactions — Mirrors JUI
+
+Components can now carry an `Interactions` table the viewer (0.9.0) acts out, so mockups respond as JUI does
+without any script. These describe behaviour JUI already has (patch versions):
+
+- `jui-menu-activator`: with `click-to-activate`, the dots open and close the menu; choosing an item, clicking
+  elsewhere or Escape closes it.
+- `jui-choice-selector-option`: clicking an enabled option chooses it.
+- `jui-check-control`: clicking ticks or unticks it, unless disabled or read-only.
+- `jui-toggle-btn`: clicking switches it.
+- `jui-avatar-selector-control`: *Change* opens and closes the panel; choosing a stock avatar closes it.
+
 ### Heading typeface — Mirrors JUI
 
 JUI sets every `h1`–`h6` in `--jui-font-family-heading` (`Theme.Component.css`), but the mockup components draw their

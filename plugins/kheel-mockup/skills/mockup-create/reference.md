@@ -163,6 +163,12 @@ relative to the section's own file. Includes may nest; a cycle is an error.
 Components whose properties include a `path` (a navigation item's `href`, a card's `href`) use the same
 mechanism. Every target must exist.
 
+Components also respond on their own where their file has an **Interactions** table: a menu opens on a click and
+closes on a click elsewhere or Escape, a checkbox ticks, an option of a choice selector is chosen. Write nothing for
+this. The viewer starts from the mockup as written, so still show what the reader should see first: a row menu
+written `state="open"` on one row starts open (with its specification), and the others open when clicked. Changes
+to other content (a filter that narrows a table, a tab that swaps a panel) remain page states.
+
 ## Custom regions
 
 For a part of the screen the design system cannot express:

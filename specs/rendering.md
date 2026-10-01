@@ -104,6 +104,7 @@ The renderer warns about the following, rendering what it can regardless:
 | Inline style | A `style` attribute outside a custom region. |
 | Custom region without a reason | `custom=""`. |
 | Misplaced style | A `<style>` element that is not a direct child of `<mockup>`. |
+| Interaction out of step | An `Interactions` row with an unknown trigger or effect, a target that matches nothing in the template, a condition or value naming no property or state of the component. |
 | Token table out of step | A token a component's (or extension's) style uses that its `Tokens` table doesn't list, a listed token the style doesn't use, a semantic token `tokens.md` doesn't define. |
 | Extension out of step | An extension of a component not in the manifest; a value it `adds` that the component has, or `overrides` that it doesn't; a property that isn't a variant property; a `Change` other than `adds` or `overrides`. |
 | Version mismatch | A manifest row whose version differs from the component's or extension's file; a mockup whose `design-system` major version differs from the manifest's. |

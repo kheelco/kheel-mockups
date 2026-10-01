@@ -1,6 +1,6 @@
 ---
 name: jui-menu-activator
-version: 1.0.1
+version: 1.0.2
 kind: composed
 status: active
 summary: MenuActivator fragment — a vertical-ellipsis trigger that opens a menu on hover or click.
@@ -58,6 +58,17 @@ Opens on hover, or on click with `click-to-activate` (a second click closes it).
 action through the enclosing component (**Fragment events**) and closes the menu. With neither `above` nor a
 threshold set, JUI shows the menu above the trigger when the trigger is within 100 px of the bottom of its scroll
 area.
+
+## Interactions
+
+With `click-to-activate`, the dots open and close the menu, and choosing an item, clicking elsewhere or Escape closes it. Without it the menu opens on hover, which needs no rows.
+
+| Trigger | Target | When | Effect | Value |
+| --- | --- | --- | --- | --- |
+| click | `.trigger` | click-to-activate | toggle-state | open |
+| click | `.panel` |  | remove-state | open |
+| click-outside |  |  | remove-state | open |
+| escape |  |  | remove-state | open |
 
 ## Content rules
 

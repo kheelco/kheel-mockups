@@ -1,6 +1,6 @@
 // Mockup runtime — renders XML mockups from a markdown design system, in the browser, without a build.
 // Part of the mechanism, not the project: replaced as a unit when the mechanism is updated. Do not edit.
-export const VERSION = '0.8.0';
+export const VERSION = '0.9.0';
 
 // This file lives in the design system folder; the project space is the folder above it.
 const DS_URL = new URL('./', import.meta.url);
@@ -200,6 +200,7 @@ async function loadDesignSystem() {
   }));
   for (const ext of ds.extensions.values()) applyExtension(ds, ext);
   checkTokens(ds);
+  checkInteractions(ds);
   return ds;
 }
 
@@ -306,9 +307,100 @@ function parseComponent(src, tag) {
     def.slots.push({ name: n, accepts: list(r.accepts).map((x) => x.toLowerCase()), suggests: list(r.suggests), layout: plain(r.layout) });
   }
   def.tokens = parseTokens(s);
+  def.interactions = [];
+  for (const r of table(s.interactions)) {
+    const trigger = plain(r.trigger).toLowerCase();
+    if (trigger) def.interactions.push({ trigger, target: plain(r.target), when: plain(r.when), effect: plain(r.effect).toLowerCase(), value: plain(r.value) });
+  }
   def.slotNames = new Set([...def.template.matchAll(/<slot(?:\s+name="([^"]*)")?/g)].map((m) => m[1] || 'default'));
   def.layoutConfigurable = /\sdata-layout[\s>=]/.test(def.template);
   return def;
+}
+
+// ───────────────────────────── interactions
+// A component's Interactions table lets the viewer change its own states and properties in response to a click,
+// a click elsewhere or Escape: enough to open a menu or tick a box without any script in the mockup.
+
+const TRIGGERS = ['click', 'click-outside', 'escape'];
+const EFFECTS = ['add-state', 'remove-state', 'toggle-state', 'set', 'unset', 'toggle', 'select'];
+const dismissable = new Set(); // connected components with click-outside or escape rows
+
+function checkInteractions(ds) {
+  const tpl = document.createElement('template');
+  for (const def of ds.components.values()) {
+    tpl.innerHTML = def.template;
+    for (const i of def.interactions) {
+      const name = `${def.tag}: interaction "${[i.trigger, i.target, i.effect, i.value].filter(Boolean).join(' ')}"`;
+      if (!TRIGGERS.includes(i.trigger)) warn(`${name}: trigger is not one of ${TRIGGERS.join(', ')}`);
+      if (i.target && i.trigger !== 'click') warn(`${name}: only a click has a target`);
+      else if (i.target) {
+        try { if (!tpl.content.querySelector(i.target)) warn(`${name}: target ${i.target} matches nothing in its template`); } catch { warn(`${name}: target ${i.target} is not a CSS selector`); }
+      }
+      for (const c of i.when.split(/\s+/).filter(Boolean)) {
+        const n = c.replace(/^!/, '').split('=')[0];
+        if (!def.props[n]) warn(`${name}: condition ${c} names no property of <${def.tag}>`);
+      }
+      const [prop, val] = i.value.split('=').map((x) => x.trim());
+      if (!EFFECTS.includes(i.effect)) warn(`${name}: effect is not one of ${EFFECTS.join(', ')}`);
+      else if (i.effect.endsWith('-state')) { if (!def.states.has(i.value)) warn(`${name}: ${i.value} is not one of its states`); }
+      else if (!def.props[prop]) warn(`${name}: ${prop} is not one of its properties`);
+      else if (i.effect === 'set' && val !== undefined) checkValue(def, def.props[prop], prop, val, null);
+      else if (def.props[prop].type !== 'boolean' && (i.effect !== 'set' || val === undefined)) warn(`${name}: ${prop} is not a boolean property`);
+    }
+  }
+}
+
+const isOn = (el, n) => el.hasAttribute(n) && el.getAttribute(n) !== 'false';
+
+// Apply one row to a component; true when it changed something.
+function applyInteraction(el, i) {
+  if (i.when && !i.when.split(/\s+/).every((c) => testIf(c, el))) return false;
+  const states = new Set((el.getAttribute('state') || '').split(/\s+/).filter(Boolean));
+  const setStates = () => { if (states.size) el.setAttribute('state', [...states].join(' ')); else el.removeAttribute('state'); };
+  const [prop, val] = i.value.split('=').map((x) => x.trim());
+  switch (i.effect) {
+    case 'add-state': if (states.has(i.value)) return false; states.add(i.value); setStates(); return true;
+    case 'remove-state': if (!states.delete(i.value)) return false; setStates(); return true;
+    case 'toggle-state': if (!states.delete(i.value)) states.add(i.value); setStates(); return true;
+    case 'set': if (val === undefined ? isOn(el, prop) : el.getAttribute(prop) === val) return false; el.setAttribute(prop, val ?? ''); return true;
+    case 'unset': if (!el.hasAttribute(prop)) return false; el.removeAttribute(prop); return true;
+    case 'toggle': if (isOn(el, prop)) el.removeAttribute(prop); else el.setAttribute(prop, ''); return true;
+    case 'select':
+      if (isOn(el, prop)) return false;
+      for (const sib of el.parentNode?.children || []) if (sib !== el && sib.localName === el.localName) sib.removeAttribute(prop);
+      el.setAttribute(prop, '');
+      return true;
+    default: return false;
+  }
+}
+
+// Rows for a trigger on every connected component that has them (click-outside and escape), skipping those in `except`.
+function dismiss(trigger, except = []) {
+  let changed = false;
+  for (const el of [...dismissable]) {
+    if (!el.isConnected) { dismissable.delete(el); continue; }
+    if (except.includes(el)) continue;
+    for (const i of state.ds.components.get(el.localName).interactions) if (i.trigger === trigger) changed = applyInteraction(el, i) || changed;
+  }
+  if (changed) scheduleBadges();
+  return changed;
+}
+
+// A click: components it fell outside of first, then the components it passed through, innermost first.
+function interact(path) {
+  let changed = dismiss('click-outside', path);
+  for (const n of path) {
+    if (n === canvas) break;
+    if (!(n instanceof Element)) continue;
+    const def = state.ds.components.get(n.localName);
+    if (!def || !def.interactions.length) continue;
+    for (const i of def.interactions) {
+      if (i.trigger !== 'click') continue;
+      if (i.target && !path.some((p) => p instanceof Element && p.getRootNode() === n.shadowRoot && p.matches(i.target))) continue;
+      changed = applyInteraction(n, i) || changed;
+    }
+  }
+  if (changed) scheduleBadges();
 }
 
 function routeSlot(def, child) {
@@ -393,6 +485,7 @@ function defineComponent(def) {
     static get observedAttributes() { return observed; }
 
     connectedCallback() {
+      if (def.interactions.some((i) => i.trigger !== 'click')) dismissable.add(this);
       if (this._kmReady) return;
       for (const [n, p] of Object.entries(def.props)) {
         if (p.default && p.type !== 'boolean' && !this.hasAttribute(n)) this.setAttribute(n, p.default);
@@ -707,7 +800,7 @@ function setupPage() {
   document.body.appendChild(hoverLabel);
 
   document.addEventListener('click', onClick, true);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.dialogs.length) closeDialog(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.ds && !dismiss('escape') && state.dialogs.length) closeDialog(); });
   document.addEventListener('mousemove', onHover, true);
   window.addEventListener('scroll', scheduleBadges, true);
   window.addEventListener('resize', scheduleBadges);
@@ -851,17 +944,18 @@ function baseFor(path) {
 }
 
 function onClick(e) {
-  if (!canvas || !state.current) return;
+  if (!canvas || !state.ds) return;
   const path = e.composedPath();
   if (!path.includes(canvas)) return;
-  for (const n of path) {
+  if (state.current) for (const n of path) {
     if (!(n instanceof Element)) continue;
     if (n === canvas) break;
     if (n.classList.contains('km-scrim')) { e.preventDefault(); closeDialog(); return; }
     if (n.hasAttribute('closes')) { e.preventDefault(); closeDialog(); return; }
-    if (n.hasAttribute('opens') && n.getAttribute('opens')) { e.preventDefault(); openDialog(n.getAttribute('opens'), baseFor(path)); return; }
+    if (n.hasAttribute('opens') && n.getAttribute('opens')) { e.preventDefault(); dismiss('click-outside'); openDialog(n.getAttribute('opens'), baseFor(path)); return; }
     if (n.hasAttribute('href') && n.getAttribute('href')) { e.preventDefault(); follow(n.getAttribute('href'), baseFor(path)); return; }
   }
+  interact(path);
 }
 
 function follow(href, base) {

@@ -34,9 +34,9 @@ This file is the manifest: it lists everything the design system contains. `inde
 
 | Component | Version | Kind | JUI | Summary |
 | --- | --- | --- | --- | --- |
-| [jui-avatar-selector-control](components/jui-avatar-selector-control.md) | 1.0.0 | composed | control `AvatarSelectorControl` | AvatarSelectorControl control — shows the current avatar with change and remove actions, and a panel to pick a stock avatar or upload and crop an image. |
+| [jui-avatar-selector-control](components/jui-avatar-selector-control.md) | 1.0.1 | composed | control `AvatarSelectorControl` | AvatarSelectorControl control — shows the current avatar with change and remove actions, and a panel to pick a stock avatar or upload and crop an image. |
 | [jui-calendar-control](components/jui-calendar-control.md) | 1.1.0 | composed | control `CalendarControl` | CalendarControl control — a date field that opens a month calendar to pick a date. |
-| [jui-check-control](components/jui-check-control.md) | 1.1.0 | composed | control `CheckControl` | CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean. |
+| [jui-check-control](components/jui-check-control.md) | 1.1.1 | composed | control `CheckControl` | CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean. |
 | [jui-file-upload-control](components/jui-file-upload-control.md) | 1.0.0 | composed | control `FileUploadControl` | FileUploadControl control — a drag-and-drop region for uploading files, with the attached files listed beneath it. |
 | [jui-multi-check-control](components/jui-multi-check-control.md) | 1.1.0 | elemental | control `MultiCheckControl` | MultiCheckControl control — a compact pill of options, any of which can be switched on, yielding a set of values. |
 | [jui-multi-selection-control](components/jui-multi-selection-control.md) | 1.1.0 | composed | control `MultiSelectionControl` | MultiSelectionControl control — a dropdown for picking several values, shown as text or as chips, with a checkbox list menu. |
@@ -85,7 +85,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-card](components/jui-card.md) | 1.0.0 | elemental | fragment `Card` | Card fragment — an outlined surface that groups related content, optionally clickable with a hover lift. |
 | [jui-card-header](components/jui-card-header.md) | 1.0.0 | composed | fragment `CardHeader` | CardHeader fragment — a card's heading row with a large icon, a title and a subtitle. |
 | [jui-choice-selector](components/jui-choice-selector.md) | 1.0.0 | composed | fragment `ChoiceSelector` | ChoiceSelector fragment — a segmented row of options, one of which is chosen. |
-| [jui-choice-selector-option](components/jui-choice-selector-option.md) | 1.0.0 | composed | fragment `ChoiceSelector.Option` | ChoiceSelector.Option fragment — one option in a choice selector, with a label, an icon and a tone. |
+| [jui-choice-selector-option](components/jui-choice-selector-option.md) | 1.0.1 | composed | fragment `ChoiceSelector.Option` | ChoiceSelector.Option fragment — one option in a choice selector, with a label, an icon and a tone. |
 | [jui-control-field](components/jui-control-field.md) | 1.0.0 | elemental | fragment `ControlField` | ControlField fragment — wraps a control with its label, description and validation messages. |
 | [jui-dialog](components/jui-dialog.md) | 1.0.1 | composed | fragment `Dialog` | Dialog fragment — an inline, non-modal dialog panel with a header, contents and a footer of actions. |
 | [jui-divider](components/jui-divider.md) | 1.0.0 | elemental | fragment `Divider` | Divider fragment — a horizontal rule separating groups of content. |
@@ -95,7 +95,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-icon-btn](components/jui-icon-btn.md) | 1.0.0 | composed | fragment `IconBtn` | IconBtn fragment — a round, borderless button showing only an icon. |
 | [jui-loading](components/jui-loading.md) | 1.0.0 | elemental | fragment `Loading` | Loading fragment — a pulsing grey placeholder bar shown where content is still loading. |
 | [jui-menu](components/jui-menu.md) | 1.0.0 | elemental | fragment `Menu` | Menu fragment — a floating list of menu items with an outlined, shadowed surface. |
-| [jui-menu-activator](components/jui-menu-activator.md) | 1.0.1 | composed | fragment `MenuActivator` | MenuActivator fragment — a vertical-ellipsis trigger that opens a menu on hover or click. |
+| [jui-menu-activator](components/jui-menu-activator.md) | 1.0.2 | composed | fragment `MenuActivator` | MenuActivator fragment — a vertical-ellipsis trigger that opens a menu on hover or click. |
 | [jui-menu-item](components/jui-menu-item.md) | 1.0.0 | composed | fragment `MenuItem` | MenuItem fragment — one action in a menu, with an optional icon and a label. |
 | [jui-notice](components/jui-notice.md) | 1.0.0 | composed | fragment `Notice` | Notice fragment — an inline callout with an icon and a message, in four tones and three styles. |
 | [jui-paper](components/jui-paper.md) | 1.0.0 | elemental | fragment `Paper` | Paper fragment — an unframed content block that gives the headings inside it JUI's heading style. |
@@ -106,7 +106,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-popup](components/jui-popup.md) | 1.0.0 | composed | fragment `Popup` | Popup fragment — a simple overlay panel over a grey mask, with a close button and a scrolling body. |
 | [jui-progress-bar](components/jui-progress-bar.md) | 1.0.0 | elemental | fragment `ProgressBar` | ProgressBar fragment — a bar filled to a percentage, with the percentage and optional commentary. |
 | [jui-stack](components/jui-stack.md) | 1.0.0 | elemental | fragment `Stack` | Stack fragment — lays its children out in a column or a row with a gap, alignment and wrapping. |
-| [jui-toggle-btn](components/jui-toggle-btn.md) | 1.1.0 | elemental | fragment `ToggleBtn` | ToggleBtn fragment — a small on/off switch with an optional label, toggled by the enclosing component. |
+| [jui-toggle-btn](components/jui-toggle-btn.md) | 1.1.1 | elemental | fragment `ToggleBtn` | ToggleBtn fragment — a small on/off switch with an optional label, toggled by the enclosing component. |
 | [jui-typography](components/jui-typography.md) | 1.0.0 | elemental | fragment `Typography` | Typography fragment — applies JUI's Material-style type scale to headings and text. |
 
 ## Behaviours

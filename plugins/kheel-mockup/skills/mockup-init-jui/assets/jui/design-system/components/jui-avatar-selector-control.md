@@ -1,6 +1,6 @@
 ---
 name: jui-avatar-selector-control
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: AvatarSelectorControl control — shows the current avatar with change and remove actions, and a panel to pick a stock avatar or upload and crop an image.
@@ -68,6 +68,15 @@ None.
 *Change* opens the panel. Clicking a stock avatar applies it and closes the panel. Dropping or choosing an image
 opens the crop step; *Apply* crops, applies and closes it. *Remove* clears the avatar. Each change is reported
 (**Control values**).
+
+## Interactions
+
+*Change* opens and closes the panel; choosing a stock avatar closes it.
+
+| Trigger | Target | When | Effect | Value |
+| --- | --- | --- | --- | --- |
+| click | `.changeLink` | !disabled !read-only | toggle-state | open |
+| click | `.stockItem` |  | remove-state | open |
 
 ## Content rules
 

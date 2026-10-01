@@ -28,7 +28,7 @@ A component's version describes its **interface** — what a mockup that uses it
 | --- | --- | --- |
 | Breaking the interface | major | Removing or renaming a property, a property value, a state or a slot; narrowing a slot's `Accepts`; changing a default so existing uses look or mean something different. |
 | Extending the interface | minor | Adding a property, a value, a state or a slot; widening `Accepts`. |
-| Anything else | patch | Changing the style, template structure, prose, example or accessibility notes without changing the interface. |
+| Anything else | patch | Changing the style, template structure, interactions, prose, example or accessibility notes without changing the interface. |
 
 A component is **deprecated** before it is removed: `status: deprecated`, with its replacement named in
 `Rules of use`. Removing a component is a major change to the design system.

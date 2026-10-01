@@ -1,6 +1,6 @@
 ---
 name: jui-check-control
-version: 1.1.0
+version: 1.1.1
 kind: composed
 status: active
 summary: CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean.
@@ -69,6 +69,14 @@ so the box sits at the far edge.
 Clicking the box or the label flips the value and reports it (**Control values**). A check control often drives
 other parts of a form — showing or hiding a group, enabling a field (JUI `show`, `hide`, `enable`, `disable` on
 the form's modification context).
+
+## Interactions
+
+Clicking the control ticks or unticks it unless it is disabled or read-only.
+
+| Trigger | Target | When | Effect | Value |
+| --- | --- | --- | --- | --- |
+| click |  | !disabled !read-only | toggle | checked |
 
 ## Content rules
 

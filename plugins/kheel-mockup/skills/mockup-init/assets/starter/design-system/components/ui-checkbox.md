@@ -1,6 +1,6 @@
 ---
 name: ui-checkbox
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: A yes/no choice, alone or in a group, and row selection in tables.
@@ -47,6 +47,14 @@ None.
 
 Clicking the box or the label toggles `checked`. A select-all checkbox is indeterminate when some rows are
 selected, and selects all when clicked.
+
+## Interactions
+
+Clicking the checkbox ticks or unticks it unless it is disabled.
+
+| Trigger | Target | When | Effect | Value |
+| --- | --- | --- | --- | --- |
+| click |  | !disabled | toggle | checked |
 
 ## Content rules
 
