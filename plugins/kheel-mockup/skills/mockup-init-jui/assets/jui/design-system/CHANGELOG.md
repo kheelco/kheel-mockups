@@ -13,6 +13,20 @@ removing it.
 
 ## Unreleased
 
+### Heading typeface — Mirrors JUI
+
+JUI sets every `h1`–`h6` in `--jui-font-family-heading` (`Theme.Component.css`), but the mockup components draw their
+headings inside their own shadow DOM, where that page-wide rule doesn't reach, so a heading typeface different from
+the body's never showed in a mockup.
+
+- The headings of `jui-card-navigator`, `jui-card-navigator-card`, `jui-dialog`, `jui-empty-notification`,
+  `jui-info-block`, `jui-modal-dialog`, `jui-notification-block`, `jui-panel-gallery-item` and `jui-title-panel` use
+  `--jui-font-family-heading` (patch versions).
+- `jui-tab-navigator-tab`: tabs and group headings use `--cpt-tabbedpanel-font-family`, the heading family, as JUI's
+  `TabNavigator`.
+- `jui-control-form` and `jui-control-form-group`: section headings use `--cpt-form-header-font-family`, `inherit` by
+  default, as JUI's `ControlForm`; so they stay in the body's typeface unless that token is set.
+
 ### Menu activator shape — Mirrors JUI
 
 `jui-menu-activator` 1.0.1: the hover and open background is a circle, as in JUI, not an oval. JUI's trigger is

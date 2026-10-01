@@ -1,6 +1,6 @@
 ---
 name: jui-panel-gallery-item
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: PanelGalleryItem component — the standard gallery item, a bordered panel with an icon or avatar, a title, a subtitle and a menu.
@@ -96,6 +96,7 @@ JUI's stylesheet for this item uses literal colours; the mockup names them as co
 | `--cpt-pgi-avatar-border` | component | `#ccc` | Avatar ring. |
 | `--jui-color-aux-white`, `--jui-radius-sm` | semantic | | Panel background and radius defaults. |
 | `--jui-text-link`, `--jui-text-link-hover` | semantic | | Title link colour and hover; menu hover. |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -149,6 +150,8 @@ p { margin: 0; }
 .menu:hover, :host([state~="hover"]) .menu { color: var(--jui-text-link); }
 .sections { display: none; padding: 0 1.15em 1em; }
 :host([data-filled~="default"]) .sections { display: block; }
+/* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
+h6 { font-family: var(--jui-font-family-heading); }
 ```
 
 ## Example

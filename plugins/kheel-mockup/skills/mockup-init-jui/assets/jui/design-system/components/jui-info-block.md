@@ -1,6 +1,6 @@
 ---
 name: jui-info-block
-version: 1.0.0
+version: 1.0.1
 kind: elemental
 status: active
 summary: InfoBlock component — a heading with a subtitle over lines of small icon-and-text facts.
@@ -74,6 +74,7 @@ icon or carry an `aria-label`.
 | `--cpt-infoblock-padding` | component | `0` | Padding; `padding` sets it. |
 | `--jui-role-text-heading`, `--jui-font-size-xl` | semantic | | Title colour and size. |
 | `--jui-space-1`, `--jui-space-2`, `--jui-space-3`, `--jui-space-4`, `--jui-space-6`, `--jui-space-8` | semantic | | Padding steps. |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -100,6 +101,8 @@ icon or carry an `aria-label`.
 .block { display: flex; flex-direction: column; gap: 1em; padding: var(--cpt-infoblock-padding); }
 h2 { margin: 0; font-weight: 600; font-size: var(--jui-font-size-xl); line-height: 1.3; color: var(--jui-role-text-heading); }
 .header p { margin: 0; color: var(--cpt-infoblock-subtitle); }
+/* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
+h2 { font-family: var(--jui-font-family-heading); }
 ```
 
 ## Example

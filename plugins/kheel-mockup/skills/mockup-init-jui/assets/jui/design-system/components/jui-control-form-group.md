@@ -1,6 +1,6 @@
 ---
 name: jui-control-form-group
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: ControlForm group layout — a nested section of a form with an optional header, footer, separator and conditional toggle.
@@ -108,6 +108,7 @@ The group reads the `--cpt-form-*` tokens set by `jui-control-form`, with JUI's 
 | `--jui-comp-form-header`, `--jui-comp-form-instruction`, `--jui-comp-form-separator`, `--jui-comp-form-footer` | semantic | | Colour fallbacks. |
 | `--jui-font-weight-semibold`, `--jui-font-weight-medium` | semantic | | Heading and conditional label weights. |
 | `--jui-role-border-strong`, `--jui-color-aux-white`, `--jui-ctl-active` | semantic | | The conditional checkbox or radio. |
+| `--cpt-form-header-font-family` | inherited | `inherit` | Typeface of the group's heading, set by `jui-control-form`. |
 
 ## Template
 
@@ -169,6 +170,7 @@ label { font-weight: var(--jui-font-weight-medium); color: var(--cpt-form-header
 :host([conditional]) .header p { margin-left: var(--cpt-form-group-indent, var(--jui-space-12)); }
 :host([conditional]) .body { margin-left: var(--cpt-form-group-indent, var(--jui-space-12)); margin-bottom: var(--cpt-form-row-gap, var(--jui-space-6)); }
 :host([conditional]:not([active])) .body, :host([conditional]:not([active])) .footer { display: none; }
+h3 { font-family: var(--cpt-form-header-font-family, inherit); }
 ```
 
 ## Example

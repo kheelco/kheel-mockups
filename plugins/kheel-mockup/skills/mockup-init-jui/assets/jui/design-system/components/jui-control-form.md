@@ -1,6 +1,6 @@
 ---
 name: jui-control-form
-version: 1.1.0
+version: 1.1.1
 kind: composed
 status: active
 summary: ControlForm component — a form of labelled controls laid out in groups and rows, with a form-level error block.
@@ -138,6 +138,7 @@ The form sets JUI's `--cpt-form-*` tokens; groups, rows and cells read them.
 | `--jui-space-2`, `--jui-space-3`, `--jui-space-4`, `--jui-space-5`, `--jui-space-6`, `--jui-space-12` | semantic | | Spacing defaults above. |
 | `--jui-comp-form-header`, `--jui-comp-form-instruction`, `--jui-comp-form-footer`, `--jui-comp-form-text`, `--jui-comp-form-text-error`, `--jui-comp-form-text-disabled`, `--jui-comp-form-help-surface`, `--jui-comp-form-help-text`, `--jui-comp-form-help-radius`, `--jui-comp-form-error-surface`, `--jui-comp-form-error-icon`, `--jui-comp-form-error-text`, `--jui-comp-form-error-radius`, `--jui-comp-form-separator` | semantic | | The form family defaults. |
 | `--jui-font-weight-medium`, `--jui-font-weight-semibold` | semantic | | Error text and heading weights. |
+| `--cpt-form-header-font-family` | component | `inherit` | Typeface of section headings: the body's by default, as in JUI; set it to `var(--jui-font-family-heading)` to use the heading family. |
 
 ## Template
 
@@ -173,6 +174,7 @@ The form sets JUI's `--cpt-form-*` tokens; groups, rows and cells read them.
   --cpt-form-header: var(--jui-comp-form-header);
   --cpt-form-header-instruction: var(--jui-comp-form-instruction);
   --cpt-form-header-icon-gap: var(--jui-space-3);
+  --cpt-form-header-font-family: inherit;
   --cpt-form-header-depth0-size: 1.4em;
   --cpt-form-header-depth1-size: 1.3em;
   --cpt-form-header-depth2-size: 1.1em;
@@ -239,6 +241,8 @@ h3 + p { margin-top: var(--jui-space-2); }
 .footer p { margin: 0; color: var(--cpt-form-footer-guidance); font-size: var(--cpt-form-footer-guidance-size); }
 .bar { display: none; flex-direction: row; align-items: center; gap: var(--jui-space-3); margin-top: var(--jui-space-6); }
 :host([data-filled~="bar"]) .bar { display: flex; }
+/* JUI resets form section headings to the body family through this token (ControlForm_Standard.css). */
+h3 { font-family: var(--cpt-form-header-font-family); }
 ```
 
 ## Example

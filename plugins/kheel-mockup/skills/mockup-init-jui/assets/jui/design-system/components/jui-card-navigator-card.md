@@ -1,6 +1,6 @@
 ---
 name: jui-card-navigator-card
-version: 1.0.0
+version: 1.0.1
 kind: elemental
 status: active
 summary: CardNavigator card component — one card in a card navigator's top level, with a label and a description.
@@ -60,6 +60,7 @@ The label is a level-3 heading; in the application the card should be keyboard-a
 | --- | --- | --- | --- |
 | `--cpt-cardnavigator-card-hover` | component | `#fafafa` | Hover background (JUI's value). |
 | `--jui-role-text-heading` | semantic | | Label. |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -78,6 +79,8 @@ The label is a level-3 heading; in the application the card should be keyboard-a
 .card:hover, :host([state~="hover"]) .card { background-color: var(--cpt-cardnavigator-card-hover); border-radius: 1em; }
 h3 { margin: 0; font-size: 1.17em; font-weight: 500; color: var(--jui-role-text-heading); }
 p { margin: 0.5em 0 0; }
+/* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
+h3 { font-family: var(--jui-font-family-heading); }
 ```
 
 ## Example

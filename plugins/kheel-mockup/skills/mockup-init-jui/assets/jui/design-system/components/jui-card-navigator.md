@@ -1,6 +1,6 @@
 ---
 name: jui-card-navigator
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: CardNavigator component — a grid of cards leading to sections, each shown under a breadcrumb back to the grid.
@@ -99,6 +99,7 @@ and in the application should be links or buttons with visible focus.
 | `--jui-cardnavigator-maxwidth` | component | `200px` | Minimum width of the navigator. |
 | `--frag-icon-size` | component | `0.7em` | Size of the crumb separators and the back-button chevron. |
 | `--jui-btn-bg`, `--jui-color-aux-white`, `--jui-color-secondary30`, `--jui-role-text-heading` | semantic | | Action, notice and heading colours; the white card panel. |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -166,6 +167,8 @@ h2 a.back:hover { color: var(--jui-color-aux-white); background-color: var(--jui
 :host([variant="compact"]) .crumb .back { display: inline-flex; }
 :host([variant="compact"]) h2 { display: none; }
 :host([variant="compact"]) .crumb > span.last { font-size: 1.2em; font-weight: 500; }
+/* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
+h2 { font-family: var(--jui-font-family-heading); }
 ```
 
 ## Example
