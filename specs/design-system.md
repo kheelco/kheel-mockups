@@ -13,6 +13,7 @@ component, pattern or token set can be read, changed, versioned and (later) sync
 | `README.md` | yes | The manifest: identity, version and an index of every other file. |
 | `tokens.md` | yes | The token set ([tokens.md](tokens.md)). |
 | `components/<tag>.md` | — | One component each ([components.md](components.md)). |
+| `extensions/<tag>.md` | no | Variants the project adds to a component it doesn't own, one file per component ([components.md](components.md#extensions)). |
 | `behaviours.md` | no | Shared behaviours. |
 | `patterns/<name>.md` | no | One pattern each. |
 | `assets/icons/<name>.svg` | — | Icons. |
@@ -53,6 +54,12 @@ source: local
 | --- | --- | --- | --- |
 | [ui-button](components/ui-button.md) | 1.0.0 | elemental | Triggers an action. |
 
+## Extensions
+
+| Extension | Version | Summary |
+| --- | --- | --- |
+| [ui-table](extensions/ui-table.md) | 1.0.0 | A borderless look for tables inside cards. |
+
 ## Behaviours
 
 - [Shared behaviours](behaviours.md)
@@ -84,6 +91,9 @@ source: local
   and `Kind` **must** match the component's own front matter. The renderer loads exactly the components listed
   here. The table may have further columns — the JUI design system adds one naming the JUI class — which the
   renderer ignores.
+- **Extensions** has one row per extension, as for components: the link text is the tag of the component it
+  extends, the link target its file, and `Version` **must** match the extension's front matter. The renderer
+  loads exactly the extensions listed here. Optional.
 - **Behaviours** and **Patterns** link to their files. Both are optional.
 - **Icons** lists the name of every icon in `assets/icons/`, each in backticks. The renderer uses the list to
   show the icon set and to check icon names.
@@ -138,6 +148,9 @@ component; mockups do not reference asset files directly.
 
 - Changing a component, token or pattern is done by editing its file. There is no build; the next render uses
   the change.
+- A component copied from another source is not edited here: it is changed at its source and copied in again.
+  Looks the project needs that its source doesn't have go in an extension
+  ([components.md](components.md#extensions)).
 - Adding a component means adding its file **and** a row in the manifest.
-- Every change to a component's file updates its `version` as [versioning.md](versioning.md) describes, and the
-  manifest's version column with it.
+- Every change to a component's or extension's file updates its `version` as [versioning.md](versioning.md)
+  describes, and the manifest's version column with it.

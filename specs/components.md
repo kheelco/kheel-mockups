@@ -198,13 +198,111 @@ also the component's visual check. Show the main variants and states side by sid
 for components that cannot be shown in isolation, such as a full-page shell, and point to an example mockup
 instead.
 
+## Extensions
+
+A design system may take some of its components from elsewhere — the JUI design system's `jui-*` components are
+copied in from its template — and a project still needs looks for them that the source doesn't have. Editing the
+copied file would mix the project's own work into it, so that the next copy from the source either loses that
+work or needs a merge. An **extension** keeps the two apart: a file of its own that adds variant values to a
+component, or restyles values it already has, while the component's file stays exactly as it came from its
+source.
+
+An extension is for components the project doesn't own. A component the project owns is changed in its own file.
+
+### File
+
+One file per extended component: `design-system/extensions/<tag>.md`, named by the tag of the component it
+extends, and listed in the manifest's `Extensions` table ([design-system.md](design-system.md#the-manifest)).
+
+```markdown
+---
+name: jui-choice-selector
+version: 1.0.0
+status: active
+summary: A rounded pill look for the compact filter strip.
+---
+
+# ChoiceSelector (extension)
+
+## Purpose
+## Variants          ← read by the renderer
+## Tokens            ← read by the renderer
+## Style             ← read by the renderer
+## Example           ← read by the viewer's catalogue
+## Implementation
+```
+
+| Key | Meaning |
+| --- | --- |
+| `name` | The tag of the component it extends. Equals the file name without `.md`. |
+| `version` | The extension's own `major.minor.patch` ([versioning.md](versioning.md#extension-versions)). |
+| `status` | `draft`, `active` or `deprecated`. |
+| `summary` | One line: what the extension gives the component. Matches the manifest row. |
+
+| Section | Covers |
+| --- | --- |
+| Purpose | Why the project needs these looks, and why they are not the component's own. |
+| Variants | The values the extension adds or overrides (below). |
+| Tokens | The tokens its style uses, in the component's `Tokens` format ([Tokens](#tokens)). Tokens it sets, its own or the component's, are `component`; tokens of the component it only reads are `inherited`. |
+| Style | One `css` code block (below). |
+| Example | One `xml` code block showing the extension's values, as for a component. |
+| Implementation | How to build each value in the application. The component's own implementation mapping belongs to its source and is not edited either. |
+
+### Variants
+
+One table with exactly these columns:
+
+| Column | Meaning |
+| --- | --- |
+| Property | A property of the component whose `Controls` is `variant`, or a new property: a variant axis the component doesn't have. |
+| Value | One value. |
+| Change | `adds` for a value the component doesn't have; `overrides` for one it has, which the extension restyles. |
+| Use | What the value looks like and when to choose it. |
+
+```markdown
+| Property | Value | Change | Use |
+| --- | --- | --- | --- |
+| variant | compact | overrides | A rounded pill: grey track, the chosen option a white pill. Filter strips. |
+| variant | quiet | adds | No track; the chosen option underlined. Secondary filters inside a panel. |
+```
+
+A mockup chooses an extension's values like any other: `variant="quiet"`. A new axis has no default; without the
+attribute the component looks as it does without the extension.
+
+An extension changes looks only. It cannot remove a value, change a default, or add content or state properties,
+states, slots or template: those change the component itself, and are made at its source.
+
+### Style
+
+The renderer appends the extension's style to the component's own, in the component's shadow root, so it reaches
+everything the component's style does and, being later, wins over the component's rules for the same selector.
+
+- Scope every rule to a value the extension lists — `:host([variant="compact"])`, `:host([variant="quiet"]) .strip`
+  — so the component's other values are untouched.
+- Prefer setting the component's own tokens (`:host([variant="compact"]) { --jui-choice-selector-radius: 999px; }`):
+  they are its published points of variation. Select its internal elements only where no token reaches; those
+  depend on its template, which can change at its source.
+
+### Synchronising
+
+Because an extension never edits the component's file, the component can be replaced by a newer copy from its
+source at any time. The renderer then checks the extension against it ([Checks](rendering.md#checks)): a value the
+extension adds that the component now has, or overrides that it no longer has, is a warning, so a change at the
+source that affects the extension shows rather than silently changing its look.
+
+### In the catalogue
+
+The catalogue marks an extended component, lists the extension's values with their changes, and renders the
+extension's example below the component's own.
+
 ## Rendering
 
 Each component listed in the manifest becomes a custom element named by its tag. When one appears on a page, the
 renderer:
 
 1. applies property defaults to absent attributes;
-2. renders the template with the element's attributes into its shadow root, with the component's style;
+2. renders the template with the element's attributes into its shadow root, with the component's style followed by
+   its extension's, if it has one;
 3. routes any child without a `slot` attribute whose tag appears in exactly one named slot's `Accepts` (and not in
    the default slot's) to that slot, so authors rarely have to write `slot="…"`;
 4. applies the element's layout attributes to the template's `data-layout` element, and its spacing attributes to

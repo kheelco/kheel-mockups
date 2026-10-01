@@ -1,6 +1,6 @@
 // Mockup runtime — renders XML mockups from a markdown design system, in the browser, without a build.
 // Part of the mechanism, not the project: replaced as a unit when the mechanism is updated. Do not edit.
-export const VERSION = '0.7.0';
+export const VERSION = '0.8.0';
 
 // This file lives in the design system folder; the project space is the folder above it.
 const DS_URL = new URL('./', import.meta.url);
@@ -160,7 +160,7 @@ async function loadDesignSystem() {
   const src = await fetchText(new URL('README.md', DS_URL));
   const { data, body } = frontMatter(src);
   const secs = sections(body);
-  const ds = { meta: data, components: new Map(), order: [], icons: [], tokensCss: '' };
+  const ds = { meta: data, components: new Map(), extensions: new Map(), order: [], icons: [], tokensCss: '' };
 
   ds.icons = [...(secs.icons || '').matchAll(/`([a-z0-9-]+)`/g)].map((m) => m[1]);
 
@@ -186,26 +186,94 @@ async function loadDesignSystem() {
       ds.components.set(tag, def);
     } catch (e) { warn(`Could not load component ${tag}: ${e.message}`); }
   }));
+  await Promise.all(table(secs.extensions || '').map(async (row) => {
+    const tag = plain(row.extension);
+    const link = (row.extension || '').match(/\]\(([^)]+)\)/);
+    if (!tag) return;
+    if (!link) { warn(`Manifest row for the ${tag} extension has no link to its file`); return; }
+    try {
+      const ext = parseExtension(await fetchText(new URL(link[1], DS_URL)), tag);
+      ext.file = link[1];
+      if (row.version && plain(row.version) !== ext.meta.version) warn(`Manifest lists the ${tag} extension at ${plain(row.version)} but its file is ${ext.meta.version}`);
+      ds.extensions.set(tag, ext);
+    } catch (e) { warn(`Could not load the ${tag} extension: ${e.message}`); }
+  }));
+  for (const ext of ds.extensions.values()) applyExtension(ds, ext);
   checkTokens(ds);
   return ds;
 }
 
-// Compare each component's Tokens table with its Style, and its semantic tokens with tokens.md.
+// Compare each component's (and extension's) Tokens table with its Style, and its semantic tokens with tokens.md.
 function checkTokens(ds) {
   const defined = new Set([...ds.tokensCss.matchAll(/(--[A-Za-z0-9_-]+)\s*:/g)].map((m) => m[1]));
-  for (const def of ds.components.values()) {
-    const declared = new Set([...def.style.matchAll(/(--[A-Za-z0-9_-]+)\s*:/g)].map((m) => m[1]));
-    const used = new Set([...def.style.matchAll(/var\(\s*(--[A-Za-z0-9_-]+)/g)].map((m) => m[1]));
+  const check = (name, style, tokens) => {
+    const declared = new Set([...style.matchAll(/(--[A-Za-z0-9_-]+)\s*:/g)].map((m) => m[1]));
+    const used = new Set([...style.matchAll(/var\(\s*(--[A-Za-z0-9_-]+)/g)].map((m) => m[1]));
     const inStyle = new Set([...declared, ...used]);
-    if (!def.tokens) { if (inStyle.size) warn(`${def.tag} has no Tokens section`); continue; }
-    const listed = new Map(def.tokens.map((t) => [t.token, t.kind]));
-    for (const t of inStyle) if (!listed.has(t)) warn(`${def.tag}: style uses ${t}, which is not in its Tokens table`);
+    if (!tokens) { if (inStyle.size) warn(`${name} has no Tokens section`); return; }
+    const listed = new Map(tokens.map((t) => [t.token, t.kind]));
+    for (const t of inStyle) if (!listed.has(t)) warn(`${name}: style uses ${t}, which is not in its Tokens table`);
     for (const [t, kind] of listed) {
-      if (!inStyle.has(t)) warn(`${def.tag}: Tokens table lists ${t}, which its style does not use`);
-      else if (kind === 'semantic' && defined.size && !defined.has(t)) warn(`${def.tag}: semantic token ${t} is not defined in tokens.md`);
-      else if (kind === 'component' && !declared.has(t)) warn(`${def.tag}: component token ${t} is never set in its style`);
-      else if (!['component', 'semantic', 'inherited'].includes(kind)) warn(`${def.tag}: ${t} has kind "${kind}"; expected component, semantic or inherited`);
+      if (!inStyle.has(t)) warn(`${name}: Tokens table lists ${t}, which its style does not use`);
+      else if (kind === 'semantic' && defined.size && !defined.has(t)) warn(`${name}: semantic token ${t} is not defined in tokens.md`);
+      else if (kind === 'component' && !declared.has(t)) warn(`${name}: component token ${t} is never set in its style`);
+      else if (!['component', 'semantic', 'inherited'].includes(kind)) warn(`${name}: ${t} has kind "${kind}"; expected component, semantic or inherited`);
     }
+  };
+  for (const def of ds.components.values()) check(def.tag, def.style, def.tokens);
+  for (const ext of ds.extensions.values()) check(`${ext.tag} extension`, ext.style, ext.tokens);
+}
+
+function parseTokens(s) {
+  if (s.tokens === undefined) return null; // [{ token, kind }] from the Tokens table, or null when the section is missing
+  const tokens = [];
+  for (const r of table(s.tokens)) {
+    const kind = plain(r.kind).toLowerCase();
+    for (const m of (r.token || '').matchAll(/`(--[A-Za-z0-9_-]+)`/g)) tokens.push({ token: m[1], kind });
+  }
+  return tokens;
+}
+
+// An extension adds variant values to a component the project doesn't own, or restyles values it has, from a file of
+// its own: the component's file stays as it came from its source.
+function parseExtension(src, tag) {
+  const { data, body } = frontMatter(src);
+  const s = sections(body);
+  if (data.name && data.name !== tag) warn(`${tag} extension: front matter name is "${data.name}"`);
+  const ext = {
+    tag,
+    meta: data,
+    variants: [],
+    style: fences(s.style, 'css').join('\n'),
+    example: fences(s.example, 'xml')[0] || '',
+    tokens: parseTokens(s),
+  };
+  for (const r of table(s.variants)) {
+    const prop = plain(r.property);
+    const value = plain(r.value);
+    if (prop && value) ext.variants.push({ prop, value, change: plain(r.change).toLowerCase(), use: plain(r.use) });
+  }
+  return ext;
+}
+
+// Merge an extension's values into its component, warning where they no longer fit it (say after the component was
+// replaced by a newer copy from its source).
+function applyExtension(ds, ext) {
+  const def = ds.components.get(ext.tag);
+  const name = `${ext.tag} extension`;
+  if (!def) { warn(`${name}: <${ext.tag}> is not in the manifest's components`); return; }
+  def.ext = ext;
+  for (const v of ext.variants) {
+    const what = `${v.prop}="${v.value}"`;
+    let p = def.props[v.prop];
+    if (v.change !== 'adds' && v.change !== 'overrides') { warn(`${name}: ${what} has change "${v.change}"; expected adds or overrides`); continue; }
+    if (!p && v.change === 'overrides') { warn(`${name} overrides ${what}, but <${ext.tag}> has no ${v.prop} property`); continue; }
+    if (!p) p = def.props[v.prop] = { controls: 'variant', type: 'enum', values: [], default: '', extension: true };
+    if (p.controls !== 'variant' || p.type !== 'enum') { warn(`${name}: ${v.prop} is not a variant property of <${ext.tag}>`); continue; }
+    const has = p.values.includes(v.value);
+    if (v.change === 'adds' && has) warn(`${name} adds ${what}, which <${ext.tag}> already has — override it or drop it`);
+    else if (v.change === 'overrides' && !has) warn(`${name} overrides ${what}, which <${ext.tag}> does not have`);
+    else if (v.change === 'adds') p.values.push(v.value);
   }
 }
 
@@ -237,14 +305,7 @@ function parseComponent(src, tag) {
     if (/^\(?default\)?$/i.test(n)) n = 'default';
     def.slots.push({ name: n, accepts: list(r.accepts).map((x) => x.toLowerCase()), suggests: list(r.suggests), layout: plain(r.layout) });
   }
-  def.tokens = null; // [{ token, kind }] from the Tokens table, or null when the section is missing
-  if (s.tokens !== undefined) {
-    def.tokens = [];
-    for (const r of table(s.tokens)) {
-      const kind = plain(r.kind).toLowerCase();
-      for (const m of (r.token || '').matchAll(/`(--[A-Za-z0-9_-]+)`/g)) def.tokens.push({ token: m[1], kind });
-    }
-  }
+  def.tokens = parseTokens(s);
   def.slotNames = new Set([...def.template.matchAll(/<slot(?:\s+name="([^"]*)")?/g)].map((m) => m[1] || 'default'));
   def.layoutConfigurable = /\sdata-layout[\s>=]/.test(def.template);
   return def;
@@ -347,7 +408,7 @@ function defineComponent(def) {
     render() {
       const root = this.shadowRoot || this.attachShadow({ mode: 'open' });
       const html = def.template.replace(/\{\{\s*([a-z][a-z0-9-]*)\s*\}\}/g, (_, n) => esc(this.getAttribute(n) ?? def.props[n]?.default ?? ''));
-      root.innerHTML = `<style>${SHADOW_BASE}\n${def.style}</style>${html}`;
+      root.innerHTML = `<style>${SHADOW_BASE}\n${def.style}${def.ext ? '\n' + def.ext.style : ''}</style>${html}`;
       for (const el of root.querySelectorAll('[data-if]')) {
         if (testIf(el.getAttribute('data-if'), this)) el.removeAttribute('data-if'); else el.remove();
       }
@@ -563,6 +624,10 @@ body{min-height:100vh}
 .km-cat-head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--color-border,#e4e7ec)}
 .km-cat-head code{font-weight:600}.km-cat-head .km-meta{color:var(--color-text-muted,#667085);font-size:13px}
 .km-cat-head a{margin-left:auto;font-size:13px}
+.km-cat-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:1px 7px;border-radius:9px;background:#f3e8ff;color:#6b21a8}
+.km-cat-ext{border-top:1px dashed var(--color-border,#e4e7ec)}
+.km-cat-ext .km-cat-head{border-bottom:none;padding-bottom:4px}
+.km-cat-ext ul{margin:0;padding:0 18px 4px 36px;font-size:13px;color:var(--color-text-muted,#667085)}
 .km-cat-ex{padding:20px 18px;background:var(--color-bg,#f8fafc)}
 .km-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
 .km-cat-icon{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border:1px solid var(--color-border,#e4e7ec);border-radius:8px;font:11px ui-monospace,monospace;color:var(--color-text-muted,#667085);background:var(--color-surface,#fff)}
@@ -964,6 +1029,17 @@ function groupMockups(items) {
     .map(([folder, list]) => [folder, list.sort((a, b) => typeRank(a.type) - typeRank(b.type) || a.title.localeCompare(b.title))]);
 }
 
+function renderExample(host, example, label) {
+  if (!example) { host.textContent = 'No example.'; return; }
+  const doc = new DOMParser().parseFromString(`<example>${example}</example>`, 'application/xml');
+  if (doc.querySelector('parsererror')) { host.textContent = 'Example is not well-formed XML.'; warn(`${label} is not well-formed XML`); return; }
+  const { frag } = buildContent(doc.documentElement);
+  host.appendChild(frag);
+  const before = state.warnings.length;
+  validate(host, null);
+  for (const w of state.warnings.slice(before)) w.message = `${label}: ${w.message}`;
+}
+
 async function showCatalogue() {
   state.current = null;
   document.title = `${state.ds.meta.name || 'Design system'} — catalogue`;
@@ -975,7 +1051,7 @@ async function showCatalogue() {
   const colours = [...new Set([...ds.tokensCss.matchAll(/(--color-[a-z0-9-]+)\s*:/g)].map((m) => m[1]))];
   wrap.innerHTML = `
     <h1>${esc(ds.meta.name || 'Design system')}</h1>
-    <p class="km-sub">Version ${esc(ds.meta.version || '—')} · source: ${esc(ds.meta.source || 'local')} · ${ds.components.size} components · ${ds.icons.length} icons · runtime ${VERSION}</p>
+    <p class="km-sub">Version ${esc(ds.meta.version || '—')} · source: ${esc(ds.meta.source || 'local')} · ${ds.components.size} components${ds.extensions.size ? ` (${ds.extensions.size} extended)` : ''} · ${ds.icons.length} icons · runtime ${VERSION}</p>
     <h2>Mockups</h2><div id="km-cat-mockups"><p>Looking for mockups…</p></div>
     <h2>Components</h2><div id="km-cat-components"></div>
     <h2>Icons</h2><div class="km-cat-grid">${ds.icons.map((i) => `<div class="km-cat-icon"><mockup-asset src="icons/${esc(i)}.svg"></mockup-asset>${esc(i)}</div>`).join('')}</div>
@@ -990,17 +1066,13 @@ async function showCatalogue() {
     const box = document.createElement('section');
     box.className = 'km-cat-comp';
     box.id = tag;
-    box.innerHTML = `<div class="km-cat-head"><code>&lt;${esc(tag)}&gt;</code><strong>${esc(def.title)}</strong><span class="km-meta">${esc(def.meta.version || '')} · ${esc(def.meta.kind || '')}${def.meta.status && def.meta.status !== 'active' ? ' · ' + esc(def.meta.status) : ''} — ${esc(def.meta.summary || '')}</span><a href="${esc(new URL(def.file, DS_URL).href)}" target="_blank">source</a></div><div class="km-cat-ex"></div>`;
+    const ext = def.ext;
+    box.innerHTML = `<div class="km-cat-head"><code>&lt;${esc(tag)}&gt;</code><strong>${esc(def.title)}</strong>${ext ? '<span class="km-cat-tag">extended</span>' : ''}<span class="km-meta">${esc(def.meta.version || '')} · ${esc(def.meta.kind || '')}${def.meta.status && def.meta.status !== 'active' ? ' · ' + esc(def.meta.status) : ''} — ${esc(def.meta.summary || '')}</span><a href="${esc(new URL(def.file, DS_URL).href)}" target="_blank">source</a></div><div class="km-cat-ex"></div>`
+      + (ext ? `<div class="km-cat-ext"><div class="km-cat-head"><span class="km-cat-tag">custom</span><strong>Extension</strong><span class="km-meta">${esc(ext.meta.version || '')}${ext.meta.status && ext.meta.status !== 'active' ? ' · ' + esc(ext.meta.status) : ''} — ${esc(ext.meta.summary || '')}</span><a href="${esc(new URL(ext.file, DS_URL).href)}" target="_blank">source</a></div><ul>${ext.variants.map((v) => `<li><code>${esc(v.prop)}="${esc(v.value)}"</code> ${esc(v.change)}${v.use ? ' — ' + esc(v.use) : ''}</li>`).join('')}</ul><div class="km-cat-ex"></div></div>` : '');
     compHost.appendChild(box);
-    const ex = box.querySelector('.km-cat-ex');
-    if (!def.example) { ex.textContent = 'No example.'; continue; }
-    const doc = new DOMParser().parseFromString(`<example>${def.example}</example>`, 'application/xml');
-    if (doc.querySelector('parsererror')) { ex.textContent = 'Example is not well-formed XML.'; warn(`Example of ${tag} is not well-formed XML`); continue; }
-    const { frag } = buildContent(doc.documentElement);
-    ex.appendChild(frag);
-    const before = state.warnings.length;
-    validate(ex, null);
-    for (const w of state.warnings.slice(before)) w.message = `Example of ${tag}: ${w.message}`;
+    const [ex, extEx] = box.querySelectorAll('.km-cat-ex');
+    renderExample(ex, def.example, `Example of ${tag}`);
+    if (ext) renderExample(extEx, ext.example, `Example of the ${tag} extension`);
   }
 
   const items = await listMockups();

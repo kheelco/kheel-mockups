@@ -74,6 +74,12 @@ so `slot` is only needed where the choice is ambiguous. A child a slot does not 
 
 **Properties you leave out take their default.** Set only what differs.
 
+**Extensions.** A component may also have an extension, `design-system/extensions/<tag>.md`, listed in the
+manifest's `Extensions` table: further values for its variant properties (or a new variant axis) that the project
+added without editing the component's file, which came from another source. Its `Variants` table lists each value
+and whether it `adds` it or `overrides` (restyles) one the component has. Use them as you would the component's
+own values.
+
 ## Plain HTML
 
 `div`, `span`, `p`, `h1`–`h6`, `strong`, `em`, `small`, `a`, `ul`, `ol`, `li`, `img`, `hr`, `code`, `br` are allowed and
