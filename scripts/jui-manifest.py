@@ -48,8 +48,14 @@ JUI distinguishes three kinds of building block, shown in the **JUI** column bel
   handles their events (see **Fragment events** in the shared behaviours).
 - **Controls** are components that hold a value, with dirty detection, validation and focus.
 
-Applications add their own custom and inline components on top of these; add mockup components for them here in
-the same way.
+**Don't edit the `jui-*` components.** They mirror JUI, and the `mockup-init-jui` skill can bring them up to date
+from its template, which would discard any change made here. Give one a look JUI doesn't have with an
+**extension** (`extensions/<tag>.md`, listed in an Extensions table here; see `_guide.md`), which adds or restyles
+variant values without touching the component's file. If a `jui-*` component is wrong about JUI, report it so it is
+fixed at the source.
+
+Applications add their own components on top of these, with a prefix of their own (such as `ui-`), and edit those
+freely.
 
 This file is the manifest: it lists everything the design system contains. `index.html`, `_runtime.js` and
 `_guide.md` in this folder are the viewer and its guide — part of the mockup mechanism, not of the design system.

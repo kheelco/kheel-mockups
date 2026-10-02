@@ -23,6 +23,7 @@ Read the introduction first.
 | [rendering.md](rendering.md) | Serving, the viewer, how a mockup is rendered, and the checks. |
 | [versioning.md](versioning.md) | Versions of design systems and components, breaking changes, and the design system's source. |
 | [implementation-mapping.md](implementation-mapping.md) | Per-target guidance for turning components into real code. |
+| [exploring.md](exploring.md) | Pages of options for a design decision, and how the chosen one goes into the design system. |
 
 ## Conventions
 

@@ -13,6 +13,11 @@ removing it.
 
 ## Unreleased
 
+### Manifest: don't edit the `jui-*` components — Mirrors JUI
+
+The manifest now says plainly that the `jui-*` components mirror JUI and are not edited in a project: a look a
+project needs goes in an extension, and a fault is reported to be fixed here. Nothing for jui-stack.
+
 ### Empty slot takes any content — Mirrors JUI
 
 `jui-table` 1.1.0 and `jui-gallery` 1.1.0: the `empty` slot accepts any content, not only `jui-empty-notification`.
