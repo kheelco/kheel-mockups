@@ -29,7 +29,7 @@ import re
 import shutil
 from pathlib import Path
 
-INCLUDE = ['*.md', 'components/*.md', 'assets/icons/*.svg']
+INCLUDE = ['*.md', 'components/*.md', 'extensions/*.md', 'assets/icons/*.svg']
 SKIP = {'_guide.md'}
 URL_RE = re.compile(r"""url\(\s*(['"]?)([^'")]+)\1\s*\)""")
 SRC_RE = re.compile(r'\bsrc="/([^"]+)"')

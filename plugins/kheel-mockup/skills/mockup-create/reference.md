@@ -74,6 +74,12 @@ so `slot` is only needed where the choice is ambiguous. A child a slot does not 
 
 **Properties you leave out take their default.** Set only what differs.
 
+**Extensions.** A component may also have an extension, `design-system/extensions/<tag>.md`, listed in the
+manifest's `Extensions` table: further values for its variant properties (or a new variant axis) that the project
+added without editing the component's file, which came from another source. Its `Variants` table lists each value
+and whether it `adds` it or `overrides` (restyles) one the component has. Use them as you would the component's
+own values.
+
 ## Plain HTML
 
 `div`, `span`, `p`, `h1`–`h6`, `strong`, `em`, `small`, `a`, `ul`, `ol`, `li`, `img`, `hr`, `code`, `br` are allowed and
@@ -156,6 +162,12 @@ relative to the section's own file. Includes may nest; a cycle is an error.
 
 Components whose properties include a `path` (a navigation item's `href`, a card's `href`) use the same
 mechanism. Every target must exist.
+
+Components also respond on their own where their file has an **Interactions** table: a menu opens on a click and
+closes on a click elsewhere or Escape, a checkbox ticks, an option of a choice selector is chosen. Write nothing for
+this. The viewer starts from the mockup as written, so still show what the reader should see first: a row menu
+written `state="open"` on one row starts open (with its specification), and the others open when clicked. Changes
+to other content (a filter that narrows a table, a tab that swaps a panel) remain page states.
 
 ## Custom regions
 

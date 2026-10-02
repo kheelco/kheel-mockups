@@ -1,6 +1,6 @@
 ---
 name: jui-dialog
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: Dialog fragment — an inline, non-modal dialog panel with a header, contents and a footer of actions.
@@ -88,6 +88,7 @@ The tokens the style uses: its own component tokens (points of variation a theme
 | `--frag-dialog-header-color` | component | `--jui-color-neutral60` | Header title and close icon colour. |
 | `--jui-color-neutral05`, `--jui-color-neutral20`, `--jui-color-neutral60` | semantic | | Dialog colours. |
 | `--jui-color-aux-white` | semantic | | Background. |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -160,6 +161,8 @@ The tokens the style uses: its own component tokens (points of variation a theme
   border-top: 1px solid var(--frag-dialog-border-color);
 }
 :host([data-filled~="actions"]) .footer, :host([data-filled~="left-actions"]) .footer { display: flex; }
+/* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
+h4 { font-family: var(--jui-font-family-heading); }
 ```
 
 ## Example

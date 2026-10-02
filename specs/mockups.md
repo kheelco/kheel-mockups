@@ -158,6 +158,11 @@ Mockups are clickable, within limits: enough to walk a flow, not to simulate the
 `href` and `opens` targets that do not exist produce warnings. A component whose properties include a `path`
 value (such as a navigation item's `href`) uses the same mechanism.
 
+Components also respond on their own where their `Interactions` table says so ([components.md](components.md#interactions)):
+a menu opens on a click and closes on a click elsewhere, a checkbox ticks, an option is chosen. A mockup needs
+nothing for this; it shows the component as written (a menu written `state="open"` starts open) and the viewer
+changes it from there. Changes to other content remain page states.
+
 ## Page states
 
 A page often has states that change its whole content: empty, loading, error, a search with no results — or a

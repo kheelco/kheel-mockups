@@ -80,6 +80,11 @@ The design system there belongs to the project; it may have changed or removed c
 
 - Add any component or implementation mapping from the template that the project does not have, and add its row
   to the manifest's Components table (copy the row from the template's manifest). Tell the user which were added.
+- List the `jui-*` components and mappings that differ from the template, each with the project's version and the
+  template's, and offer to replace them, which brings them back in step with JUI. Replace only with the user's
+  agreement, and update their manifest rows to match. Replacing never touches `design-system/extensions/`, where
+  the project keeps the looks it added to those components; afterwards, open the catalogue and pass on any warning
+  that an extension no longer fits its component.
 - For the viewer files (`index.html`, `_runtime.js`, `_guide.md`): copy any that are missing. If they differ from
   the template, tell the user the runtime version they have and the one the template carries (the `VERSION` line
   near the top of `_runtime.js`) and ask before replacing them, together.
@@ -92,6 +97,9 @@ Tell the user, briefly:
 - the absolute path of the project space and what was added (or that it was already up to date);
 - that the design system is local and theirs to change: its manifest is `design-system/README.md`, and
   `design-system/implementations/jui/` says how each component maps to JUI;
+- that the `jui-*` components mirror JUI and are best left as they are, so that they can be brought up to date
+  from this skill: looks the project needs that JUI doesn't have go in an extension, `design-system/extensions/<tag>.md`,
+  which `design-system/_guide.md` describes;
 - that mockups can go anywhere in the project space outside `design-system/`, and `design-system/_guide.md`
   explains how to write them;
 - how to view them — serve the project space, not `design-system/`:

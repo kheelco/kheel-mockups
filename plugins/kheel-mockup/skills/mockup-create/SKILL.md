@@ -59,13 +59,15 @@ would change the structure; otherwise decide, and say what you assumed in the mo
 1. Read `design-system/README.md`: the component list with summaries, the patterns, the shared behaviours.
 2. For each component you are likely to use, read its file in `design-system/components/`: **Purpose** (when to
    use it and when not), **Properties** (the attributes, their values and defaults), **Variants**, **States**,
-   **Slots** (what may go where) and **Rules of use**. Its **Example** shows typical markup.
+   **Slots** (what may go where) and **Rules of use**. Its **Example** shows typical markup. If the manifest lists
+   an **extension** for it, read `design-system/extensions/<tag>.md` too: its **Variants** are further values the
+   project has added, or restyled, for that component, used like the component's own.
 3. If a **pattern** in `design-system/patterns/` fits the screen (a data table, a gallery with filters, a form in
    a dialog), follow its arrangement rules and its handling of loading, empty and error.
 4. Note the **shared behaviours** components follow, so the specification can name them rather than restate them.
 
 Use only what the design system defines: a tag it does not list, a property a component does not have, or a
-value outside a property's list is an error, not an extension.
+value outside a property's list (the component's or its extension's) is an error, not a way to extend it.
 
 ## 4. Compose
 
@@ -126,7 +128,8 @@ Use `spec="…"` for one line on an element. Keep specifications about behaviour
 Tell the user, briefly: the files you created or changed, how to view them, the assumptions you made, and any
 **custom regions** with their reasons. Where a custom region or a recurring arrangement looks like a gap in the
 design system, say so — it is a candidate for a new component or pattern, which is how the design system grows
-without drifting.
+without drifting. A look a component copied from another source lacks (a `jui-*` component, say) is a candidate for
+an extension of it, never for an edit to its file.
 
 ## Revising a mockup
 

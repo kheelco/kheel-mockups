@@ -1,6 +1,6 @@
 ---
 name: jui-toggle-btn
-version: 1.1.0
+version: 1.1.1
 kind: elemental
 status: active
 summary: ToggleBtn fragment — a small on/off switch with an optional label, toggled by the enclosing component.
@@ -50,6 +50,14 @@ on; and an optional label in medium-weight grey text.
 Clicking anywhere on the switch or its label invokes the fragment's handler through the enclosing component
 (**Fragment events**); the component then re-renders the fragment with the new `active` value. The switch does
 not toggle itself.
+
+## Interactions
+
+Clicking switches it, as the enclosing component does when it handles the click.
+
+| Trigger | Target | When | Effect | Value |
+| --- | --- | --- | --- | --- |
+| click |  |  | toggle | active |
 
 ## Content rules
 

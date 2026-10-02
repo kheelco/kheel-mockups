@@ -33,6 +33,7 @@ summary: Triggers an action.
 ## States            ← read by the renderer
 ## Slots             ← read by the renderer
 ## Behaviour
+## Interactions      ← read by the renderer
 ## Content rules
 ## Accessibility
 ## Rules of use
@@ -43,8 +44,8 @@ summary: Triggers an action.
 ```
 
 Sections appear in this order. A section that has nothing to say says so in one line ("None — built from
-tokens.") rather than being left out, except `Slots`, `Tokens`, `Style` and `Example`, which may be omitted —
-`Tokens` only when there is no `Style`.
+tokens.") rather than being left out, except `Slots`, `Interactions`, `Tokens`, `Style` and `Example`, which may be
+omitted — `Tokens` only when there is no `Style`.
 
 ### Front matter
 
@@ -127,6 +128,46 @@ The places a consumer puts other content. One table with exactly these columns:
 
 A component with no slots omits the section.
 
+### Interactions
+
+What the viewer does when someone uses the component in a mockup: changes to the component's own states and
+properties, so that a menu opens on a click, a box ticks or an option is chosen, with no script in the mockup.
+It covers only what changes the component itself (and, for a choice, its siblings); anything that changes other
+content — filtering a table, switching a tab's panel — is a page state ([mockups.md](mockups.md#page-states)).
+`Behaviour` still describes the component's behaviour in full; this table is the part of it the viewer acts out.
+One table with exactly these columns:
+
+| Column | Meaning |
+| --- | --- |
+| Trigger | `click` on the component; `click-outside`, a click anywhere else in the mockup; or `escape`, the Escape key. |
+| Target | For a click, a CSS selector into the component's template: only a click on that part counts. Blank for the whole component. |
+| When | Conditions on the component's properties, in the template's `data-if` form, separated by spaces, all of which must hold (`click-to-activate !disabled`). Blank for always. |
+| Effect | What changes (below). |
+| Value | The state or property it changes. |
+
+| Effect | Value | Does |
+| --- | --- | --- |
+| `add-state`, `remove-state`, `toggle-state` | a state | Adds the state to the `state` attribute, removes it, or either. |
+| `set` | `property` or `property=value` | Sets a boolean property on, or a property to a value. |
+| `unset` | a boolean property | Removes it. |
+| `toggle` | a boolean property | Turns it on or off. |
+| `select` | a boolean property | Turns it on here and off on the siblings of the same tag: one chosen among several. |
+
+```markdown
+| Trigger | Target | When | Effect | Value |
+| --- | --- | --- | --- | --- |
+| click | `.trigger` | click-to-activate | toggle-state | open |
+| click | `.panel` | | remove-state | open |
+| click-outside | | | remove-state | open |
+| escape | | | remove-state | open |
+```
+
+The viewer starts from the mockup as written — a menu written `state="open"` starts open — and changes it from
+there; reloading the mockup restores it. Navigation comes first: a click on an element with `href` or `opens`
+follows it (and before opening a dialog, applies every `click-outside` row, so an open menu closes) instead of any
+interaction. Escape applies the `escape` rows before it closes a dialog, and closes the dialog only if none of them
+changed anything. States the browser already shows, `:hover` and `:focus-within`, need no rows.
+
 ### Tokens
 
 The tokens the component's style uses, so that a reader can see what restyles it without reading its CSS, and a
@@ -198,13 +239,111 @@ also the component's visual check. Show the main variants and states side by sid
 for components that cannot be shown in isolation, such as a full-page shell, and point to an example mockup
 instead.
 
+## Extensions
+
+A design system may take some of its components from elsewhere — the JUI design system's `jui-*` components are
+copied in from its template — and a project still needs looks for them that the source doesn't have. Editing the
+copied file would mix the project's own work into it, so that the next copy from the source either loses that
+work or needs a merge. An **extension** keeps the two apart: a file of its own that adds variant values to a
+component, or restyles values it already has, while the component's file stays exactly as it came from its
+source.
+
+An extension is for components the project doesn't own. A component the project owns is changed in its own file.
+
+### File
+
+One file per extended component: `design-system/extensions/<tag>.md`, named by the tag of the component it
+extends, and listed in the manifest's `Extensions` table ([design-system.md](design-system.md#the-manifest)).
+
+```markdown
+---
+name: jui-choice-selector
+version: 1.0.0
+status: active
+summary: A rounded pill look for the compact filter strip.
+---
+
+# ChoiceSelector (extension)
+
+## Purpose
+## Variants          ← read by the renderer
+## Tokens            ← read by the renderer
+## Style             ← read by the renderer
+## Example           ← read by the viewer's catalogue
+## Implementation
+```
+
+| Key | Meaning |
+| --- | --- |
+| `name` | The tag of the component it extends. Equals the file name without `.md`. |
+| `version` | The extension's own `major.minor.patch` ([versioning.md](versioning.md#extension-versions)). |
+| `status` | `draft`, `active` or `deprecated`. |
+| `summary` | One line: what the extension gives the component. Matches the manifest row. |
+
+| Section | Covers |
+| --- | --- |
+| Purpose | Why the project needs these looks, and why they are not the component's own. |
+| Variants | The values the extension adds or overrides (below). |
+| Tokens | The tokens its style uses, in the component's `Tokens` format ([Tokens](#tokens)). Tokens it sets, its own or the component's, are `component`; tokens of the component it only reads are `inherited`. |
+| Style | One `css` code block (below). |
+| Example | One `xml` code block showing the extension's values, as for a component. |
+| Implementation | How to build each value in the application. The component's own implementation mapping belongs to its source and is not edited either. |
+
+### Variants
+
+One table with exactly these columns:
+
+| Column | Meaning |
+| --- | --- |
+| Property | A property of the component whose `Controls` is `variant`, or a new property: a variant axis the component doesn't have. |
+| Value | One value. |
+| Change | `adds` for a value the component doesn't have; `overrides` for one it has, which the extension restyles. |
+| Use | What the value looks like and when to choose it. |
+
+```markdown
+| Property | Value | Change | Use |
+| --- | --- | --- | --- |
+| variant | compact | overrides | A rounded pill: grey track, the chosen option a white pill. Filter strips. |
+| variant | quiet | adds | No track; the chosen option underlined. Secondary filters inside a panel. |
+```
+
+A mockup chooses an extension's values like any other: `variant="quiet"`. A new axis has no default; without the
+attribute the component looks as it does without the extension.
+
+An extension changes looks only. It cannot remove a value, change a default, or add content or state properties,
+states, slots, interactions or template: those change the component itself, and are made at its source.
+
+### Style
+
+The renderer appends the extension's style to the component's own, in the component's shadow root, so it reaches
+everything the component's style does and, being later, wins over the component's rules for the same selector.
+
+- Scope every rule to a value the extension lists — `:host([variant="compact"])`, `:host([variant="quiet"]) .strip`
+  — so the component's other values are untouched.
+- Prefer setting the component's own tokens (`:host([variant="compact"]) { --jui-choice-selector-radius: 999px; }`):
+  they are its published points of variation. Select its internal elements only where no token reaches; those
+  depend on its template, which can change at its source.
+
+### Synchronising
+
+Because an extension never edits the component's file, the component can be replaced by a newer copy from its
+source at any time. The renderer then checks the extension against it ([Checks](rendering.md#checks)): a value the
+extension adds that the component now has, or overrides that it no longer has, is a warning, so a change at the
+source that affects the extension shows rather than silently changing its look.
+
+### In the catalogue
+
+The catalogue marks an extended component, lists the extension's values with their changes, and renders the
+extension's example below the component's own.
+
 ## Rendering
 
 Each component listed in the manifest becomes a custom element named by its tag. When one appears on a page, the
 renderer:
 
 1. applies property defaults to absent attributes;
-2. renders the template with the element's attributes into its shadow root, with the component's style;
+2. renders the template with the element's attributes into its shadow root, with the component's style followed by
+   its extension's, if it has one;
 3. routes any child without a `slot` attribute whose tag appears in exactly one named slot's `Accepts` (and not in
    the default slot's) to that slot, so authors rarely have to write `slot="…"`;
 4. applies the element's layout attributes to the template's `data-layout` element, and its spacing attributes to

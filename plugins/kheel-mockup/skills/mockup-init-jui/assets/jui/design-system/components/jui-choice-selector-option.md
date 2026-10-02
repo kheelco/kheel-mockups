@@ -1,6 +1,6 @@
 ---
 name: jui-choice-selector-option
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: ChoiceSelector.Option fragment — one option in a choice selector, with a label, an icon and a tone.
@@ -54,6 +54,14 @@ A centred row of an optional `jui-icon` (with a gap after it) and the label, fil
 
 Clicking an unchosen, enabled option invokes its handler through the enclosing component (**Fragment events**),
 which re-renders the selector with this option `active`.
+
+## Interactions
+
+Clicking an enabled option chooses it, as the enclosing component does when it re-renders the selector.
+
+| Trigger | Target | When | Effect | Value |
+| --- | --- | --- | --- | --- |
+| click |  | !disabled | select | active |
 
 ## Content rules
 

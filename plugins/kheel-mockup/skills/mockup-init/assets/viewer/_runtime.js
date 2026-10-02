@@ -1,6 +1,6 @@
 // Mockup runtime — renders XML mockups from a markdown design system, in the browser, without a build.
 // Part of the mechanism, not the project: replaced as a unit when the mechanism is updated. Do not edit.
-export const VERSION = '0.7.0';
+export const VERSION = '0.9.0';
 
 // This file lives in the design system folder; the project space is the folder above it.
 const DS_URL = new URL('./', import.meta.url);
@@ -160,7 +160,7 @@ async function loadDesignSystem() {
   const src = await fetchText(new URL('README.md', DS_URL));
   const { data, body } = frontMatter(src);
   const secs = sections(body);
-  const ds = { meta: data, components: new Map(), order: [], icons: [], tokensCss: '' };
+  const ds = { meta: data, components: new Map(), extensions: new Map(), order: [], icons: [], tokensCss: '' };
 
   ds.icons = [...(secs.icons || '').matchAll(/`([a-z0-9-]+)`/g)].map((m) => m[1]);
 
@@ -186,26 +186,95 @@ async function loadDesignSystem() {
       ds.components.set(tag, def);
     } catch (e) { warn(`Could not load component ${tag}: ${e.message}`); }
   }));
+  await Promise.all(table(secs.extensions || '').map(async (row) => {
+    const tag = plain(row.extension);
+    const link = (row.extension || '').match(/\]\(([^)]+)\)/);
+    if (!tag) return;
+    if (!link) { warn(`Manifest row for the ${tag} extension has no link to its file`); return; }
+    try {
+      const ext = parseExtension(await fetchText(new URL(link[1], DS_URL)), tag);
+      ext.file = link[1];
+      if (row.version && plain(row.version) !== ext.meta.version) warn(`Manifest lists the ${tag} extension at ${plain(row.version)} but its file is ${ext.meta.version}`);
+      ds.extensions.set(tag, ext);
+    } catch (e) { warn(`Could not load the ${tag} extension: ${e.message}`); }
+  }));
+  for (const ext of ds.extensions.values()) applyExtension(ds, ext);
   checkTokens(ds);
+  checkInteractions(ds);
   return ds;
 }
 
-// Compare each component's Tokens table with its Style, and its semantic tokens with tokens.md.
+// Compare each component's (and extension's) Tokens table with its Style, and its semantic tokens with tokens.md.
 function checkTokens(ds) {
   const defined = new Set([...ds.tokensCss.matchAll(/(--[A-Za-z0-9_-]+)\s*:/g)].map((m) => m[1]));
-  for (const def of ds.components.values()) {
-    const declared = new Set([...def.style.matchAll(/(--[A-Za-z0-9_-]+)\s*:/g)].map((m) => m[1]));
-    const used = new Set([...def.style.matchAll(/var\(\s*(--[A-Za-z0-9_-]+)/g)].map((m) => m[1]));
+  const check = (name, style, tokens) => {
+    const declared = new Set([...style.matchAll(/(--[A-Za-z0-9_-]+)\s*:/g)].map((m) => m[1]));
+    const used = new Set([...style.matchAll(/var\(\s*(--[A-Za-z0-9_-]+)/g)].map((m) => m[1]));
     const inStyle = new Set([...declared, ...used]);
-    if (!def.tokens) { if (inStyle.size) warn(`${def.tag} has no Tokens section`); continue; }
-    const listed = new Map(def.tokens.map((t) => [t.token, t.kind]));
-    for (const t of inStyle) if (!listed.has(t)) warn(`${def.tag}: style uses ${t}, which is not in its Tokens table`);
+    if (!tokens) { if (inStyle.size) warn(`${name} has no Tokens section`); return; }
+    const listed = new Map(tokens.map((t) => [t.token, t.kind]));
+    for (const t of inStyle) if (!listed.has(t)) warn(`${name}: style uses ${t}, which is not in its Tokens table`);
     for (const [t, kind] of listed) {
-      if (!inStyle.has(t)) warn(`${def.tag}: Tokens table lists ${t}, which its style does not use`);
-      else if (kind === 'semantic' && defined.size && !defined.has(t)) warn(`${def.tag}: semantic token ${t} is not defined in tokens.md`);
-      else if (kind === 'component' && !declared.has(t)) warn(`${def.tag}: component token ${t} is never set in its style`);
-      else if (!['component', 'semantic', 'inherited'].includes(kind)) warn(`${def.tag}: ${t} has kind "${kind}"; expected component, semantic or inherited`);
+      if (!inStyle.has(t)) warn(`${name}: Tokens table lists ${t}, which its style does not use`);
+      else if (kind === 'semantic' && defined.size && !defined.has(t)) warn(`${name}: semantic token ${t} is not defined in tokens.md`);
+      else if (kind === 'component' && !declared.has(t)) warn(`${name}: component token ${t} is never set in its style`);
+      else if (!['component', 'semantic', 'inherited'].includes(kind)) warn(`${name}: ${t} has kind "${kind}"; expected component, semantic or inherited`);
     }
+  };
+  for (const def of ds.components.values()) check(def.tag, def.style, def.tokens);
+  for (const ext of ds.extensions.values()) check(`${ext.tag} extension`, ext.style, ext.tokens);
+}
+
+function parseTokens(s) {
+  if (s.tokens === undefined) return null; // [{ token, kind }] from the Tokens table, or null when the section is missing
+  const tokens = [];
+  for (const r of table(s.tokens)) {
+    const kind = plain(r.kind).toLowerCase();
+    for (const m of (r.token || '').matchAll(/`(--[A-Za-z0-9_-]+)`/g)) tokens.push({ token: m[1], kind });
+  }
+  return tokens;
+}
+
+// An extension adds variant values to a component the project doesn't own, or restyles values it has, from a file of
+// its own: the component's file stays as it came from its source.
+function parseExtension(src, tag) {
+  const { data, body } = frontMatter(src);
+  const s = sections(body);
+  if (data.name && data.name !== tag) warn(`${tag} extension: front matter name is "${data.name}"`);
+  const ext = {
+    tag,
+    meta: data,
+    variants: [],
+    style: fences(s.style, 'css').join('\n'),
+    example: fences(s.example, 'xml')[0] || '',
+    tokens: parseTokens(s),
+  };
+  for (const r of table(s.variants)) {
+    const prop = plain(r.property);
+    const value = plain(r.value);
+    if (prop && value) ext.variants.push({ prop, value, change: plain(r.change).toLowerCase(), use: plain(r.use) });
+  }
+  return ext;
+}
+
+// Merge an extension's values into its component, warning where they no longer fit it (say after the component was
+// replaced by a newer copy from its source).
+function applyExtension(ds, ext) {
+  const def = ds.components.get(ext.tag);
+  const name = `${ext.tag} extension`;
+  if (!def) { warn(`${name}: <${ext.tag}> is not in the manifest's components`); return; }
+  def.ext = ext;
+  for (const v of ext.variants) {
+    const what = `${v.prop}="${v.value}"`;
+    let p = def.props[v.prop];
+    if (v.change !== 'adds' && v.change !== 'overrides') { warn(`${name}: ${what} has change "${v.change}"; expected adds or overrides`); continue; }
+    if (!p && v.change === 'overrides') { warn(`${name} overrides ${what}, but <${ext.tag}> has no ${v.prop} property`); continue; }
+    if (!p) p = def.props[v.prop] = { controls: 'variant', type: 'enum', values: [], default: '', extension: true };
+    if (p.controls !== 'variant' || p.type !== 'enum') { warn(`${name}: ${v.prop} is not a variant property of <${ext.tag}>`); continue; }
+    const has = p.values.includes(v.value);
+    if (v.change === 'adds' && has) warn(`${name} adds ${what}, which <${ext.tag}> already has — override it or drop it`);
+    else if (v.change === 'overrides' && !has) warn(`${name} overrides ${what}, which <${ext.tag}> does not have`);
+    else if (v.change === 'adds') p.values.push(v.value);
   }
 }
 
@@ -237,17 +306,101 @@ function parseComponent(src, tag) {
     if (/^\(?default\)?$/i.test(n)) n = 'default';
     def.slots.push({ name: n, accepts: list(r.accepts).map((x) => x.toLowerCase()), suggests: list(r.suggests), layout: plain(r.layout) });
   }
-  def.tokens = null; // [{ token, kind }] from the Tokens table, or null when the section is missing
-  if (s.tokens !== undefined) {
-    def.tokens = [];
-    for (const r of table(s.tokens)) {
-      const kind = plain(r.kind).toLowerCase();
-      for (const m of (r.token || '').matchAll(/`(--[A-Za-z0-9_-]+)`/g)) def.tokens.push({ token: m[1], kind });
-    }
+  def.tokens = parseTokens(s);
+  def.interactions = [];
+  for (const r of table(s.interactions)) {
+    const trigger = plain(r.trigger).toLowerCase();
+    if (trigger) def.interactions.push({ trigger, target: plain(r.target), when: plain(r.when), effect: plain(r.effect).toLowerCase(), value: plain(r.value) });
   }
   def.slotNames = new Set([...def.template.matchAll(/<slot(?:\s+name="([^"]*)")?/g)].map((m) => m[1] || 'default'));
   def.layoutConfigurable = /\sdata-layout[\s>=]/.test(def.template);
   return def;
+}
+
+// ───────────────────────────── interactions
+// A component's Interactions table lets the viewer change its own states and properties in response to a click,
+// a click elsewhere or Escape: enough to open a menu or tick a box without any script in the mockup.
+
+const TRIGGERS = ['click', 'click-outside', 'escape'];
+const EFFECTS = ['add-state', 'remove-state', 'toggle-state', 'set', 'unset', 'toggle', 'select'];
+const dismissable = new Set(); // connected components with click-outside or escape rows
+
+function checkInteractions(ds) {
+  const tpl = document.createElement('template');
+  for (const def of ds.components.values()) {
+    tpl.innerHTML = def.template;
+    for (const i of def.interactions) {
+      const name = `${def.tag}: interaction "${[i.trigger, i.target, i.effect, i.value].filter(Boolean).join(' ')}"`;
+      if (!TRIGGERS.includes(i.trigger)) warn(`${name}: trigger is not one of ${TRIGGERS.join(', ')}`);
+      if (i.target && i.trigger !== 'click') warn(`${name}: only a click has a target`);
+      else if (i.target) {
+        try { if (!tpl.content.querySelector(i.target)) warn(`${name}: target ${i.target} matches nothing in its template`); } catch { warn(`${name}: target ${i.target} is not a CSS selector`); }
+      }
+      for (const c of i.when.split(/\s+/).filter(Boolean)) {
+        const n = c.replace(/^!/, '').split('=')[0];
+        if (!def.props[n]) warn(`${name}: condition ${c} names no property of <${def.tag}>`);
+      }
+      const [prop, val] = i.value.split('=').map((x) => x.trim());
+      if (!EFFECTS.includes(i.effect)) warn(`${name}: effect is not one of ${EFFECTS.join(', ')}`);
+      else if (i.effect.endsWith('-state')) { if (!def.states.has(i.value)) warn(`${name}: ${i.value} is not one of its states`); }
+      else if (!def.props[prop]) warn(`${name}: ${prop} is not one of its properties`);
+      else if (i.effect === 'set' && val !== undefined) checkValue(def, def.props[prop], prop, val, null);
+      else if (def.props[prop].type !== 'boolean' && (i.effect !== 'set' || val === undefined)) warn(`${name}: ${prop} is not a boolean property`);
+    }
+  }
+}
+
+const isOn = (el, n) => el.hasAttribute(n) && el.getAttribute(n) !== 'false';
+
+// Apply one row to a component; true when it changed something.
+function applyInteraction(el, i) {
+  if (i.when && !i.when.split(/\s+/).every((c) => testIf(c, el))) return false;
+  const states = new Set((el.getAttribute('state') || '').split(/\s+/).filter(Boolean));
+  const setStates = () => { if (states.size) el.setAttribute('state', [...states].join(' ')); else el.removeAttribute('state'); };
+  const [prop, val] = i.value.split('=').map((x) => x.trim());
+  switch (i.effect) {
+    case 'add-state': if (states.has(i.value)) return false; states.add(i.value); setStates(); return true;
+    case 'remove-state': if (!states.delete(i.value)) return false; setStates(); return true;
+    case 'toggle-state': if (!states.delete(i.value)) states.add(i.value); setStates(); return true;
+    case 'set': if (val === undefined ? isOn(el, prop) : el.getAttribute(prop) === val) return false; el.setAttribute(prop, val ?? ''); return true;
+    case 'unset': if (!el.hasAttribute(prop)) return false; el.removeAttribute(prop); return true;
+    case 'toggle': if (isOn(el, prop)) el.removeAttribute(prop); else el.setAttribute(prop, ''); return true;
+    case 'select':
+      if (isOn(el, prop)) return false;
+      for (const sib of el.parentNode?.children || []) if (sib !== el && sib.localName === el.localName) sib.removeAttribute(prop);
+      el.setAttribute(prop, '');
+      return true;
+    default: return false;
+  }
+}
+
+// Rows for a trigger on every connected component that has them (click-outside and escape), skipping those in `except`.
+function dismiss(trigger, except = []) {
+  let changed = false;
+  for (const el of [...dismissable]) {
+    if (!el.isConnected) { dismissable.delete(el); continue; }
+    if (except.includes(el)) continue;
+    for (const i of state.ds.components.get(el.localName).interactions) if (i.trigger === trigger) changed = applyInteraction(el, i) || changed;
+  }
+  if (changed) scheduleBadges();
+  return changed;
+}
+
+// A click: components it fell outside of first, then the components it passed through, innermost first.
+function interact(path) {
+  let changed = dismiss('click-outside', path);
+  for (const n of path) {
+    if (n === canvas) break;
+    if (!(n instanceof Element)) continue;
+    const def = state.ds.components.get(n.localName);
+    if (!def || !def.interactions.length) continue;
+    for (const i of def.interactions) {
+      if (i.trigger !== 'click') continue;
+      if (i.target && !path.some((p) => p instanceof Element && p.getRootNode() === n.shadowRoot && p.matches(i.target))) continue;
+      changed = applyInteraction(n, i) || changed;
+    }
+  }
+  if (changed) scheduleBadges();
 }
 
 function routeSlot(def, child) {
@@ -332,6 +485,7 @@ function defineComponent(def) {
     static get observedAttributes() { return observed; }
 
     connectedCallback() {
+      if (def.interactions.some((i) => i.trigger !== 'click')) dismissable.add(this);
       if (this._kmReady) return;
       for (const [n, p] of Object.entries(def.props)) {
         if (p.default && p.type !== 'boolean' && !this.hasAttribute(n)) this.setAttribute(n, p.default);
@@ -347,7 +501,7 @@ function defineComponent(def) {
     render() {
       const root = this.shadowRoot || this.attachShadow({ mode: 'open' });
       const html = def.template.replace(/\{\{\s*([a-z][a-z0-9-]*)\s*\}\}/g, (_, n) => esc(this.getAttribute(n) ?? def.props[n]?.default ?? ''));
-      root.innerHTML = `<style>${SHADOW_BASE}\n${def.style}</style>${html}`;
+      root.innerHTML = `<style>${SHADOW_BASE}\n${def.style}${def.ext ? '\n' + def.ext.style : ''}</style>${html}`;
       for (const el of root.querySelectorAll('[data-if]')) {
         if (testIf(el.getAttribute('data-if'), this)) el.removeAttribute('data-if'); else el.remove();
       }
@@ -563,6 +717,10 @@ body{min-height:100vh}
 .km-cat-head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--color-border,#e4e7ec)}
 .km-cat-head code{font-weight:600}.km-cat-head .km-meta{color:var(--color-text-muted,#667085);font-size:13px}
 .km-cat-head a{margin-left:auto;font-size:13px}
+.km-cat-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:1px 7px;border-radius:9px;background:#f3e8ff;color:#6b21a8}
+.km-cat-ext{border-top:1px dashed var(--color-border,#e4e7ec)}
+.km-cat-ext .km-cat-head{border-bottom:none;padding-bottom:4px}
+.km-cat-ext ul{margin:0;padding:0 18px 4px 36px;font-size:13px;color:var(--color-text-muted,#667085)}
 .km-cat-ex{padding:20px 18px;background:var(--color-bg,#f8fafc)}
 .km-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
 .km-cat-icon{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border:1px solid var(--color-border,#e4e7ec);border-radius:8px;font:11px ui-monospace,monospace;color:var(--color-text-muted,#667085);background:var(--color-surface,#fff)}
@@ -642,7 +800,7 @@ function setupPage() {
   document.body.appendChild(hoverLabel);
 
   document.addEventListener('click', onClick, true);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.dialogs.length) closeDialog(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.ds && !dismiss('escape') && state.dialogs.length) closeDialog(); });
   document.addEventListener('mousemove', onHover, true);
   window.addEventListener('scroll', scheduleBadges, true);
   window.addEventListener('resize', scheduleBadges);
@@ -786,17 +944,18 @@ function baseFor(path) {
 }
 
 function onClick(e) {
-  if (!canvas || !state.current) return;
+  if (!canvas || !state.ds) return;
   const path = e.composedPath();
   if (!path.includes(canvas)) return;
-  for (const n of path) {
+  if (state.current) for (const n of path) {
     if (!(n instanceof Element)) continue;
     if (n === canvas) break;
     if (n.classList.contains('km-scrim')) { e.preventDefault(); closeDialog(); return; }
     if (n.hasAttribute('closes')) { e.preventDefault(); closeDialog(); return; }
-    if (n.hasAttribute('opens') && n.getAttribute('opens')) { e.preventDefault(); openDialog(n.getAttribute('opens'), baseFor(path)); return; }
+    if (n.hasAttribute('opens') && n.getAttribute('opens')) { e.preventDefault(); dismiss('click-outside'); openDialog(n.getAttribute('opens'), baseFor(path)); return; }
     if (n.hasAttribute('href') && n.getAttribute('href')) { e.preventDefault(); follow(n.getAttribute('href'), baseFor(path)); return; }
   }
+  interact(path);
 }
 
 function follow(href, base) {
@@ -964,6 +1123,17 @@ function groupMockups(items) {
     .map(([folder, list]) => [folder, list.sort((a, b) => typeRank(a.type) - typeRank(b.type) || a.title.localeCompare(b.title))]);
 }
 
+function renderExample(host, example, label) {
+  if (!example) { host.textContent = 'No example.'; return; }
+  const doc = new DOMParser().parseFromString(`<example>${example}</example>`, 'application/xml');
+  if (doc.querySelector('parsererror')) { host.textContent = 'Example is not well-formed XML.'; warn(`${label} is not well-formed XML`); return; }
+  const { frag } = buildContent(doc.documentElement);
+  host.appendChild(frag);
+  const before = state.warnings.length;
+  validate(host, null);
+  for (const w of state.warnings.slice(before)) w.message = `${label}: ${w.message}`;
+}
+
 async function showCatalogue() {
   state.current = null;
   document.title = `${state.ds.meta.name || 'Design system'} — catalogue`;
@@ -975,7 +1145,7 @@ async function showCatalogue() {
   const colours = [...new Set([...ds.tokensCss.matchAll(/(--color-[a-z0-9-]+)\s*:/g)].map((m) => m[1]))];
   wrap.innerHTML = `
     <h1>${esc(ds.meta.name || 'Design system')}</h1>
-    <p class="km-sub">Version ${esc(ds.meta.version || '—')} · source: ${esc(ds.meta.source || 'local')} · ${ds.components.size} components · ${ds.icons.length} icons · runtime ${VERSION}</p>
+    <p class="km-sub">Version ${esc(ds.meta.version || '—')} · source: ${esc(ds.meta.source || 'local')} · ${ds.components.size} components${ds.extensions.size ? ` (${ds.extensions.size} extended)` : ''} · ${ds.icons.length} icons · runtime ${VERSION}</p>
     <h2>Mockups</h2><div id="km-cat-mockups"><p>Looking for mockups…</p></div>
     <h2>Components</h2><div id="km-cat-components"></div>
     <h2>Icons</h2><div class="km-cat-grid">${ds.icons.map((i) => `<div class="km-cat-icon"><mockup-asset src="icons/${esc(i)}.svg"></mockup-asset>${esc(i)}</div>`).join('')}</div>
@@ -990,17 +1160,13 @@ async function showCatalogue() {
     const box = document.createElement('section');
     box.className = 'km-cat-comp';
     box.id = tag;
-    box.innerHTML = `<div class="km-cat-head"><code>&lt;${esc(tag)}&gt;</code><strong>${esc(def.title)}</strong><span class="km-meta">${esc(def.meta.version || '')} · ${esc(def.meta.kind || '')}${def.meta.status && def.meta.status !== 'active' ? ' · ' + esc(def.meta.status) : ''} — ${esc(def.meta.summary || '')}</span><a href="${esc(new URL(def.file, DS_URL).href)}" target="_blank">source</a></div><div class="km-cat-ex"></div>`;
+    const ext = def.ext;
+    box.innerHTML = `<div class="km-cat-head"><code>&lt;${esc(tag)}&gt;</code><strong>${esc(def.title)}</strong>${ext ? '<span class="km-cat-tag">extended</span>' : ''}<span class="km-meta">${esc(def.meta.version || '')} · ${esc(def.meta.kind || '')}${def.meta.status && def.meta.status !== 'active' ? ' · ' + esc(def.meta.status) : ''} — ${esc(def.meta.summary || '')}</span><a href="${esc(new URL(def.file, DS_URL).href)}" target="_blank">source</a></div><div class="km-cat-ex"></div>`
+      + (ext ? `<div class="km-cat-ext"><div class="km-cat-head"><span class="km-cat-tag">custom</span><strong>Extension</strong><span class="km-meta">${esc(ext.meta.version || '')}${ext.meta.status && ext.meta.status !== 'active' ? ' · ' + esc(ext.meta.status) : ''} — ${esc(ext.meta.summary || '')}</span><a href="${esc(new URL(ext.file, DS_URL).href)}" target="_blank">source</a></div><ul>${ext.variants.map((v) => `<li><code>${esc(v.prop)}="${esc(v.value)}"</code> ${esc(v.change)}${v.use ? ' — ' + esc(v.use) : ''}</li>`).join('')}</ul><div class="km-cat-ex"></div></div>` : '');
     compHost.appendChild(box);
-    const ex = box.querySelector('.km-cat-ex');
-    if (!def.example) { ex.textContent = 'No example.'; continue; }
-    const doc = new DOMParser().parseFromString(`<example>${def.example}</example>`, 'application/xml');
-    if (doc.querySelector('parsererror')) { ex.textContent = 'Example is not well-formed XML.'; warn(`Example of ${tag} is not well-formed XML`); continue; }
-    const { frag } = buildContent(doc.documentElement);
-    ex.appendChild(frag);
-    const before = state.warnings.length;
-    validate(ex, null);
-    for (const w of state.warnings.slice(before)) w.message = `Example of ${tag}: ${w.message}`;
+    const [ex, extEx] = box.querySelectorAll('.km-cat-ex');
+    renderExample(ex, def.example, `Example of ${tag}`);
+    if (ext) renderExample(extEx, ext.example, `Example of the ${tag} extension`);
   }
 
   const items = await listMockups();

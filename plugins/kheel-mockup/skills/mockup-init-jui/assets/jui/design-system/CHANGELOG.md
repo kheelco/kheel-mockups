@@ -13,6 +13,38 @@ removing it.
 
 ## Unreleased
 
+### Card navigator header slot — Mirrors JUI
+
+`jui-card-navigator` 1.1.0: an optional `header` slot replaces the standard header (crumb trail, back button and
+title) with the application's own top, at the top level and for an open card. JUI allows the same by subclassing
+`CardNavigator` and overriding `buildBreadcrumb(…)`; the mapping says how.
+
+### Interactions — Mirrors JUI
+
+Components can now carry an `Interactions` table the viewer (0.9.0) acts out, so mockups respond as JUI does
+without any script. These describe behaviour JUI already has (patch versions):
+
+- `jui-menu-activator`: with `click-to-activate`, the dots open and close the menu; choosing an item, clicking
+  elsewhere or Escape closes it.
+- `jui-choice-selector-option`: clicking an enabled option chooses it.
+- `jui-check-control`: clicking ticks or unticks it, unless disabled or read-only.
+- `jui-toggle-btn`: clicking switches it.
+- `jui-avatar-selector-control`: *Change* opens and closes the panel; choosing a stock avatar closes it.
+
+### Heading typeface — Mirrors JUI
+
+JUI sets every `h1`–`h6` in `--jui-font-family-heading` (`Theme.Component.css`), but the mockup components draw their
+headings inside their own shadow DOM, where that page-wide rule doesn't reach, so a heading typeface different from
+the body's never showed in a mockup.
+
+- The headings of `jui-card-navigator`, `jui-card-navigator-card`, `jui-dialog`, `jui-empty-notification`,
+  `jui-info-block`, `jui-modal-dialog`, `jui-notification-block`, `jui-panel-gallery-item` and `jui-title-panel` use
+  `--jui-font-family-heading` (patch versions).
+- `jui-tab-navigator-tab`: tabs and group headings use `--cpt-tabbedpanel-font-family`, the heading family, as JUI's
+  `TabNavigator`.
+- `jui-control-form` and `jui-control-form-group`: section headings use `--cpt-form-header-font-family`, `inherit` by
+  default, as JUI's `ControlForm`; so they stay in the body's typeface unless that token is set.
+
 ### Menu activator shape — Mirrors JUI
 
 `jui-menu-activator` 1.0.1: the hover and open background is a circle, as in JUI, not an oval. JUI's trigger is

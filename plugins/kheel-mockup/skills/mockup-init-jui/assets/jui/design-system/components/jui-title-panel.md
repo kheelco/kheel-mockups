@@ -1,6 +1,6 @@
 ---
 name: jui-title-panel
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: TitlePanel component — a panel with a title bar (icon, title and subtitle) above its content.
@@ -84,6 +84,7 @@ The title is a level-2 heading. The icon is decorative.
 | `--frag-icon-size` | component | `1.5em` | The icon's size; `3.25em` with a subtitle. |
 | `--jui-role-border-default`, `--jui-role-surface-raised`, `--jui-role-text-heading`, `--jui-color-neutral60` | semantic | | Title bar colours. |
 | `--jui-space-1`, `--jui-space-2`, `--jui-space-3`, `--jui-space-4`, `--jui-space-5`, `--jui-space-6`, `--jui-space-8` | semantic | | Padding steps. |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -130,6 +131,8 @@ h3 { margin: 0.25em 0 0; font-weight: 400; font-size: 1.25em; line-height: 1.2; 
 .contents { padding: var(--cpt-titlepanel-padding); }
 :host([scrollable]) { overflow: auto; }
 :host([scrollable]) .contents { flex-grow: 1; overflow-y: auto; }
+/* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
+h2, h3 { font-family: var(--jui-font-family-heading); }
 ```
 
 ## Example

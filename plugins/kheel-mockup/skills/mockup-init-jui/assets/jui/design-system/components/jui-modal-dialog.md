@@ -1,6 +1,6 @@
 ---
 name: jui-modal-dialog
-version: 1.1.0
+version: 1.1.1
 kind: composed
 status: active
 summary: ModalDialog component — the dialog frame with a titled header, a body and a footer of actions.
@@ -124,6 +124,7 @@ control needs an accessible name (`Close`).
 | `--jui-comp-dialog-surface`, `--jui-comp-dialog-border`, `--jui-comp-dialog-radius`, `--jui-comp-dialog-shadow`, `--jui-comp-dialog-header-surface`, `--jui-comp-dialog-header-divider`, `--jui-comp-dialog-footer-surface`, `--jui-comp-dialog-footer-divider`, `--jui-comp-dialog-heading`, `--jui-comp-dialog-subheading`, `--jui-comp-dialog-icon`, `--jui-comp-dialog-close` | semantic | | The dialog family tokens the component tokens start from. |
 | `--jui-font-weight-semibold`, `--jui-font-size-sm`, `--jui-font-size-2xl` | semantic | | Title weight; description and uniform title sizes. |
 | `--jui-space-1`, `--jui-space-2`, `--jui-space-3`, `--jui-space-4`, `--jui-space-5`, `--jui-space-6`, `--jui-space-8` | semantic | | Insets and body padding steps. |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -258,6 +259,8 @@ h2 jui-icon { color: var(--cpt-modaldialog-icon); position: relative; top: 0.2em
 .zone { display: flex; flex-grow: 1; flex-wrap: wrap; align-items: center; gap: 0.5em; }
 .zone.left { justify-content: flex-start; }
 .zone.right { justify-content: flex-end; }
+/* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
+h1, h2 { font-family: var(--jui-font-family-heading); }
 ```
 
 ## Example

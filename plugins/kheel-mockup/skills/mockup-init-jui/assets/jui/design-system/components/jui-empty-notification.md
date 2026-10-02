@@ -1,6 +1,6 @@
 ---
 name: jui-empty-notification
-version: 1.0.0
+version: 1.0.1
 kind: elemental
 status: active
 summary: EmptyNotification component — the notice a Gallery or Table shows when it has no records or its store is in error.
@@ -83,6 +83,7 @@ white and its border the waiting background.
 | `--frag-btn-padding-tb`, `--frag-btn-padding-lr` | component | `0.25em`, `1.25em` | Set on slotted `jui-btn` actions to match JUI's action links. |
 | `--jui-color-aux-white` | semantic | | Panel background. |
 | `--jui-state-waiting-bg` | semantic | | Panel border. |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -106,6 +107,8 @@ h3 { margin-block-start: 0; }
 :host([data-filled~="actions"]) .actions { display: flex; }
 :host([actions-right-aligned]) .actions { justify-content: flex-end; }
 ::slotted(jui-btn) { --frag-btn-padding-tb: 0.25em; --frag-btn-padding-lr: 1.25em; }
+/* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
+h3 { font-family: var(--jui-font-family-heading); }
 ```
 
 ## Example

@@ -1,6 +1,6 @@
 ---
 name: jui-tab-navigator-tab
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: TabNavigator tab component — one tab of a tab navigator, with a label, an icon, a count and an indicator.
@@ -83,6 +83,8 @@ All tokens are set by the enclosing `jui-tab-navigator` for its variant.
 | `--cpt-tabnavigator-tab-shadow-active`, `--cpt-tabnavigator-tab-count-position` | inherited | | Active shadow; count placement. |
 | `--cpt-tabnavigator-group-display`, `--cpt-tabnavigator-group-text` | inherited | | Group heading. |
 | `--cpt-tabnavigator-count-bg`, `--cpt-tabnavigator-count-color`, `--cpt-tabnavigator-indicator-top`, `--cpt-tabnavigator-indicator-right` | inherited | | Count badge and indicator. |
+| `--cpt-tabbedpanel-font-family` | inherited | `--jui-font-family-heading` | Typeface of the tabs and group headings (JUI `TabNavigator.css`). |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -156,6 +158,8 @@ jui-icon { color: var(--cpt-tabnavigator-tab-icon, inherit); width: var(--cpt-ta
   box-shadow: var(--cpt-tabnavigator-tab-shadow-active, none);
 }
 :host([active]) jui-icon { color: var(--cpt-tabnavigator-tab-icon-active, inherit); }
+/* JUI's TabNavigator sets tabs and group headings in --cpt-tabbedpanel-font-family, the heading family. */
+.group, .tab { font-family: var(--cpt-tabbedpanel-font-family, var(--jui-font-family-heading)); }
 ```
 
 ## Example

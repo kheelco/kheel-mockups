@@ -1,6 +1,6 @@
 ---
 name: jui-notification-block
-version: 1.0.0
+version: 1.0.1
 kind: composed
 status: active
 summary: NotificationBlock component — an inline notice, success or error message with a coloured side bar.
@@ -96,6 +96,7 @@ decorative; the theme's meaning must be carried by the text too.
 | `--jui-comp-notification-info-accent`, `--jui-comp-notification-info-border`, `--jui-comp-notification-info-surface`, `--jui-comp-notification-success-accent`, `--jui-comp-notification-success-border`, `--jui-comp-notification-success-surface`, `--jui-comp-notification-error-accent`, `--jui-comp-notification-error-border`, `--jui-comp-notification-error-surface`, `--jui-comp-notification-radius` | semantic | | Theme colours and radius. |
 | `--jui-role-text-inverse`, `--jui-role-text-heading`, `--jui-role-border-contrast`, `--jui-role-text-muted`, `--jui-font-weight-regular` | semantic | | Text colours and title weight. |
 | `--jui-space-1`, `--jui-space-3`, `--jui-space-4`, `--jui-space-8` | semantic | | Insets. |
+| `--jui-font-family-heading` | semantic | | Heading typeface: JUI gives every `h1`–`h6` this family (`Theme.Component.css`). |
 
 ## Template
 
@@ -161,6 +162,8 @@ ul { display: none; margin: var(--jui-space-3) 0 0; padding: 0 var(--jui-space-4
 :host([data-filled~="default"]) ul { display: block; }
 ::slotted(li) { list-style: disc; margin-left: var(--jui-space-8); font-size: 0.9em; color: var(--cpt-notification-item); margin-bottom: var(--jui-space-1); }
 ::slotted(li:last-child) { margin-bottom: 0; }
+/* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
+h3 { font-family: var(--jui-font-family-heading); }
 ```
 
 ## Example

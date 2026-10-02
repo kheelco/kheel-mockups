@@ -13,6 +13,7 @@ information that move will need.
 | --- | --- | --- |
 | Design system | `major.minor.patch` | `version` in the manifest's front matter. |
 | Component | `major.minor.patch` | `version` in the component's front matter, repeated in the manifest row. |
+| Extension | `major.minor.patch` | `version` in the extension's front matter, repeated in the manifest row. |
 | Mockup | — | Mockups are not versioned by the mechanism. They record which design system version they were last checked against. |
 
 Tokens, behaviours and patterns are versioned through the design system's version. The viewer and runtime
@@ -27,18 +28,30 @@ A component's version describes its **interface** — what a mockup that uses it
 | --- | --- | --- |
 | Breaking the interface | major | Removing or renaming a property, a property value, a state or a slot; narrowing a slot's `Accepts`; changing a default so existing uses look or mean something different. |
 | Extending the interface | minor | Adding a property, a value, a state or a slot; widening `Accepts`. |
-| Anything else | patch | Changing the style, template structure, prose, example or accessibility notes without changing the interface. |
+| Anything else | patch | Changing the style, template structure, interactions, prose, example or accessibility notes without changing the interface. |
 
 A component is **deprecated** before it is removed: `status: deprecated`, with its replacement named in
 `Rules of use`. Removing a component is a major change to the design system.
+
+## Extension versions
+
+An extension is versioned on its own, so that adding variants to a component copied from elsewhere never changes
+that component's version, which belongs to its source.
+
+| Change | Bump | Examples |
+| --- | --- | --- |
+| Breaking | major | Removing an added value or axis; dropping an override, so the value goes back to the component's look. |
+| Extending | minor | Adding a value or an axis, or overriding another value. |
+| Anything else | patch | Changing the style, prose, example or implementation notes. |
 
 ## Design system versions
 
 The design system's version moves with its contents:
 
-- **major** when any component takes a major bump or is removed, or a token that components or mockups refer to
-  is removed or renamed;
-- **minor** when a component, token, behaviour or pattern is added, or a component takes a minor bump;
+- **major** when any component or extension takes a major bump or is removed, or a token that components or
+  mockups refer to is removed or renamed;
+- **minor** when a component, extension, token, behaviour or pattern is added, or a component or extension takes
+  a minor bump;
 - **patch** otherwise.
 
 ## On disk
