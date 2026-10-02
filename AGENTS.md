@@ -35,6 +35,19 @@ never in `target/` or another skill, then run `./scripts/sync-viewer.sh` to copy
 `target/`. Bump its `VERSION` so initialisation can tell an existing project space
 that a newer viewer is available.
 
+## Checking in a browser
+
+The viewer prints every warning to the browser console prefixed `[mockup]`, so a check can be scripted. With
+[agent-browser](https://github.com/vercel-labs/agent-browser) (in cloud sessions, point it at Playwright's
+Chromium: `AGENT_BROWSER_EXECUTABLE_PATH=/opt/pw-browsers/chromium-*/chrome-linux/chrome`), serve `target/` (or a
+project space), open each page with `/design-system/?m=<mockup>` (the catalogue is `/design-system/`) and count the
+lines from `agent-browser console` that contain `[mockup]`; the target is zero. Use a session name per run
+(`--session`), and take screenshots: warnings check structure, not appearance.
+
+- `init-target.sh --reset` deletes and recreates `target/`, so a server started inside it must be restarted.
+- Interactions can be exercised from script: click a component's part in its shadow root
+  (`el.shadowRoot.querySelector('.trigger').click()`) and read its `state` attribute back.
+
 ## Rules for skills
 
 Skills are installed on their own (as a Claude Code plugin, as uploaded zips, or copied into another agent's

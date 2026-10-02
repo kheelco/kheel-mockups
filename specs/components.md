@@ -250,6 +250,13 @@ source.
 
 An extension is for components the project doesn't own. A component the project owns is changed in its own file.
 
+**Owned or not.** A component the project does not own is one that mirrors a library or another design system and is
+kept in step with it from there: the JUI design system's `jui-*` components, which mirror JUI and which its
+initialisation can bring up to date. The design system's manifest says which components these are. Their files
+**must not** be edited in the project space, not even to fix them: a look the project needs goes in an extension,
+and a fault, or something the source should have, is reported to be changed at the source. The project's own
+components, such as those it adds with its own prefix, are edited in place.
+
 ### File
 
 One file per extended component: `design-system/extensions/<tag>.md`, named by the tag of the component it

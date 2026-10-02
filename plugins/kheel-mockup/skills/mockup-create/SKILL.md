@@ -123,13 +123,33 @@ Use `spec="…"` for one line on an element. Keep specifications about behaviour
   that does not read the way the design intends.
 - Whether or not you can render it, go through the checklist in `reference.md` ("Before you finish").
 
+## Changing the design system
+
+A mockup sometimes needs something the design system doesn't have yet: a variant, a look, a component. Change the
+design system only as far as the mockup needs, and only where you may:
+
+- **A component the project owns** (its own prefix, such as `ui-`) is changed in its own file: bump its `version`
+  and its row in `design-system/README.md`. A reusable piece the design system lacks becomes a new component of the
+  project's.
+- **A component the project doesn't own** — one that mirrors a library or another design system and is kept in step
+  with it from there, such as the JUI design system's `jui-*` components (`design-system/README.md` says which) — is
+  **never edited**, not even to fix it, because bringing it up to date from its source would discard the change.
+  Put the look in an **extension**, `design-system/extensions/<tag>.md`, listed in the manifest's Extensions table:
+  the variant values it `adds`, or the existing values it `overrides` to restyle (the format is in
+  `design-system/_guide.md`, under Extensions). What an extension can't give (a new slot, property or template)
+  becomes a new component of the project's, or is reported to the user as a change for the component's source.
+- Give a new variant or component a note on how to build it in the application: an extension's `Implementation`
+  section, or a component's mapping in `design-system/implementations/` where the design system has them.
+- Say in your report what you changed in the design system.
+
+When the change is a matter of taste with several reasonable answers, offer options first with `mockup-explore`.
+
 ## 7. Report
 
 Tell the user, briefly: the files you created or changed, how to view them, the assumptions you made, and any
 **custom regions** with their reasons. Where a custom region or a recurring arrangement looks like a gap in the
 design system, say so — it is a candidate for a new component or pattern, which is how the design system grows
-without drifting. A look a component copied from another source lacks (a `jui-*` component, say) is a candidate for
-an extension of it, never for an edit to its file.
+without drifting. List any changes you made to the design system (see "Changing the design system").
 
 ## Revising a mockup
 
