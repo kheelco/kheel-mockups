@@ -50,7 +50,7 @@ store.load (0, 20);
 | --- | --- |
 | columns | One `cfg.header (label, h -> …)` per `jui-table-column`, in order. |
 | default | Records in the store; each `jui-table-row` is one record, and each `jui-table-cell` is what that column's `renderer(…)` draws. |
-| empty | The content of `emptyUnfiltered` / `emptyFiltered` / `emptyError`: build it with `EmptyNotification.buildPanel (el, new EmptyNotification (panel -> …))`. |
+| empty | The content of `emptyUnfiltered` / `emptyFiltered` / `emptyError`: build it with `EmptyNotification.buildPanel (el, new EmptyNotification (panel -> …))`, or build the application's own content into `el`. |
 
 ## States
 

@@ -1,6 +1,6 @@
 ---
 name: jui-gallery
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: Gallery component — a store-backed collection of items in a grid or rows, with infinite paging and loading, empty and error states.
@@ -64,7 +64,7 @@ when records are compared field by field in columns.
 | --- | --- | --- | --- | --- |
 | default | any | jui-panel-gallery-item | Wrapping tiles (grid) or full-width rows (row) | The items, one per record, in store order. |
 | last | any | jui-btn | Full-width area after the items | JUI's `lastItem(…)`: "Load more", a result count, or an "Add" tile. |
-| empty | jui-empty-notification | jui-empty-notification | Centred column | Replaces JUI's default notice for the current `empty` state. |
+| empty | any | jui-empty-notification | Centred column | Replaces JUI's default notice for the current `empty` state: a `jui-empty-notification`, or the application's own empty-state content (JUI's empty renderers build anything). Give it `slot="empty"`. |
 
 ## Behaviour
 

@@ -52,7 +52,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-card-navigator-card](components/jui-card-navigator-card.md) | 1.0.1 | elemental | component `CardNavigator card` | CardNavigator card component — one card in a card navigator's top level, with a label and a description. |
 | [jui-control-form](components/jui-control-form.md) | 1.1.1 | composed | component `ControlForm` | ControlForm component — a form of labelled controls laid out in groups and rows, with a form-level error block. |
 | [jui-empty-notification](components/jui-empty-notification.md) | 1.0.1 | elemental | component `EmptyNotification` | EmptyNotification component — the notice a Gallery or Table shows when it has no records or its store is in error. |
-| [jui-gallery](components/jui-gallery.md) | 1.0.0 | composed | component `Gallery` | Gallery component — a store-backed collection of items in a grid or rows, with infinite paging and loading, empty and error states. |
+| [jui-gallery](components/jui-gallery.md) | 1.1.0 | composed | component `Gallery` | Gallery component — a store-backed collection of items in a grid or rows, with infinite paging and loading, empty and error states. |
 | [jui-info-block](components/jui-info-block.md) | 1.0.1 | elemental | component `InfoBlock` | InfoBlock component — a heading with a subtitle over lines of small icon-and-text facts. |
 | [jui-info-block-item](components/jui-info-block-item.md) | 1.0.0 | composed | component `InfoBlock item` | InfoBlock item component — one icon-and-value fact in an info line, optionally a link. |
 | [jui-info-block-line](components/jui-info-block-line.md) | 1.0.0 | elemental | component `InfoBlock line` | InfoBlock line component — one row of items in an info block. |
@@ -67,7 +67,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-split-panel](components/jui-split-panel.md) | 1.0.0 | elemental | component `SplitPanel` | SplitPanel component — a main content area beside or below a secondary area, such as a toolbar. |
 | [jui-tab-navigator](components/jui-tab-navigator.md) | 1.0.0 | elemental | component `TabNavigator` | TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body. |
 | [jui-tab-navigator-tab](components/jui-tab-navigator-tab.md) | 1.0.1 | composed | component `TabNavigator tab` | TabNavigator tab component — one tab of a tab navigator, with a label, an icon, a count and an indicator. |
-| [jui-table](components/jui-table.md) | 1.0.0 | composed | component `Table` | Table component — a store-backed data table with declared columns, sorting, row selection, and loading, empty and error states. |
+| [jui-table](components/jui-table.md) | 1.1.0 | composed | component `Table` | Table component — a store-backed data table with declared columns, sorting, row selection, and loading, empty and error states. |
 | [jui-table-cell](components/jui-table-cell.md) | 1.0.0 | elemental | component `Table cell` | Table cell component — one cell of a Table row, as drawn by its column's cell renderer. |
 | [jui-table-column](components/jui-table-column.md) | 1.0.0 | composed | component `Table column` | Table column component — one column header of a Table, with its title, icon, width and sort indicator. |
 | [jui-table-row](components/jui-table-row.md) | 1.0.0 | elemental | component `Table row` | Table row component — one record of a Table, holding its cells and, when the table is selectable, a selection checkbox. |
