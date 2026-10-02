@@ -50,7 +50,7 @@ satisfies it — check (`ProviderBuilder.string ("…")` gives a constant).
 | --- | --- |
 | default | The store's records, each drawn by the item factory. Mockup items describe the data and the item shape. A plain heading between items maps to `gallery.groupBy (r -> GroupDescriptor.of (…), (el, g) -> …)`. |
 | last | `cfg.lastItem (el -> …)` — rendered after the items. |
-| empty | The empty renderers, built with `EmptyNotification.buildPanel`. |
+| empty | The empty renderers, built with `EmptyNotification.buildPanel`, or the application's own content built into the element. |
 
 ## States
 

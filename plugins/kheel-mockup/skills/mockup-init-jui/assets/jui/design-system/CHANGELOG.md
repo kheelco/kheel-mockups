@@ -13,6 +13,12 @@ removing it.
 
 ## Unreleased
 
+### Empty slot takes any content — Mirrors JUI
+
+`jui-table` 1.1.0 and `jui-gallery` 1.1.0: the `empty` slot accepts any content, not only `jui-empty-notification`.
+JUI's `emptyUnfiltered`, `emptyFiltered` and `emptyError` renderers build whatever the application puts in the
+element, so an application can use its own empty-state design.
+
 ### Card navigator header slot — Mirrors JUI
 
 `jui-card-navigator` 1.1.0: an optional `header` slot replaces the standard header (crumb trail, back button and

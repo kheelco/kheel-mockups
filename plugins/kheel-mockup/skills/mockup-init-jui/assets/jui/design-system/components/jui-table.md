@@ -1,6 +1,6 @@
 ---
 name: jui-table
-version: 1.0.0
+version: 1.1.0
 kind: composed
 status: active
 summary: Table component — a store-backed data table with declared columns, sorting, row selection, and loading, empty and error states.
@@ -71,7 +71,7 @@ Row states (hover, selected) belong to `jui-table-row`; sort states to `jui-tabl
 | --- | --- | --- | --- | --- |
 | columns | jui-table-column | jui-table-column | Header row, one cell per column | The column headers, in order. |
 | default | jui-table-row | jui-table-row | Table body, one row per record | The rows (records), in store order. |
-| empty | jui-empty-notification | jui-empty-notification | Centred column | Replaces JUI's default notice for the current `empty` state. |
+| empty | any | jui-empty-notification | Centred column | Replaces JUI's default notice for the current `empty` state: a `jui-empty-notification`, or the application's own empty-state content (JUI's empty renderers build anything). Give it `slot="empty"`. |
 
 ## Behaviour
 
