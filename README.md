@@ -19,6 +19,10 @@ to use, including commercially, but not to build into a product that competes wi
 kheel-mockups/
 ├── .claude-plugin/
 │   └── marketplace.json        # makes this repo installable as a Claude Code plugin marketplace
+├── .github/workflows/
+│   └── release.yml             # checks every push; releases VERSION when it has no tag yet
+├── VERSION                     # the project's version, for the plugin, the skills and the extension alike
+├── CHANGELOG.md                # what each release changed; a version's section is its release notes
 ├── LICENSE.md                  # PolyForm Shield 1.0.0; copied into each skill folder
 ├── plugins/
 │   └── kheel-mockup/           # the plugin — the only part that is installed into an agent
@@ -49,6 +53,9 @@ kheel-mockups/
 └── scripts/
     ├── package-skills.sh       # builds uploadable skill zips into dist/
     ├── package-extension.sh    # builds the VS Code extension's .vsix into extensions/vscode/dist/
+    ├── package-release.sh      # builds everything a release carries into dist/
+    ├── set-version.sh          # sets the version in VERSION and every file that carries it
+    ├── check-version.sh        # checks those files agree
     ├── init-target.sh          # fills target/ (git-ignored) as a project space, for trying it out
     ├── sync-viewer.sh          # copies mockup-init's viewer into the other skills
     └── jui-manifest.py         # regenerates the JUI design system's manifest
@@ -80,9 +87,9 @@ then open <http://localhost:8000/design-system/>.
 ## Previewing in VS Code
 
 The **Kheel Mockup Preview** extension ([`extensions/vscode/`](extensions/vscode/README.md)) shows a mockup beside
-the editor, serving the project space itself, and reloads it as files change. Build it with
-`./scripts/package-extension.sh` and install the `.vsix` from `extensions/vscode/dist/` with **Extensions: Install
-from VSIX…**.
+the editor, serving the project space itself, and reloads it as files change. Download the `.vsix` from
+the [latest release](https://github.com/kheelco/kheel-mockups/releases/latest) (or build it with
+`./scripts/package-extension.sh`) and install it with **Extensions: Install from VSIX…**.
 
 ## Installing
 
@@ -123,8 +130,8 @@ claude --plugin-dir ./plugins/kheel-mockup
 
 ### Claude desktop app and claude.ai
 
-Build the skill zips, then upload each one as a skill in the app's settings (**Settings → Capabilities →
-Skills**):
+Download the skill zips from the [latest release](https://github.com/kheelco/kheel-mockups/releases/latest), or
+build them, then upload each one as a skill in the app's settings (**Settings → Capabilities → Skills**):
 
 ```
 ./scripts/package-skills.sh
@@ -141,6 +148,28 @@ Copy (or symlink) a skill folder into your agent's skills directory — for exam
 ```
 cp -R plugins/kheel-mockup/skills/mockup-init ~/.codex/skills/
 ```
+
+## Releasing
+
+The project is versioned and released as one: the plugin, its skills and the VS Code extension share the version
+in `VERSION`. A release is a GitHub release tagged `version/X.Y.Z` and titled **vX.Y.Z**, carrying the skill zips
+and the extension's `.vsix`, with the version's section of [CHANGELOG.md](CHANGELOG.md) as its notes.
+
+Releases are automatic. The *Release* workflow (`.github/workflows/release.yml`) checks and packages the project
+on every pull request and every push to `main`; when a push to `main` carries a version that has no tag yet, it
+creates the tag and the release. So changes can be merged without releasing, and released when wanted by setting
+a new version:
+
+```
+./scripts/set-version.sh 0.14.0      # VERSION, plugin.json and the extension's package.json
+```
+
+then adding a `## 0.14.0` section to `CHANGELOG.md` and merging to `main`. `./scripts/package-release.sh` builds
+the release's files into `dist/` locally. Don't create `version/*` tags or releases by hand.
+
+The viewer runtime (`VERSION` in `_runtime.js`) and the design systems carry versions of their own, which
+initialisation and the viewer compare for compatibility; they are not release numbers and change only when those
+parts do.
 
 ## Specifications
 

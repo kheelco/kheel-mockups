@@ -25,7 +25,9 @@ Not yet: previewing unsaved changes, and keeping the state tab or **Inspect** ac
 
 ## Installing
 
-Build the package from the repository root:
+Download the `.vsix` from the [latest release](https://github.com/kheelco/kheel-mockups/releases/latest) and
+install it with **Extensions: Install from VSIX…** in VS Code. To build it yourself instead, from the repository
+root:
 
 ```
 ./scripts/package-extension.sh        # → extensions/vscode/dist/kheel-mockup-preview-<version>.vsix
@@ -34,6 +36,11 @@ Build the package from the repository root:
 then install it with **Extensions: Install from VSIX…** in VS Code, or from a terminal with
 `code --install-extension extensions/vscode/dist/kheel-mockup-preview-<version>.vsix`. Reload the window
 afterwards. Install a newer `.vsix` over it to update; uninstall from the Extensions view.
+
+## Releasing
+
+The extension is released with the rest of the project and shares its version: don't change `version` in
+`package.json` by hand. See the repository README's *Releasing*.
 
 ## Developing
 

@@ -59,9 +59,17 @@ In `extensions/vscode/`, run `npm test` (the server and finding the project spac
 F5 in VS Code with that folder open, which opens `target/` (fill it with `./scripts/init-target.sh`) in an
 Extension Development Host: open `examples/jobs.xml`, click the preview icon in the editor's title bar, and check
 that the mockup shows; that switching to another example moves the preview; that saving a mockup or a
-design-system file reloads it; and that **Mockups: Open Catalogue** lists the examples. Bump `version` in its
-`package.json` and add a `CHANGELOG.md` entry with each change, and build the package with
+design-system file reloads it; and that **Mockups: Open Catalogue** lists the examples. Build the package with
 `./scripts/package-extension.sh`.
+
+## Versions and releases
+
+The project has one version, in `VERSION`, carried by `plugin.json` and the extension's `package.json`. Set it
+only with `./scripts/set-version.sh X.Y.Z`; `scripts/check-version.sh` (run by the *Release* workflow on every
+pull request) fails if the files disagree. A version reaching `main` without a `version/X.Y.Z` tag is released
+automatically (README.md, *Releasing*), so set a new version, with a `## X.Y.Z` section in `CHANGELOG.md`, only
+when the work should be released; leave it alone otherwise. Record what each change does for users in
+`CHANGELOG.md` under the next version as you go. Never create `version/*` tags or releases by hand.
 
 ## Rules for skills
 
@@ -87,5 +95,5 @@ skills folder), so each skill folder must stand alone:
 2. Create `plugins/kheel-mockup/skills/mockup-<name>/SKILL.md` (plus any assets), and copy the root
    `LICENSE.md` into it.
 3. Add it to the skill tables in `README.md` and `plugins/kheel-mockup/README.md`.
-4. Bump `version` in `plugins/kheel-mockup/.claude-plugin/plugin.json`.
+4. Add it to `CHANGELOG.md` under the next version (see *Versions and releases*).
 5. Run `./scripts/package-skills.sh` to check it packages and passes the frontmatter checks.
