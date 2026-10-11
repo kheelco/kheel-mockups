@@ -22,6 +22,11 @@ Guidance for agents and people working **on** this repository.
   specification usually changes something here too. `_guide.md` restates the mockup format for people and agents
   in a project space; keep it in step with `specs/mockups.md`.
 
+- `extensions/vscode/` — the VS Code previewer ([specs/previewing.md](specs/previewing.md)). It is not a skill, so
+  the rules for skills don't apply to it, but it carries its own copy of `LICENSE.md`. It holds no copy of the
+  viewer: it serves a project space and shows that project space's `design-system/index.html`, so a change to the
+  viewer needs no change here unless it changes the addresses or the serving rules in `specs/rendering.md`.
+
 ## Checking the starter project space
 
 Run `./scripts/init-target.sh --reset --serve` and open <http://localhost:8000/design-system/>. The catalogue renders every component's `Example` and
@@ -48,6 +53,24 @@ lines from `agent-browser console` that contain `[mockup]`; the target is zero. 
 - Interactions can be exercised from script: click a component's part in its shadow root
   (`el.shadowRoot.querySelector('.trigger').click()`) and read its `state` attribute back.
 
+## Checking the previewer
+
+In `extensions/vscode/`, run `npm test` (the server and finding the project space) and `npm run check`. Then press
+F5 in VS Code with that folder open, which opens `target/` (fill it with `./scripts/init-target.sh`) in an
+Extension Development Host: open `examples/jobs.xml`, click the preview icon in the editor's title bar, and check
+that the mockup shows; that switching to another example moves the preview; that saving a mockup or a
+design-system file reloads it; and that **Mockups: Open Catalogue** lists the examples. Build the package with
+`./scripts/package-extension.sh`.
+
+## Versions and releases
+
+The project has one version, in `VERSION`, carried by `plugin.json` and the extension's `package.json`. Set it
+only with `./scripts/set-version.sh X.Y.Z`; `scripts/check-version.sh` (run by the *Release* workflow on every
+pull request) fails if the files disagree. A version reaching `main` without a `version/X.Y.Z` tag is released
+automatically (README.md, *Releasing*), so set a new version, with a `## X.Y.Z` section in `CHANGELOG.md`, only
+when the work should be released; leave it alone otherwise. Record what each change does for users in
+`CHANGELOG.md` under the next version as you go. Never create `version/*` tags or releases by hand.
+
 ## Rules for skills
 
 Skills are installed on their own (as a Claude Code plugin, as uploaded zips, or copied into another agent's
@@ -72,5 +95,5 @@ skills folder), so each skill folder must stand alone:
 2. Create `plugins/kheel-mockup/skills/mockup-<name>/SKILL.md` (plus any assets), and copy the root
    `LICENSE.md` into it.
 3. Add it to the skill tables in `README.md` and `plugins/kheel-mockup/README.md`.
-4. Bump `version` in `plugins/kheel-mockup/.claude-plugin/plugin.json`.
+4. Add it to `CHANGELOG.md` under the next version (see *Versions and releases*).
 5. Run `./scripts/package-skills.sh` to check it packages and passes the frontmatter checks.

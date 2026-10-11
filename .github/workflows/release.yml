@@ -1,0 +1,75 @@
+# Checks and packages the whole project; on main, releases a VERSION that has no tag yet: tag version/X.Y.Z,
+# release "vX.Y.Z" with the skill zips and the VS Code extension's .vsix attached and CHANGELOG.md's "## X.Y.Z"
+# section as its notes. A push that leaves VERSION alone releases nothing. Pull requests get the checks only.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: extensions/vscode/package-lock.json
+
+      - name: Version
+        id: version
+        run: |
+          version="$(tr -d '[:space:]' < VERSION)"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=version/$version" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --tags origin "refs/tags/version/$version" > /dev/null; then
+            echo "released=true" >> "$GITHUB_OUTPUT"
+            echo "version/$version is already released"
+          else
+            echo "released=false" >> "$GITHUB_OUTPUT"
+            echo "version/$version is not released yet"
+          fi
+
+      - name: Check and package
+        run: ./scripts/package-release.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kheel-mockups-${{ steps.version.outputs.version }}
+          path: dist/
+          if-no-files-found: error
+
+      - name: Release
+        if: ${{ (github.ref == 'refs/heads/main') && (github.event_name != 'pull_request') && (steps.version.outputs.released == 'false') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          # The notes are the version's section of CHANGELOG.md (from "## X.Y.Z" to the next "## ").
+          awk -v v="$VERSION" '
+            /^## / { if (found) exit; if ($2 == v) { found = 1; next } }
+            found { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          if [[ ! -s "$RUNNER_TEMP/notes.md" ]]; then
+            echo "::warning file=CHANGELOG.md::no '## $VERSION' entry; releasing without notes"
+            echo "Kheel Mockups $VERSION." > "$RUNNER_TEMP/notes.md"
+          fi
+          gh release create "$TAG" dist/* \
+            --target "$GITHUB_SHA" \
+            --title "v$VERSION" \
+            --notes-file "$RUNNER_TEMP/notes.md"

@@ -1,3 +1,6 @@
 dist/
 target/
 .DS_Store
+node_modules/
+extensions/vscode/out/
+tmp/

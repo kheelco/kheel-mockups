@@ -21,6 +21,7 @@ Read the introduction first.
 | [components.md](components.md) | The component file: specification sections, properties, states, slots, template and style. |
 | [mockups.md](mockups.md) | The mockup file: frames, content, layout and spacing, states, specifications, includes, interaction. |
 | [rendering.md](rendering.md) | Serving, the viewer, how a mockup is rendered, and the checks. |
+| [previewing.md](previewing.md) | Showing the viewer in an editor beside the mockup being edited. |
 | [versioning.md](versioning.md) | Versions of design systems and components, breaking changes, and the design system's source. |
 | [implementation-mapping.md](implementation-mapping.md) | Per-target guidance for turning components into real code. |
 | [exploring.md](exploring.md) | Pages of options for a design decision, and how the chosen one goes into the design system. |
