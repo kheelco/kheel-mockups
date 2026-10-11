@@ -43,9 +43,12 @@ kheel-mockups/
 │               ├── SKILL.md
 │               └── scripts/
 │                   └── mockup-bundle.py  # stages mockups and a design-system bundle for publishing
+├── extensions/
+│   └── vscode/                 # Kheel Mockup Preview: the viewer beside the editor in VS Code (not a skill)
 ├── specs/                      # how the mockup mechanism works — not shipped with the skills
 └── scripts/
     ├── package-skills.sh       # builds uploadable skill zips into dist/
+    ├── package-extension.sh    # builds the VS Code extension's .vsix into extensions/vscode/dist/
     ├── init-target.sh          # fills target/ (git-ignored) as a project space, for trying it out
     ├── sync-viewer.sh          # copies mockup-init's viewer into the other skills
     └── jui-manifest.py         # regenerates the JUI design system's manifest
@@ -73,6 +76,13 @@ edits and refreshes only the viewer; `--reset` starts again, `--empty` sets up a
 `--jui` the JUI design system, and `--help` lists the options.
 
 then open <http://localhost:8000/design-system/>.
+
+## Previewing in VS Code
+
+The **Kheel Mockup Preview** extension ([`extensions/vscode/`](extensions/vscode/README.md)) shows a mockup beside
+the editor, serving the project space itself, and reloads it as files change. Build it with
+`./scripts/package-extension.sh` and install the `.vsix` from `extensions/vscode/dist/` with **Extensions: Install
+from VSIX…**.
 
 ## Installing
 

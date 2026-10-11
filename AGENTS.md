@@ -22,6 +22,11 @@ Guidance for agents and people working **on** this repository.
   specification usually changes something here too. `_guide.md` restates the mockup format for people and agents
   in a project space; keep it in step with `specs/mockups.md`.
 
+- `extensions/vscode/` — the VS Code previewer ([specs/previewing.md](specs/previewing.md)). It is not a skill, so
+  the rules for skills don't apply to it, but it carries its own copy of `LICENSE.md`. It holds no copy of the
+  viewer: it serves a project space and shows that project space's `design-system/index.html`, so a change to the
+  viewer needs no change here unless it changes the addresses or the serving rules in `specs/rendering.md`.
+
 ## Checking the starter project space
 
 Run `./scripts/init-target.sh --reset --serve` and open <http://localhost:8000/design-system/>. The catalogue renders every component's `Example` and
@@ -47,6 +52,16 @@ lines from `agent-browser console` that contain `[mockup]`; the target is zero. 
 - `init-target.sh --reset` deletes and recreates `target/`, so a server started inside it must be restarted.
 - Interactions can be exercised from script: click a component's part in its shadow root
   (`el.shadowRoot.querySelector('.trigger').click()`) and read its `state` attribute back.
+
+## Checking the previewer
+
+In `extensions/vscode/`, run `npm test` (the server and finding the project space) and `npm run check`. Then press
+F5 in VS Code with that folder open, which opens `target/` (fill it with `./scripts/init-target.sh`) in an
+Extension Development Host: open `examples/jobs.xml`, click the preview icon in the editor's title bar, and check
+that the mockup shows; that switching to another example moves the preview; that saving a mockup or a
+design-system file reloads it; and that **Mockups: Open Catalogue** lists the examples. Bump `version` in its
+`package.json` and add a `CHANGELOG.md` entry with each change, and build the package with
+`./scripts/package-extension.sh`.
 
 ## Rules for skills
 

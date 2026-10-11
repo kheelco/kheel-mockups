@@ -1,0 +1,93 @@
+{
+  "name": "kheel-mockup-preview",
+  "displayName": "Kheel Mockup Preview",
+  "description": "Shows a mockup project space's viewer beside the mockup you are editing, reloading as files change.",
+  "version": "0.1.0",
+  "publisher": "kheel",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kheelco/kheel-mockups",
+    "directory": "extensions/vscode"
+  },
+  "homepage": "https://github.com/kheelco/kheel-mockups",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "mockups",
+    "wireframes",
+    "design-system",
+    "preview"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "workspaceContains:**/design-system/README.md"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "kheelMockups.openPreview",
+        "title": "Open Preview to the Side",
+        "category": "Mockups",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "kheelMockups.openCatalogue",
+        "title": "Open Catalogue",
+        "category": "Mockups"
+      },
+      {
+        "command": "kheelMockups.openInBrowser",
+        "title": "Open Preview in Browser",
+        "category": "Mockups"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "kheelMockups.openPreview",
+          "when": "kheelMockups.isMockup",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "kheelMockups.openPreview",
+          "when": "resourceExtname == .xml",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "kheelMockups.openPreview",
+          "when": "kheelMockups.isMockup"
+        },
+        {
+          "command": "kheelMockups.openCatalogue",
+          "when": "kheelMockups.inProjectSpace"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "package": "vsce package --no-dependencies -o dist/",
+    "vscode:prepublish": "node esbuild.mjs --production"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "~1.90.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  }
+}

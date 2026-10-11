@@ -31,7 +31,8 @@ python3 -m http.server 8000
 ```
 
 Then open `http://localhost:8000/design-system/`. Opened from disk, the viewer shows these instructions instead
-of a mockup.
+of a mockup. An editor extension can serve the project space itself and show the viewer beside the file being
+edited ([previewing.md](previewing.md)).
 
 ## Addresses
 
