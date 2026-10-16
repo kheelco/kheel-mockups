@@ -76,15 +76,30 @@ Then go to step 5.
 
 ## 4. Update an existing JUI project space
 
-The design system there belongs to the project; it may have changed or removed components. Never overwrite them.
+Some of the design system's files mirror JUI and are kept in step with the template; the rest belong to the
+project, which may have changed, added or removed them. Never overwrite anything without the user's agreement.
 
-- Add any component or implementation mapping from the template that the project does not have, and add its row
-  to the manifest's Components table (copy the row from the template's manifest). Tell the user which were added.
-- List the `jui-*` components and mappings that differ from the template, each with the project's version and the
-  template's, and offer to replace them, which brings them back in step with JUI. Replace only with the user's
-  agreement, and update their manifest rows to match. Replacing never touches `design-system/extensions/`, where
-  the project keeps the looks it added to those components; afterwards, open the catalogue and pass on any warning
-  that an extension no longer fits its component.
+| Mirrors JUI: compare with the template | Belongs to the project: leave alone |
+| --- | --- |
+| `components/jui-*.md`, `implementations/jui/jui-*.md` | The project's own components (another prefix) and mappings |
+| `tokens.md`, `behaviours.md`, `CHANGELOG.md` | Further token files (such as a theme), `patterns/` |
+| The icons in `<skill>/assets/jui/design-system/assets/icons/` (and their licence files) | Icons the project added, and other assets (brand, fonts) |
+| | `extensions/`, and the manifest (`README.md`) apart from the rows and icon names below |
+
+Compare each mirrored file in the template with the project's copy, byte for byte (with a shell, `cmp` or
+`diff -q`), then:
+
+- **Missing in the project:** add it. For a component or mapping, add its row to the manifest's Components table
+  (copy the row from the template's manifest); for an icon, add its name to the manifest's icon list, in
+  alphabetical order. Tell the user what was added.
+- **Different from the template:** list each with what tells the two apart — a component's `version` (the
+  project's and the template's); for `CHANGELOG.md`, the headings of the entries the template has and the
+  project's copy lacks; for `tokens.md`, `behaviours.md`, a mapping or an icon, that it differs. Offer to replace
+  them, which brings them back in step with JUI, and replace only those the user agrees to. Update a replaced
+  component's manifest row to match the template's.
+- Replacing never touches `design-system/extensions/`, where the project keeps the looks it added to the `jui-*`
+  components, nor any file the project owns. Afterwards, open the catalogue (or run `mockup-create`'s check script
+  with `--catalogue`, if installed) and pass on any warning that an extension no longer fits its component.
 - For the viewer files (`index.html`, `_runtime.js`, `_guide.md`): copy any that are missing. If they differ from
   the template, tell the user the runtime version they have and the one the template carries (the `VERSION` line
   near the top of `_runtime.js`) and ask before replacing them, together.

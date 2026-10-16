@@ -79,4 +79,32 @@ A newly initialised design system is local, whichever the mode: its manifest has
 connected to any remote system ([versioning.md](versioning.md#source)). An empty one is ready to receive a design
 system by synchronisation, which will be specified separately.
 
+### The JUI design system
+
+The `mockup-init-jui` skill initialises a project space with the JUI design system instead of the starter set, and
+brings an existing JUI project space (one whose manifest has `prefix: jui`) up to date with the design system it
+carries. Some of a JUI design system's files mirror JUI and are kept in step with the template; the rest belong to
+the project:
+
+| Mirrors JUI (kept in step) | Belongs to the project |
+| --- | --- |
+| `components/jui-*.md`, `implementations/jui/jui-*.md` | The project's own components (another prefix) and their mappings |
+| `tokens.md`, `behaviours.md`, `CHANGELOG.md` | Further token files (such as a theme), patterns |
+| The icons the template carries, in `assets/icons/` (with their licence files) | Icons the project adds, and other assets (brand, fonts) |
+| | `extensions/`, and the manifest (`README.md`) as a whole |
+
+Updating an existing JUI project space:
+
+1. A mirrored file the project lacks **must** be added. A component or mapping added this way gets its row in the
+   manifest's Components table, copied from the template's manifest; an icon added this way is added to the
+   manifest's icon list.
+2. A mirrored file that differs from the template **must** be listed with what tells the versions apart (a
+   component's `version`; for `CHANGELOG.md`, the entries the template has that the project's lacks), and
+   **may** be replaced, only after the user agrees. A replaced component's manifest row is updated to match.
+3. A file that belongs to the project **must not** be added to, changed or removed, apart from the manifest rows
+   and icon list above. In particular `extensions/` is never touched; after replacing components, any warning that
+   an extension no longer fits its component is passed on to the user.
+4. The viewer is handled as for any project space: missing files added, differing ones replaced together with the
+   user's agreement.
+
 Initialisation is idempotent: running it twice on the same location has the same effect as running it once.

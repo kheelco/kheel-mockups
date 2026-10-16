@@ -19,6 +19,11 @@ Each release of kheel-mockups, newest first. The release workflow uses a version
   `_bundle.json`, so a page load is a handful of requests rather than a hundred. `mockup-create`'s *Check* step,
   its checklist, `mockup-explore`'s check and the initialisation skills' confirmation now point to it, and warn
   that a rendered mockup's text is in shadow DOM, so it looks empty to a script.
+- **`mockup-init-jui` updates the whole JUI part of a design system.** Its update step now compares `tokens.md`,
+  `behaviours.md`, `CHANGELOG.md` and the template's icons with the project's copies, as well as the `jui-*`
+  components and mappings: it adds what is missing (with manifest rows and icon names) and offers to replace what
+  differs, never touching the project's own files or `extensions/`
+  ([specs/project-space.md](specs/project-space.md#the-jui-design-system)).
 - **Shared page frames through includes.** `mockup-create` (and the format, [specs/mockups.md](specs/mockups.md#includes))
   now suggest putting a frame several pages share — an app shell's header, a side navigation — in `<include>`d
   sections rather than copying it into each page or generating pages by script.
