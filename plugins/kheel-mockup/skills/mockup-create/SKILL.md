@@ -57,7 +57,8 @@ would change the structure; otherwise decide, and say what you assumed in the mo
 ## 3. Read the design system
 
 1. Read `design-system/README.md`: the component list with summaries, the patterns, the shared behaviours.
-2. For each component you are likely to use, read its file in `design-system/components/`: **Purpose** (when to
+2. For each component you are likely to use, read its file — the one its manifest row links to, in
+   `design-system/components/` or a folder in it (`components/jui/`, for example): **Purpose** (when to
    use it and when not), **Properties** (the attributes, their values and defaults), **Variants**, **States**,
    **Slots** (what may go where) and **Rules of use**. Its **Example** shows typical markup. If the manifest lists
    an **extension** for it, read `design-system/extensions/<tag>.md` too: its **Variants** are further values the
@@ -158,7 +159,8 @@ design system only as far as the mockup needs, and only where you may:
 
 - **A component the project owns** (its own prefix, such as `ui-`) is changed in its own file: bump its `version`
   and its row in `design-system/README.md`. A reusable piece the design system lacks becomes a new component of the
-  project's.
+  project's, in `design-system/components/<tag>.md` (directly in `components/`, not in a folder such as `jui/`,
+  which holds components from elsewhere), with a tag no other component has, listed in the manifest.
 - **A component the project doesn't own** — one that mirrors a library or another design system and is kept in step
   with it from there, such as the JUI design system's `jui-*` components (`design-system/README.md` says which) — is
   **never edited**, not even to fix it, because bringing it up to date from its source would discard the change.

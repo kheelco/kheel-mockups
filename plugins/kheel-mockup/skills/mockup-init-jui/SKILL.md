@@ -81,10 +81,17 @@ project, which may have changed, added or removed them. Never overwrite anything
 
 | Mirrors JUI: compare with the template | Belongs to the project: leave alone |
 | --- | --- |
-| `components/jui-*.md`, `implementations/jui/jui-*.md` | The project's own components (another prefix) and mappings |
+| `components/jui/jui-*.md`, `implementations/jui/jui-*.md` | The project's own components (another prefix, directly in `components/`) and mappings |
 | `tokens.md`, `behaviours.md`, `CHANGELOG.md` | Further token files (such as a theme), `patterns/` |
 | The icons in `<skill>/assets/jui/design-system/assets/icons/` (and their licence files) | Icons the project added, and other assets (brand, fonts) |
 | | `extensions/`, and the manifest (`README.md`) apart from the rows and icon names below |
+
+**Components moved into `components/jui/`.** A project space set up before then keeps its `jui-*` components
+directly in `components/`. If it does, offer to move them into `components/jui/` (with `git mv` in a git
+repository, so their history follows) and change the links in their manifest rows to `components/jui/<tag>.md`.
+Move only the `jui-*` files, only with the user's agreement, and make sure no tag ends up in both places. Without
+the move, compare each with the template's `components/jui/<tag>.md` all the same; a component added later goes
+where the project keeps the others.
 
 Compare each mirrored file in the template with the project's copy, byte for byte (with a shell, `cmp` or
 `diff -q`), then:

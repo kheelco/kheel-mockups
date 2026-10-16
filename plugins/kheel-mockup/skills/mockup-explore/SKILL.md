@@ -21,7 +21,8 @@ to make a visual change with more than one reasonable answer. To build or revise
 3. Read what the options must fit:
    - the design system's token files (`design-system/tokens*.md`, as listed in `design-system/README.md`) for its
      colours, type and spacing;
-   - the files of the components involved (`design-system/components/<tag>.md`) and any extensions of them
+   - the files of the components involved (as their manifest rows link them: `design-system/components/<tag>.md`,
+     or in a folder of `components/`) and any extensions of them
      (`design-system/extensions/<tag>.md`);
    - the mockup itself, for its real content.
 4. If the application's source is to hand, check the rules the options must follow there (what is shown when, what
@@ -85,7 +86,9 @@ When the user asks for changes to the options, update the page and share it agai
 Apply only what was chosen, following the design system's own rules:
 
 - **A component the project owns** (its own prefix, such as `ui-`) is changed in its own file: bump its `version`
-  and its row in `design-system/README.md`. A new reusable piece becomes a new component of the project's.
+  and its row in `design-system/README.md`. A new reusable piece becomes a new component of the project's, directly
+  in `design-system/components/` (folders such as `components/jui/` hold components from elsewhere), with a tag no
+  other component has.
 - **A component the project doesn't own** (one that mirrors a library or another design system, such as the JUI
   design system's `jui-*` components; `design-system/README.md` says which) is **never edited**, not even to fix
   it. Put the look in an **extension**, `design-system/extensions/<tag>.md`, listed in the manifest's Extensions

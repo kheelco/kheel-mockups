@@ -13,6 +13,12 @@ removing it.
 
 ## Unreleased
 
+### Components in `components/jui/` — Mirrors JUI
+
+The `jui-*` component files moved from `components/` into `components/jui/`, as their mappings are in
+`implementations/jui/`, so the project's own components stand apart directly in `components/`. Only the files
+moved: no component changed, and the manifest's rows link to the new places. Nothing for jui-stack.
+
 ### Dropdown menus float — Mirrors JUI
 
 `jui-selection-control`, `jui-multi-selection-control`, `jui-calendar-control` and `jui-text-search-control` 1.1.1:

@@ -56,7 +56,9 @@ Components are written by tag, with their properties as attributes:
 <ui-badge tone="danger" label="Overdue"/>
 ```
 
-Everything about a component is in `design-system/components/<tag>.md`:
+Everything about a component is in its file, `design-system/components/<tag>.md`, or `components/<group>/<tag>.md`
+when it is grouped with others from one source (`components/jui/`); its manifest row links to it. Tags are unique
+whichever folder they are in:
 
 | Section | Tells you |
 | --- | --- |

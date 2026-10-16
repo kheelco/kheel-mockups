@@ -18,7 +18,8 @@ design system, and the viewer inside it renders them.
 │   ├── README.md                   # the manifest — indexes the design system
 │   ├── tokens.md
 │   ├── behaviours.md               # optional
-│   ├── components/<tag>.md
+│   ├── components/<tag>.md         # the project's own components
+│   ├── components/<group>/<tag>.md # optional — components from one source, such as jui/
 │   ├── patterns/<name>.md          # optional
 │   ├── assets/icons/<name>.svg
 │   └── implementations/<target>/<tag>.md   # optional
@@ -88,7 +89,7 @@ the project:
 
 | Mirrors JUI (kept in step) | Belongs to the project |
 | --- | --- |
-| `components/jui-*.md`, `implementations/jui/jui-*.md` | The project's own components (another prefix) and their mappings |
+| `components/jui/jui-*.md`, `implementations/jui/jui-*.md` | The project's own components (another prefix, directly in `components/`) and their mappings |
 | `tokens.md`, `behaviours.md`, `CHANGELOG.md` | Further token files (such as a theme), patterns |
 | The icons the template carries, in `assets/icons/` (with their licence files) | Icons the project adds, and other assets (brand, fonts) |
 | | `extensions/`, and the manifest (`README.md`) as a whole |
@@ -104,7 +105,10 @@ Updating an existing JUI project space:
 3. A file that belongs to the project **must not** be added to, changed or removed, apart from the manifest rows
    and icon list above. In particular `extensions/` is never touched; after replacing components, any warning that
    an extension no longer fits its component is passed on to the user.
-4. The viewer is handled as for any project space: missing files added, differing ones replaced together with the
+4. A project space made before the JUI components moved into `components/jui/` keeps them directly in
+   `components/`. Updating **may** move them into `components/jui/`, with the user's agreement, changing the
+   links in their manifest rows to match; it moves nothing else.
+5. The viewer is handled as for any project space: missing files added, differing ones replaced together with the
    user's agreement.
 
 Initialisation is idempotent: running it twice on the same location has the same effect as running it once.

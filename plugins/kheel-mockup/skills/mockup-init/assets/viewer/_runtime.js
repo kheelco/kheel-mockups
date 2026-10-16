@@ -201,6 +201,11 @@ async function loadDesignSystem() {
 
   const rows = table(secs.components || '');
   ds.order = rows.map((r) => plain(r.component)).filter(Boolean);
+  // A tag is unique across the design system, whichever folder of components/ its file is in.
+  for (const tag of new Set(ds.order.filter((t, i) => ds.order.indexOf(t) !== i))) {
+    warn(`Manifest lists ${tag} more than once (${rows.filter((r) => plain(r.component) === tag).map((r) => (r.component.match(/\]\(([^)]+)\)/) || [])[1] || 'no link').join(', ')}); the last row wins`);
+  }
+  ds.order = [...new Set(ds.order)];
   await Promise.all(rows.map(async (row) => {
     const tag = plain(row.component);
     const link = (row.component || '').match(/\]\(([^)]+)\)/);
@@ -1188,7 +1193,7 @@ async function showCatalogue() {
   canvas.appendChild(wrap);
 
   const compHost = wrap.querySelector('#km-cat-components');
-  if (!ds.order.length) compHost.innerHTML = '<p>No components yet. Add them to <code>design-system/components/</code> and list them in the manifest, or synchronise the design system from a remote source.</p>';
+  if (!ds.order.length) compHost.innerHTML = '<p>No components yet. Add them to <code>design-system/components/</code> (or a folder in it) and list them in the manifest, or synchronise the design system from a remote source.</p>';
   for (const tag of ds.order) {
     const def = ds.components.get(tag);
     if (!def) continue;

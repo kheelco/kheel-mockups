@@ -24,6 +24,11 @@ Each release of kheel-mockups, newest first. The release workflow uses a version
   components and mappings: it adds what is missing (with manifest rows and icon names) and offers to replace what
   differs, never touching the project's own files or `extensions/`
   ([specs/project-space.md](specs/project-space.md#the-jui-design-system)).
+- **Components may be grouped in folders.** A design system's components may sit one folder down in
+  `components/` (`components/<group>/<tag>.md`), found through the manifest's links; tags stay unique across
+  folders, and the viewer warns about a tag listed twice. The JUI design system's components are now in
+  `components/jui/`, and `mockup-init-jui`'s update offers to move an existing project's there; a project's own
+  components stay directly in `components/` ([specs/components.md](specs/components.md#file)).
 - **Shared page frames through includes.** `mockup-create` (and the format, [specs/mockups.md](specs/mockups.md#includes))
   now suggest putting a frame several pages share — an app shell's header, a side navigation — in `<include>`d
   sections rather than copying it into each page or generating pages by script.

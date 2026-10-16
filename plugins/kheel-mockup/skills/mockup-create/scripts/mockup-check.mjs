@@ -117,7 +117,8 @@ function resolveTargets(root, paths) {
 }
 
 // The design system's text files in one object, as the viewer reads _bundle.json: every .md except _guide.md, the
-// components, the extensions and the icons, keyed by their path within design-system/.
+// components (with those in a folder of components/), the extensions and the icons, keyed by their path within
+// design-system/.
 function buildBundle(ds) {
   const files = {};
   const add = (rel, filter) => {
@@ -130,6 +131,12 @@ function buildBundle(ds) {
   };
   add('', (f) => f.endsWith('.md') && f !== '_guide.md');
   add('components', (f) => f.endsWith('.md'));
+  const groups = path.join(ds, 'components');
+  if (existsSync(groups)) {
+    for (const g of readdirSync(groups, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort()) {
+      add(`components/${g}`, (f) => f.endsWith('.md'));
+    }
+  }
   add('extensions', (f) => f.endsWith('.md'));
   add('assets/icons', (f) => f.endsWith('.svg'));
   return JSON.stringify({ files });

@@ -9,16 +9,16 @@ import os, re, sys
 D = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'plugins/kheel-mockup/skills/mockup-init-jui/assets/jui/design-system')
 ORDER = {'control': 0, 'component': 1, 'layout': 2, 'fragment': 3}
 rows = []
-for f in sorted(os.listdir(f'{D}/components')):
+for f in sorted(os.listdir(f'{D}/components/jui')):
     if not f.endswith('.md'): continue
-    s = open(f'{D}/components/{f}').read()
+    s = open(f'{D}/components/jui/{f}').read()
     fm = dict(l.split(': ', 1) for l in s.split('---')[1].strip().splitlines())
     m = re.search(r'^# (.+?) \((control|component|fragment|layout)\)\s*$', s, re.M)
     jui, typ = (m.group(1), m.group(2)) if m else ('?', 'component')
     rows.append((ORDER[typ], typ, jui, fm['name'], fm['version'], fm['kind'], fm['summary']))
 rows.sort()
 icons = sorted(f[:-4] for f in os.listdir(f'{D}/assets/icons') if f.endswith('.svg'))
-table = '\n'.join(f'| [{t}](components/{t}.md) | {v} | {k} | {typ} `{j}` | {s} |' for _, typ, j, t, v, k, s in rows)
+table = '\n'.join(f'| [{t}](components/jui/{t}.md) | {v} | {k} | {typ} `{j}` | {s} |' for _, typ, j, t, v, k, s in rows)
 patterns = sorted(f for f in os.listdir(f'{D}/patterns') if f.endswith('.md')) if os.path.isdir(f'{D}/patterns') else []
 pat_rows = []
 for p in patterns:
@@ -39,7 +39,8 @@ Mockup components that represent the standard controls, components and fragments
 [JUI](https://github.com/juiproject/jui-stack)'s `jui-ui` module, styled with JUI's own tokens so that a mockup looks
 like the JUI application it describes and can be implemented from directly. Each tag is named after the JUI class
 it stands for — `jui-btn` is the Btn fragment, `jui-button` the Button component, `jui-text-control` the
-TextControl — and each component's implementation mapping, in `implementations/jui/`, says how to build it.
+TextControl. The components are kept together in `components/jui/`, and each one's implementation mapping, in
+`implementations/jui/`, says how to build it.
 
 JUI distinguishes three kinds of building block, shown in the **JUI** column below:
 
@@ -54,8 +55,8 @@ from its template, which would discard any change made here. Give one a look JUI
 variant values without touching the component's file. If a `jui-*` component is wrong about JUI, report it so it is
 fixed at the source.
 
-Applications add their own components on top of these, with a prefix of their own (such as `ui-`), and edit those
-freely.
+Applications add their own components on top of these, with a prefix of their own (such as `ui-`), directly in
+`components/`, and edit those freely. A tag is unique across the design system, whichever folder its file is in.
 
 This file is the manifest: it lists everything the design system contains. `index.html`, `_runtime.js` and
 `_guide.md` in this folder are the viewer and its guide — part of the mockup mechanism, not of the design system.
