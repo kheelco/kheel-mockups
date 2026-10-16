@@ -8,10 +8,10 @@ Guidance for agents and people working **on** this repository.
   changing a skill, and update the specification first when behaviour changes.
 - `plugins/kheel-mockup/skills/` — the skills that implement the specifications. This is the only part of the
   repository that reaches users' agents.
-- `plugins/kheel-mockup/skills/mockup-init-jui/assets/` — the JUI design system (`jui/design-system/`, with
-  implementation mappings in `implementations/jui/`), its examples, and a copy of the viewer. Component titles
-  read `# <JUI class> (control|component|fragment|layout)`; after adding or re-versioning a JUI component, run
-  `scripts/jui-manifest.py` to regenerate its manifest. Check it with `./scripts/init-target.sh --reset --jui
+- `plugins/kheel-mockup/skills/mockup-init-jui/assets/` — the JUI design system (`jui/design-system/`, with its
+  components in `components/jui/` and implementation mappings in `implementations/jui/`), its examples, and a copy
+  of the viewer. Component titles read `# <JUI class> (control|component|fragment|layout)`; after adding or
+  re-versioning a JUI component, run `scripts/jui-manifest.py` to regenerate its manifest. Check it with `./scripts/init-target.sh --reset --jui
   --serve`.
 - Record every change to the JUI design system (a `jui-*` component or its mapping, `tokens.md`, the icons) in
   `mockup-init-jui/assets/jui/design-system/CHANGELOG.md`, saying whether it mirrors JUI or is for jui-stack (and
@@ -42,12 +42,13 @@ that a newer viewer is available.
 
 ## Checking in a browser
 
-The viewer prints every warning to the browser console prefixed `[mockup]`, so a check can be scripted. With
-[agent-browser](https://github.com/vercel-labs/agent-browser) (in cloud sessions, point it at Playwright's
-Chromium: `AGENT_BROWSER_EXECUTABLE_PATH=/opt/pw-browsers/chromium-*/chrome-linux/chrome`), serve `target/` (or a
-project space), open each page with `/design-system/?m=<mockup>` (the catalogue is `/design-system/`) and count the
-lines from `agent-browser console` that contain `[mockup]`; the target is zero. Use a session name per run
-(`--session`), and take screenshots: warnings check structure, not appearance.
+The viewer prints every warning to the browser console prefixed `[mockup]`, sets `<html data-mockup="ready">` when a
+page is rendered and lists its warnings in `window.mockup.warnings`, so a check can be scripted. `mockup-create`
+carries the script: `node plugins/kheel-mockup/skills/mockup-create/scripts/mockup-check.mjs --root target
+--catalogue --shots <scratch>` checks the catalogue and every mockup in one browser (it serves the project space
+itself), prints the warnings and exits non-zero on any; the target is zero. It needs Playwright (installed
+globally in cloud sessions). Look at the screenshots: warnings check structure, not appearance. The mockups render
+in shadow DOM, so the page's text looks empty to a script; don't judge a page by it.
 
 - `init-target.sh --reset` deletes and recreates `target/`, so a server started inside it must be restarted.
 - Interactions can be exercised from script: click a component's part in its shadow root

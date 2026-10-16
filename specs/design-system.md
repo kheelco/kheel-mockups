@@ -12,7 +12,7 @@ component, pattern or token set can be read, changed, versioned and (later) sync
 | --- | --- | --- |
 | `README.md` | yes | The manifest: identity, version and an index of every other file. |
 | `tokens.md` | yes | The token set ([tokens.md](tokens.md)). |
-| `components/<tag>.md` | — | One component each ([components.md](components.md)). |
+| `components/<tag>.md`, `components/<group>/<tag>.md` | — | One component each, directly in `components/` or grouped one level down ([components.md](components.md#file)). |
 | `extensions/<tag>.md` | no | Variants the project adds to a component it doesn't own, one file per component ([components.md](components.md#extensions)). |
 | `behaviours.md` | no | Shared behaviours. |
 | `patterns/<name>.md` | no | One pattern each. |

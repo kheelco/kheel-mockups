@@ -1,6 +1,6 @@
 ---
 name: jui-multi-selection-control
-version: 1.1.0
+version: 1.1.1
 kind: composed
 status: active
 summary: MultiSelectionControl control — a dropdown for picking several values, shown as text or as chips, with a checkbox list menu.
@@ -22,8 +22,9 @@ checkbox `jui-selection-group-control` when there are only a few options that sh
 - **Selector box** (JUI `.inner`) — the selection as text (`value`) or as chips (the `chips` slot, JUI `.inner.chip`
   with one `span.chip` per value, each with a remove `x`), or the placeholder; a clear action (`x`); a lock when
   read-only; the open chevron.
-- **Menu** (JUI `SelectorMenu`) — while open, beneath the box: a keyword search box and the options, each with a
-  checkbox, ticked when selected (default slot); an empty message when there are none.
+- **Menu** (JUI `SelectorMenu`) — while open, floating over the page beneath the box and at least as wide as it: a
+  keyword search box and the options, each with a checkbox, ticked when selected (default slot); an empty message
+  when there are none.
 
 ## Properties
 
@@ -55,7 +56,7 @@ as `3 selected`.
 | Interaction | hover | `:hover` | The clear action darkens. |
 | Interaction | focus | `:focus-within` | Focus-coloured border with a soft focus ring. |
 | Disclosure | closed | Default | Only the box. |
-| Disclosure | open | `:focus-within`, or `state="open"` | Menu beneath the box; chevron turned over. |
+| Disclosure | open | `:focus-within`, or `state="open"` | Menu floating beneath the box, over the content below; chevron turned over. |
 | Availability | enabled | Default | — |
 | Availability | disabled | `disabled` property | Sunken surface at half opacity; does not open. |
 | Availability | read-only | `read-only` property | Read-only surface at half opacity with a lock; does not open. |
@@ -93,7 +94,8 @@ Each chip's remove action needs an accessible name (`Remove Design`).
 ## Rules of use
 
 - Keep chips to a few short values; switch to text (`3 selected`) when the selection can be long.
-- Show the menu with `state="open"` and mark the ticked options with `data-selected`.
+- Show the menu with `state="open"` and mark the ticked options with `data-selected`. The menu floats over the
+  content below without moving it, so leave room for it or accept that it covers what is beneath.
 
 ## Tokens
 
@@ -147,7 +149,7 @@ Each chip's remove action needs an accessible name (`Remove Design`).
   --jui-selectctl-chip-border-radius: 12px;
   --jui-selectctl-chip-size: 0.9em;
 }
-.control { outline: none; cursor: pointer; }
+.control { position: relative; outline: none; cursor: pointer; }
 .inner {
   margin: 2px 0; min-height: var(--jui-ctl-height); box-sizing: content-box; padding: 0 0.75em;
   border: 1px solid var(--jui-selectctl-border); border-radius: var(--jui-ctl-border-radius);
@@ -181,8 +183,8 @@ Each chip's remove action needs an accessible name (`Remove Design`).
 :host([waiting]) .inner { animation: jui-waiting 1s infinite; border-color: transparent; background-color: var(--jui-ctl-bg-wait); box-shadow: none; }
 :host([waiting]) .inner > * { visibility: hidden; }
 @keyframes jui-waiting { from { background-color: var(--jui-role-surface-muted); } to { background-color: var(--jui-role-surface-raised); } }
-/* Menu (JUI SelectorMenu), drawn in the flow beneath the box. */
-.selector { display: none; padding: 0.35em 0; cursor: default; }
+/* Menu (JUI SelectorMenu), floating over the page beneath the box and at least as wide as it. */
+.selector { display: none; position: absolute; z-index: 100000; top: 100%; left: 0; min-width: 100%; box-sizing: border-box; padding: 0.35em 0; cursor: default; }
 :host(:focus-within) .selector, :host([state~="open"]) .selector { display: block; }
 :host(:focus-within) .open, :host([state~="open"]) .open { transform: rotate(180deg); }
 :host([disabled]) .selector, :host([read-only]) .selector, :host([waiting]) .selector { display: none; }
@@ -235,5 +237,7 @@ Each chip's remove action needs an accessible name (`Remove Design`).
       <div data-selected="">Research</div>
     </jui-multi-selection-control>
   </jui-control-field>
+  <div span="full" mt="12" mb="12"></div>
+  <div span="full" mt="12" mb="12"></div>
 </div>
 ```

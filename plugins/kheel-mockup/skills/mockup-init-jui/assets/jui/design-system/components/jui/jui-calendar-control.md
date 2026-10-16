@@ -1,6 +1,6 @@
 ---
 name: jui-calendar-control
-version: 1.1.0
+version: 1.1.1
 kind: composed
 status: active
 summary: CalendarControl control — a date field that opens a month calendar to pick a date.
@@ -21,8 +21,8 @@ provides it. For a date that is really free text (such as "early March") use `ju
   and an optional clear action (`x`) shown while a date is set.
 - **Calendar** (JUI `#selector`) — while open, beneath the field: a month header with previous and next arrows,
   then a table of weekday headings and dates. Dates outside the month are greyed; today is marked in the accent
-  colour with a dot beneath; the selected date is filled. JUI floats the calendar over the page; the mockup draws
-  it in the flow beneath the field.
+  colour with a dot beneath; the selected date is filled. The calendar floats over the page, at least as wide as
+  the field.
 
 ## Properties
 
@@ -54,7 +54,7 @@ provides it. For a date that is really free text (such as "early March") use `ju
 | Interaction | hover | `:hover` | Hover border (the same as rest in the standard style); dates shade on hover. |
 | Interaction | focus | `:focus-within` | Focus-coloured border with a soft focus ring. |
 | Disclosure | closed | Default | Only the field. |
-| Disclosure | open | `:focus-within`, or `state="open"` | Calendar beneath the field. |
+| Disclosure | open | `:focus-within`, or `state="open"` | Calendar floating beneath the field, over the content below. |
 | Availability | enabled | Default | — |
 | Availability | disabled | `disabled` property | Sunken surface at half opacity, muted text; does not open. |
 | Availability | read-only | `read-only` property | Read-only surface at half opacity with a lock; does not open. |
@@ -83,7 +83,8 @@ from the enclosing field or cell.
 
 ## Rules of use
 
-- Show the calendar with `state="open"`; set `selected-day` to match `value`.
+- Show the calendar with `state="open"`; set `selected-day` to match `value`. The calendar floats over the
+  content below without moving it, so leave room for it or accept that it covers what is beneath.
 - Use one control per date; for a range use two, labelled `From` and `To`.
 
 ## Tokens
@@ -173,7 +174,7 @@ from the enclosing field or cell.
   --cpt-calendarctl-gap: 0.5em;
   --cpt-calendarctl-icon: var(--jui-calendarctl-icon);
 }
-.control { outline: none; cursor: pointer; }
+.control { position: relative; outline: none; cursor: pointer; }
 .inner {
   margin: 2px 0; height: var(--cpt-calendarctl-height); box-sizing: content-box; padding: var(--cpt-calendarctl-padding);
   border: 1px solid var(--cpt-calendarctl-border); border-radius: var(--cpt-calendarctl-border-radius);
@@ -203,8 +204,8 @@ from the enclosing field or cell.
 :host([waiting]) .inner { animation: jui-waiting 1s infinite; border-color: transparent; background-color: var(--jui-ctl-bg-wait); box-shadow: none; }
 :host([waiting]) .inner > * { visibility: hidden; }
 @keyframes jui-waiting { from { background-color: var(--jui-role-surface-muted); } to { background-color: var(--jui-role-surface-raised); } }
-/* Calendar (JUI #selector), drawn in the flow beneath the field. */
-.selector { display: none; min-width: 210px; padding: 0.75em 0 0.25em 0; font-size: var(--jui-calendarctl-selector-size); cursor: default; }
+/* Calendar (JUI #selector), floating over the page beneath the field and at least as wide as it. */
+.selector { display: none; position: absolute; z-index: 100000; top: 100%; left: 0; min-width: max(100%, 210px); box-sizing: border-box; padding: 0.75em 0 0.25em 0; font-size: var(--jui-calendarctl-selector-size); cursor: default; }
 :host(:focus-within) .selector, :host([state~="open"]) .selector { display: block; }
 :host([disabled]) .selector, :host([read-only]) .selector, :host([waiting]) .selector { display: none; }
 .panel {

@@ -23,7 +23,7 @@ the components, the specifications and any warnings.
 | --- | --- |
 | `README.md` | The design system's manifest. Start here. |
 | `tokens.md` | Colour, type, spacing, radius, elevation and motion tokens. |
-| `components/` | One file per component: its specification, template and style. |
+| `components/` | One file per component: its specification, template and style. Components that come from one source may be grouped in a folder (the JUI design system's are in `components/jui/`); the project's own sit directly in `components/`. Each tag is unique, whichever folder it is in. |
 | `extensions/` | Variants added to components the project doesn't own, one file per component, kept out of the component's own file. |
 | `behaviours.md` | Behaviours shared by categories of components. |
 | `patterns/` | How components are arranged to solve recurring problems. |
@@ -87,3 +87,9 @@ suit the project:
 
 The viewer lists anything that doesn't fit the design system — unknown components or properties, values out of
 range, children a slot doesn't accept, links to mockups that don't exist — under **warnings**.
+
+**Checking from a script.** The viewer prints each warning to the browser console, prefixed `[mockup]`. When a
+page has finished rendering it sets `data-mockup="ready"` on the `<html>` element, and `window.mockup.warnings`
+lists the page's warnings. Components are drawn in shadow DOM, so the page's text (`document.body.innerText`) is
+empty to a script even when the mockup rendered: read the warnings and take screenshots instead. The
+`mockup-create` skill has a script that checks every mockup this way.

@@ -56,7 +56,9 @@ Components are written by tag, with their properties as attributes:
 <ui-badge tone="danger" label="Overdue"/>
 ```
 
-Everything about a component is in `design-system/components/<tag>.md`:
+Everything about a component is in its file, `design-system/components/<tag>.md`, or `components/<group>/<tag>.md`
+when it is grouped with others from one source (`components/jui/`); its manifest row links to it. Tags are unique
+whichever folder they are in:
 
 | Section | Tells you |
 | --- | --- |
@@ -150,6 +152,11 @@ appear or are disabled, which pattern or shared behaviour applies, and how custo
 `<include src="summary.xml"/>` inserts the content of a `section` mockup in its place. Links inside the section stay
 relative to the section's own file. Includes may nest; a cycle is an error.
 
+A page frame several mockups share (an app shell's header, a side navigation) belongs in sections that every page
+includes, not copied into each page. Attributes on the section's elements carry into the page (`slot="nav"` fills a
+shell's slot); keep what differs between pages in the page. Sections kept in a folder whose name starts with `_`
+are not listed in the catalogue.
+
 ## Interaction
 
 | Attribute | On | Effect |
@@ -241,4 +248,7 @@ Each of these is a warning in the viewer's bar and the browser console (prefixed
       in `states`.
 - [ ] Every `href` and `opens` target exists; dialogs have a way to close.
 - [ ] A top-level `<specification>`, and specifications wherever meaning isn't visible.
-- [ ] Rendered with no warnings (or each remaining one explained).
+- [ ] A frame shared with other pages comes from `<include>`d sections, not a copy.
+- [ ] `scripts/mockup-check.mjs` (beside `SKILL.md`) reports no warnings for the mockup and its page states (or
+      each remaining one is explained), and its screenshots look as intended. Not a check of the page's text: the
+      components render in shadow DOM, so `document.body.innerText` is empty even when the mockup is fine.

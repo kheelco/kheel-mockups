@@ -55,5 +55,5 @@ Controls.<Suburb>textsearch(cfg -> cfg.store(suburbStore));
 ## Notes
 
 The menu floats beneath the input in JUI (`#selector`, above it when there is no room — `selector_top`); the
-mockup draws it in the flow. The value is the text, so validate it if only candidates are acceptable, or use
+mockup always floats it beneath. The value is the text, so validate it if only candidates are acceptable, or use
 `SelectionControl`.

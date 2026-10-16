@@ -15,6 +15,13 @@ One file per component: `design-system/components/<tag>.md`, where `<tag>` is th
 system's prefix, a hyphen and a kebab-case name (`ui-button`, `ui-table-row`). The tag is the component's
 identity and is not changed in place; renaming is removing one component and adding another.
 
+Components **may** be grouped in subfolders of `components/`, one level deep: `components/<group>/<tag>.md`. A
+group holds components that come from one source and are kept in step with it — the JUI design system keeps its
+`jui-*` components in `components/jui/`, as its implementation mappings are in `implementations/jui/`. The
+project's own components sit directly in `components/`. The folder only organises the files: a tag **must** be
+unique across the whole design system, whichever folder its file is in, and the manifest's row links to the file
+wherever it is ([design-system.md](design-system.md#the-manifest)).
+
 ```markdown
 ---
 name: ui-button

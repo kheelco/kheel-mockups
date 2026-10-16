@@ -108,12 +108,35 @@ The renderer warns about the following, rendering what it can regardless:
 | Interaction out of step | An `Interactions` row with an unknown trigger or effect, a target that matches nothing in the template, a condition or value naming no property or state of the component. |
 | Token table out of step | A token a component's (or extension's) style uses that its `Tokens` table doesn't list, a listed token the style doesn't use, a semantic token `tokens.md` doesn't define. |
 | Extension out of step | An extension of a component not in the manifest; a value it `adds` that the component has, or `overrides` that it doesn't; a property that isn't a variant property; a `Change` other than `adds` or `overrides`. |
+| Duplicate component | A tag listed in more than one row of the manifest, such as `jui-btn` in `components/` and in `components/jui/`. |
 | Version mismatch | A manifest row whose version differs from the component's or extension's file; a mockup whose `design-system` major version differs from the manifest's. |
 | Missing root attributes | A mockup without `type` or `title`. |
 
 Warnings appear in the viewer and in the browser console, prefixed `[mockup]`, so an agent driving a browser can
 read them. The catalogue also checks every component's `Example`, which makes it the quickest check of the design
 system itself.
+
+### Checking from a script
+
+The viewer tells a script when a page is done, so a check needs no fixed waits:
+
+- The `<html>` element carries `data-mockup`: `loading` while a page (the catalogue, a mockup, a page state or a
+  dialog opened with `opens`) is being rendered, `ready` once it is, and `error` when the design system could not
+  be loaded. A page is ready when its includes are resolved, its components are built, its icons are loaded and
+  its asynchronous checks (`href`, `opens` and `states` targets) have finished, so its warnings are complete.
+- `window.mockup` holds `version` (the runtime's), `status` (the same as `data-mockup`) and `warnings`: one string
+  per warning, the console line without its `[mockup] ` prefix. Warnings raised after the page is ready, by
+  interacting with it, are added to the list.
+
+Components render into shadow DOM, so the page's text as a script reads it (`document.body.innerText`) is empty
+and a rendered page can look blank to a naive check. A check reads the warnings and takes screenshots; to reach a
+component's parts it goes through the component's `shadowRoot`.
+
+The `mockup-create` skill carries a check script built on this. It serves the project space itself (or uses a
+given address), opens every mockup in one browser, waits for `ready`, prints each mockup's warnings, writes a
+screenshot of each, and exits non-zero when there are any warnings. It supplies the design system as a
+`_bundle.json` built in memory from the design system's files, so each page load reads the design system in one
+request rather than one per file, and nothing is written into the project space.
 
 ## Compatibility
 

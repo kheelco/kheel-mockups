@@ -47,5 +47,5 @@ None.
 ## Notes
 
 The calendar floats beneath the field (or above, `selector_top`) and may show an extra column of quick picks
-(`div.extra`); the mockup draws a plain month in the flow. The control is 16em wide by default. Tokens:
+(`div.extra`); the mockup floats a plain month beneath the field. The control is 16em wide by default. Tokens:
 `--jui-calendarctl-*` and `--cpt-calendarctl-*`.

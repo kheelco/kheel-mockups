@@ -1,6 +1,6 @@
 ---
 name: jui-text-search-control
-version: 1.1.0
+version: 1.1.1
 kind: composed
 status: active
 summary: TextSearchControl control — a text input that offers matching values from a list or store as you type.
@@ -22,7 +22,7 @@ suburbs, tags or known names. Use `jui-selection-control` when the value must be
 - **Input box** (JUI `.inner`) — optional leading icon (a lock when read-only), the input, an optional clear
   action (`x`) that replaces the trailing icon while there is text, and an optional trailing icon.
 - **Menu** (JUI `SearchMenu`) — while open, the matching values one per line with dividers between them (default
-  slot), or an empty message. JUI floats it over the page; the mockup draws it in the flow beneath the input.
+  slot), or an empty message, floating over the page beneath the input and at least as wide as it.
 
 ## Properties
 
@@ -55,7 +55,7 @@ suburbs, tags or known names. Use `jui-selection-control` when the value must be
 | Interaction | hover | `:hover` | The clear action darkens. |
 | Interaction | focus | `:focus-within` | Focus-coloured border with a soft focus ring. |
 | Disclosure | closed | Default | Only the input. |
-| Disclosure | open | `state="open"` (in JUI: typing that finds matches) | Menu of matches beneath the input. |
+| Disclosure | open | `state="open"` (in JUI: typing that finds matches) | Menu of matches floating beneath the input, over the content below. |
 | Availability | enabled | Default | — |
 | Availability | disabled | `disabled` property | Sunken surface at half opacity, muted text. |
 | Availability | read-only | `read-only` property | Read-only surface at half opacity; lock in place of the leading icon. |
@@ -91,7 +91,8 @@ The label comes from the enclosing field or cell.
 
 ## Rules of use
 
-- Show the menu with `state="open"` and put the matches in the default slot.
+- Show the menu with `state="open"` and put the matches in the default slot. The menu floats over the content
+  below without moving it, so leave room for it or accept that it covers what is beneath.
 - If free text must not be accepted, use `jui-selection-control`.
 
 ## Tokens
@@ -127,7 +128,7 @@ The label comes from the enclosing field or cell.
 ## Style
 
 ```css
-:host { display: block; }
+:host { display: block; position: relative; }
 .inner {
   margin: 2px 0; height: var(--jui-ctl-height); box-sizing: content-box; padding: 0 0.75em;
   border: 1px solid var(--jui-ctl-border); border-radius: var(--jui-ctl-border-radius);
@@ -155,8 +156,8 @@ jui-icon { color: var(--jui-ctl-action); }
 :host([waiting]) .inner { animation: jui-waiting 1s infinite; border-color: transparent; background-color: var(--jui-ctl-bg-wait); box-shadow: none; }
 :host([waiting]) .inner > * { visibility: hidden; }
 @keyframes jui-waiting { from { background-color: var(--jui-role-surface-muted); } to { background-color: var(--jui-role-surface-raised); } }
-/* Menu (JUI SearchMenu), drawn in the flow beneath the input. */
-.selector { display: none; padding: 0.25em 0; }
+/* Menu (JUI SearchMenu), floating over the page beneath the input and at least as wide as it. */
+.selector { display: none; position: absolute; z-index: 100000; top: 100%; left: 0; min-width: 100%; box-sizing: border-box; padding: 0.25em 0; }
 :host([state~="open"]) .selector { display: block; }
 :host([disabled]) .selector, :host([read-only]) .selector, :host([waiting]) .selector { display: none; }
 .menu {
@@ -178,14 +179,15 @@ jui-icon { color: var(--jui-ctl-action); }
 ```xml
 <div layout="grid" cols="3" gap="4" align="start">
   <jui-text-search-control placeholder="Start typing a suburb" icon-left="map-pin"/>
+  <jui-text-search-control value="Newtown" invalid=""/>
+  <jui-text-search-control value="Newtown" disabled=""/>
+  <jui-text-search-control value="Newtown" read-only="" icon-left="map-pin"/>
   <jui-text-search-control value="Syd" icon-left="map-pin" clear-action="" state="open focus">
     <div data-active=""><strong>Syd</strong>ney</div>
     <div><strong>Syd</strong>enham</div>
     <div>North <strong>Syd</strong>ney</div>
   </jui-text-search-control>
   <jui-text-search-control value="Zzz" icon-left="map-pin" empty-message="No matching suburbs" state="open focus"/>
-  <jui-text-search-control value="Newtown" invalid=""/>
-  <jui-text-search-control value="Newtown" disabled=""/>
-  <jui-text-search-control value="Newtown" read-only="" icon-left="map-pin"/>
+  <div span="full" mt="12" mb="12"></div>
 </div>
 ```

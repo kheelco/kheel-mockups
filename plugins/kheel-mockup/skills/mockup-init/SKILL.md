@@ -100,6 +100,10 @@ Tell the user, briefly:
 
   then open <http://localhost:8000/design-system/>. With **starter**, the examples are in `examples/` and can be
   deleted once they have served their purpose.
+- how to check them: the viewer prints each problem as a warning (in its bar, and in the browser console prefixed
+  `[mockup]`) and marks a finished page with `<html data-mockup="ready">`; the `mockup-create` skill's check script
+  (`scripts/mockup-check.mjs`) checks every mockup that way and saves screenshots. Agents should use it rather than
+  reading the page's text, which is in shadow DOM and looks empty to a script.
 
 If you can run commands and the user wants you to, you may start the server for them in the background; opening
 the page is theirs to do.
