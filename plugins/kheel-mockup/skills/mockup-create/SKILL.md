@@ -99,6 +99,15 @@ When only one part differs (a status badge's tone), show one version and name th
 follows) so clicking through simulates success. Reusable parts of pages are `section` mockups placed with
 `<include src="…"/>`.
 
+**Share the page frame through includes.** When several pages share a frame — an app shell's header, a side
+navigation, a page toolbar — don't copy it into each page, and don't generate the pages by script. Put each shared
+part in a `section` mockup of its own (in a folder whose name starts with `_`, such as `_frame/`, if it shouldn't be
+listed in the catalogue) and `<include>` it from every page; a change to the frame is then made once. Attributes on
+the section's elements carry into the page, so a section's root element can carry `slot="nav"` to fill the shell
+component's slot. Keep what differs between pages (the selected navigation item, the page's content) in the page:
+when that is only a property of one item, a section per variant is fine, or leave the item out of the shared part.
+Before writing a new page, look for such sections in the project space and use them.
+
 ## 5. Specify
 
 Pictures show layout; specifications carry meaning. Add a `<specification>` at the top of every mockup (what the
@@ -114,14 +123,33 @@ Use `spec="…"` for one line on an element. Keep specifications about behaviour
 
 ## 6. Check
 
-- If you can run a browser against the project space (serve it with `python3 -m http.server` from the project
-  space and open `/design-system/?m=<path to the base mockup>`), do: the viewer lists warnings in its bar and in
-  the browser console, each prefixed `[mockup]`. Fix every warning except deliberate ones you can explain. Page
-  states appear as tabs in the bar (or add `&state=<state>` to the address). Click through links and dialogs.
-- **Look at it.** The viewer checks structure, not appearance. Take screenshots (or look in the browser) and check
-  for text cut off in narrow fields, open menus covering other content, misaligned custom elements, and anything
-  that does not read the way the design intends.
-- Whether or not you can render it, go through the checklist in `reference.md` ("Before you finish").
+**Run the check script** if you can run Node (18 or later) with Playwright:
+
+```
+node <skill>/scripts/mockup-check.mjs --root <project space> --shots <scratch folder> <mockups or folders>
+```
+
+It serves the project space itself (or pass `--url http://localhost:8000/` to use a server already running), opens
+each mockup — every page state file too — in one browser, waits until the viewer says the page is rendered, prints
+each mockup's warnings and saves a full-page screenshot of each. It exits non-zero when there is any warning. Name
+the mockups you changed, or a folder, or nothing to check the whole project space; add `--catalogue` after changing
+the design system, to check every component's `Example` as well. Run it with `--help` for the rest. If Playwright
+is missing, install it (`npm i -D playwright` in the project, or `npm i -g playwright`, then `npx playwright
+install chromium`) or tell the user what the script needs.
+
+- **Fix every warning** except deliberate ones you can explain, and run it again until it is clean.
+- **Look at the screenshots.** Warnings check structure, not appearance. Check for text cut off in narrow fields,
+  open menus covering content they shouldn't, misaligned custom elements, and anything that does not read the way
+  the design intends.
+- **Don't judge a page by its text.** Components draw themselves in shadow DOM, so a script that reads the page's
+  text (`document.body.innerText`) finds it empty even when the mockup rendered perfectly; and with no signal to
+  wait for, fixed waits miss warnings that arrive late (missing icons, link targets). If you check another way,
+  wait for `<html data-mockup="ready">`, read `window.mockup.warnings` (or the console lines prefixed `[mockup]`),
+  and take screenshots; reach a component's parts through its `shadowRoot`.
+- Click through links and dialogs where it matters (serve the project space and open
+  `/design-system/?m=<mockup>`); page states appear as tabs in the viewer's bar.
+- If you can't run the script or a browser, say so, and go through the checklist in `reference.md` ("Before you
+  finish") by reading.
 
 ## Changing the design system
 

@@ -115,6 +115,28 @@ Warnings appear in the viewer and in the browser console, prefixed `[mockup]`, s
 read them. The catalogue also checks every component's `Example`, which makes it the quickest check of the design
 system itself.
 
+### Checking from a script
+
+The viewer tells a script when a page is done, so a check needs no fixed waits:
+
+- The `<html>` element carries `data-mockup`: `loading` while a page (the catalogue, a mockup, a page state or a
+  dialog opened with `opens`) is being rendered, `ready` once it is, and `error` when the design system could not
+  be loaded. A page is ready when its includes are resolved, its components are built, its icons are loaded and
+  its asynchronous checks (`href`, `opens` and `states` targets) have finished, so its warnings are complete.
+- `window.mockup` holds `version` (the runtime's), `status` (the same as `data-mockup`) and `warnings`: one string
+  per warning, the console line without its `[mockup] ` prefix. Warnings raised after the page is ready, by
+  interacting with it, are added to the list.
+
+Components render into shadow DOM, so the page's text as a script reads it (`document.body.innerText`) is empty
+and a rendered page can look blank to a naive check. A check reads the warnings and takes screenshots; to reach a
+component's parts it goes through the component's `shadowRoot`.
+
+The `mockup-create` skill carries a check script built on this. It serves the project space itself (or uses a
+given address), opens every mockup in one browser, waits for `ready`, prints each mockup's warnings, writes a
+screenshot of each, and exits non-zero when there are any warnings. It supplies the design system as a
+`_bundle.json` built in memory from the design system's files, so each page load reads the design system in one
+request rather than one per file, and nothing is written into the project space.
+
 ## Compatibility
 
 The runtime uses standard browser features only: ES modules, custom elements, shadow DOM, `DOMParser`, `fetch`.

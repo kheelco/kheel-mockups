@@ -61,6 +61,6 @@ Controls.<Person>selector(cfg -> {
 
 ## Notes
 
-The menu (`SelectorMenu`) floats beneath the control (above it when there is no room); the mockup draws it in
-the flow. `cfg.clearStore(true)` reloads a paginated store on reset; `cfg.storeBatchSize(n)` overrides its page
+The menu (`SelectorMenu`) floats beneath the control (above it when there is no room); the mockup always floats
+it beneath. `cfg.clearStore(true)` reloads a paginated store on reset; `cfg.storeBatchSize(n)` overrides its page
 size. Tokens: `--cpt-selectctl-*` (with optional `--jui-selectctl-*` overrides).

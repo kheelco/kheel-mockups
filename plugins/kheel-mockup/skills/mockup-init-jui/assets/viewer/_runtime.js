@@ -1,6 +1,6 @@
 // Mockup runtime — renders XML mockups from a markdown design system, in the browser, without a build.
 // Part of the mechanism, not the project: replaced as a unit when the mechanism is updated. Do not edit.
-export const VERSION = '0.9.0';
+export const VERSION = '0.10.0';
 
 // This file lives in the design system folder; the project space is the folder above it.
 const DS_URL = new URL('./', import.meta.url);
@@ -38,6 +38,34 @@ function warn(message, el) {
   console.warn('[mockup] ' + message + (where ? ' — ' + where : ''));
   scheduleChrome();
 }
+
+// Done signal, for scripts that check mockups: <html data-mockup="loading|ready|error">, and window.mockup with the
+// warnings (the console lines without their "[mockup] " prefix). "ready" is set once the page, its includes, its
+// icons and its asynchronous checks have all finished.
+const pending = new Set();
+let renderRun = 0;
+
+function track(promise) {
+  pending.add(promise);
+  promise.finally(() => pending.delete(promise));
+  return promise;
+}
+
+function setStatus(status) {
+  document.documentElement.dataset.mockup = status;
+}
+
+async function settled(run) {
+  while (pending.size) await Promise.allSettled([...pending]);
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  if (run === renderRun) setStatus('ready');
+}
+
+window.mockup = {
+  version: VERSION,
+  get status() { return document.documentElement.dataset.mockup || 'loading'; },
+  get warnings() { return state.warnings.map((w) => w.message + (w.where ? ' — ' + w.where : '')); },
+};
 
 function describe(el) {
   if (!el || !el.attributes) return '';
@@ -528,7 +556,8 @@ customElements.define('mockup-asset', class extends HTMLElement {
   static get observedAttributes() { return ['src']; }
   connectedCallback() { this.load(); }
   attributeChangedCallback() { if (this.isConnected) this.load(); }
-  async load() {
+  load() { return track(this.fetchSvg()); }
+  async fetchSvg() {
     const src = this.getAttribute('src') || '';
     if (!src || /\/\.svg$|\{\{/.test(src)) { this.innerHTML = ''; return; }
     const url = new URL('assets/' + src, DS_URL).href;
@@ -657,7 +686,7 @@ function validate(scope, base) {
       if (slot && !slotAccepts(slot, c)) warn(`Slot "${sn}" of <${tag}> does not accept ${c.nodeType === 3 ? 'text' : `<${c.localName}>`}`, c.nodeType === 1 ? c : el);
     }
   }
-  if (base) checkTargets(targets, base);
+  if (base) track(checkTargets(targets, base));
 }
 
 function checkValue(def, p, n, v, el) {
@@ -965,9 +994,11 @@ function follow(href, base) {
 }
 
 async function openDialog(rel, base) {
+  const run = ++renderRun;
+  setStatus('loading');
   const url = new URL(rel, base);
   const { doc, error } = await parseMockup(url);
-  if (error) { warn(error); return; }
+  if (error) { warn(error); await settled(run); return; }
   const root = doc.documentElement;
   if (root.getAttribute('type') !== 'dialog') warn(`opens="${rel}" is not a dialog mockup`);
   await resolveIncludes(doc, url, new Set([url.href]));
@@ -987,6 +1018,7 @@ async function openDialog(rel, base) {
   state.dialogs.push(overlay);
   validate(frame, url);
   if (state.inspect) setInspect(true); else renderChrome();
+  await settled(run);
 }
 
 function closeDialog() {
@@ -1010,6 +1042,8 @@ function navigate(path, st, replace) {
 // ───────────────────────────── viewer: pages
 
 async function route() {
+  const run = ++renderRun;
+  setStatus('loading');
   const q = new URLSearchParams(location.search);
   state.warnings = [...state.dsWarnings];
   state.dialogs = [];
@@ -1021,6 +1055,7 @@ async function route() {
   if (q.get('m')) await showMockup(q.get('m'), q.get('state'));
   else await showCatalogue();
   if (state.inspect && state.current) setInspect(true); else renderChrome();
+  await settled(run);
 }
 
 async function showMockup(path, stName) {
@@ -1070,7 +1105,7 @@ async function showMockup(path, stName) {
   validate(frame, fileUrl);
   for (const st of states) {
     const u = new URL(path.replace(/\.xml$/, `.${st}.xml`), PROJECT);
-    fetch(u, { method: 'HEAD', cache: 'no-cache' }).then((r) => { if (!r.ok) warn(`states lists "${st}" but ${relToProject(u)} does not exist`); }).catch(() => {});
+    track(fetch(u, { method: 'HEAD', cache: 'no-cache' }).then((r) => { if (!r.ok) warn(`states lists "${st}" but ${relToProject(u)} does not exist`); }).catch(() => {}));
   }
 }
 
@@ -1192,6 +1227,8 @@ async function start() {
     state.ds = await loadDesignSystem();
   } catch (e) {
     canvas.innerHTML = `<div class="km-error">Could not load the design system manifest (README.md beside _runtime.js)\n${esc(e.message)}</div>`;
+    warn(`Could not load the design system manifest: ${e.message}`);
+    setStatus('error');
     return;
   }
   state.dsWarnings = state.warnings.map((w) => ({ ...w, message: `Design system: ${w.message}` }));

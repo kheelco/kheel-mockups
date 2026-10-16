@@ -13,6 +13,13 @@ removing it.
 
 ## Unreleased
 
+### Dropdown menus float — Mirrors JUI
+
+`jui-selection-control`, `jui-multi-selection-control`, `jui-calendar-control` and `jui-text-search-control` 1.1.1:
+the open menu (or calendar) floats over the page beneath the control, at least as wide as it, as
+`jui-menu-activator`'s menu does, instead of being drawn in the flow. Opening one in a toolbar no longer makes the
+toolbar taller or moves the controls beside it. JUI already floats these menus, so nothing for jui-stack.
+
 ### Manifest: don't edit the `jui-*` components — Mirrors JUI
 
 The manifest now says plainly that the `jui-*` components mirror JUI and are not edited in a project: a look a

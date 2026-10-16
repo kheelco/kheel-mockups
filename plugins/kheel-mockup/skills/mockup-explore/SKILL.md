@@ -64,7 +64,8 @@ user asks.
 
 ## 4. Check it
 
-Open the page in a browser and look at every option under every switch (screenshots are enough). Check that text
+Open the page in a browser and look at every option under every switch (screenshots are enough; the page is plain
+HTML, so the viewer's warnings and check script don't apply to it). Check that text
 fits (labels in chips and buttons, long lines), nothing is clipped or overlaps, and each option reads as intended.
 Fix what you find once.
 
@@ -96,7 +97,12 @@ Apply only what was chosen, following the design system's own rules:
   them).
 - Update the mockups that should show the choice, and their specifications where the change affects what an
   implementer reads.
-- Check the changed mockups in the viewer (serve the project space, open `/design-system/?m=<mockup>`): no warnings
-  (each is printed to the browser console prefixed `[mockup]`), and screenshots that look as chosen.
+- Check the changed mockups: no warnings, and screenshots that look as chosen. If the `mockup-create` skill is
+  installed, run its check script, `scripts/mockup-check.mjs` in that skill's folder (`node <that folder>/scripts/
+  mockup-check.mjs --root <project space> --shots <scratch folder> <changed mockups>`; it exits non-zero on any
+  warning, and `--catalogue` also checks the components' examples after a design-system change). Otherwise open
+  each in the viewer (serve the project space, open `/design-system/?m=<mockup>`), wait for `<html
+  data-mockup="ready">`, and read `window.mockup.warnings` or the console lines prefixed `[mockup]`. Don't judge a
+  page by its text: components render in shadow DOM, so `document.body.innerText` is empty even when it rendered.
 
 Report what changed, where to see it, and anything the application will need.

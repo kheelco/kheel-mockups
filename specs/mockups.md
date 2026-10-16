@@ -143,6 +143,13 @@ to the including file. Links (`href`, `opens`) inside the included section stay 
 file. Includes may nest; a cycle is an error. A `<specification>` at the top of the included section describes
 the element that holds the `<include>`.
 
+Includes are how mockups share a page frame. When several pages share an app shell's parts — a header, a side
+navigation — each part is a section of its own (kept, for example, in a folder whose name starts with `_`, which
+the catalogue does not list) and every page includes it, rather than repeating it or generating it by script. A
+change to the frame is then made once. Attributes on the elements of an included section, such as `slot`, carry
+into the page, so a section can fill a slot of the shell component the page places it in. What differs between
+pages (the selected navigation item, the page's own content) stays in the page.
+
 ## Interaction
 
 Mockups are clickable, within limits: enough to walk a flow, not to simulate the product.

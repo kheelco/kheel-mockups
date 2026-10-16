@@ -87,3 +87,9 @@ suit the project:
 
 The viewer lists anything that doesn't fit the design system — unknown components or properties, values out of
 range, children a slot doesn't accept, links to mockups that don't exist — under **warnings**.
+
+**Checking from a script.** The viewer prints each warning to the browser console, prefixed `[mockup]`. When a
+page has finished rendering it sets `data-mockup="ready"` on the `<html>` element, and `window.mockup.warnings`
+lists the page's warnings. Components are drawn in shadow DOM, so the page's text (`document.body.innerText`) is
+empty to a script even when the mockup rendered: read the warnings and take screenshots instead. The
+`mockup-create` skill has a script that checks every mockup this way.

@@ -1,6 +1,6 @@
 ---
 name: jui-selection-control
-version: 1.1.0
+version: 1.1.1
 kind: composed
 status: active
 summary: SelectionControl control — a single-select dropdown over a fixed or store-backed list, with keyword search in its menu.
@@ -22,9 +22,8 @@ two to five options that should all be visible, and `jui-text-search-control` wh
 - **Selector box** (JUI `.inner`) — an optional leading icon, an optional bold prompt, the selected value (or the
   placeholder), a clear action (`x`) when an empty value is allowed, a lock when read-only, and the open chevron,
   which turns over while the menu is open.
-- **Menu** (JUI `SelectorMenu`) — shown beneath the box while open: a keyword search box, the list of options
-  (default slot) and a message when there are none. In JUI the menu floats over the page; the mockup draws it
-  in the flow, directly beneath the box.
+- **Menu** (JUI `SelectorMenu`) — shown while open, floating over the page beneath the box and at least as wide
+  as it: a keyword search box, the list of options (default slot) and a message when there are none.
 
 ## Properties
 
@@ -60,7 +59,7 @@ two to five options that should all be visible, and `jui-text-search-control` wh
 | Interaction | hover | `:hover` | Hover border (the same as rest in the standard style); the clear action darkens. |
 | Interaction | focus | `:focus-within` | Focus-coloured border with a soft focus ring. |
 | Disclosure | closed | Default | Only the selector box. |
-| Disclosure | open | `:focus-within`, or `state="open"` | Menu shown beneath the box; chevron turned over. |
+| Disclosure | open | `:focus-within`, or `state="open"` | Menu floating beneath the box, over the content below; chevron turned over. |
 | Availability | enabled | Default | — |
 | Availability | disabled | `disabled` property | Sunken surface at half opacity, not-allowed cursor; does not open. |
 | Availability | read-only | `read-only` property | Read-only surface at half opacity with a lock; does not open. |
@@ -98,7 +97,8 @@ selects. The label comes from the enclosing field or cell.
 ## Rules of use
 
 - For two to five options that should all be visible, use a radio `jui-selection-group-control` instead.
-- Show the menu with `state="open"` to mock the list; put the options in the default slot.
+- Show the menu with `state="open"` to mock the list; put the options in the default slot. The menu floats over
+  the content below without moving it, so leave room for it or accept that it covers what is beneath.
 - Keep the search box unless the list is short and fixed.
 
 ## Tokens
@@ -168,7 +168,7 @@ selects. The label comes from the enclosing field or cell.
   --cpt-selectctl-prompt-weight: 600;
   --cpt-selectctl-height: var(--jui-ctl-height);
 }
-.control { outline: none; cursor: pointer; }
+.control { position: relative; outline: none; cursor: pointer; }
 .inner {
   margin: 2px 0; height: var(--cpt-selectctl-height); box-sizing: content-box; padding: var(--cpt-selectctl-padding);
   border: 1px solid var(--cpt-selectctl-border); border-radius: var(--cpt-selectctl-border-radius);
@@ -195,8 +195,8 @@ selects. The label comes from the enclosing field or cell.
 :host([waiting]) .inner { animation: jui-waiting 1s infinite; border-color: transparent; background-color: var(--jui-ctl-bg-wait); box-shadow: none; }
 :host([waiting]) .inner > * { visibility: hidden; }
 @keyframes jui-waiting { from { background-color: var(--jui-role-surface-muted); } to { background-color: var(--jui-role-surface-raised); } }
-/* Menu (JUI SelectorMenu), drawn in the flow beneath the box. */
-.selector { display: none; padding: 0.25em 0; cursor: default; }
+/* Menu (JUI SelectorMenu), floating over the page beneath the box and at least as wide as it. */
+.selector { display: none; position: absolute; z-index: 100000; top: 100%; left: 0; min-width: 100%; box-sizing: border-box; padding: 0.25em 0; cursor: default; }
 :host(:focus-within) .selector, :host([state~="open"]) .selector { display: block; }
 :host(:focus-within) .open, :host([state~="open"]) .open { transform: rotate(180deg); }
 :host([disabled]) .selector, :host([read-only]) .selector, :host([waiting]) .selector { display: none; }
@@ -255,5 +255,7 @@ selects. The label comes from the enclosing field or cell.
       <jui-selection-control placeholder="Select customer" keywords="zzz" empty-message="No matching customers" state="open focus"/>
     </jui-control-field>
   </div>
+  <div mt="12" mb="12"></div>
+  <div mt="12" mb="12"></div>
 </div>
 ```
