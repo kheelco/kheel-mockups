@@ -1,6 +1,6 @@
 ---
 name: jui-modal-dialog
-version: 1.1.1
+version: 1.2.0
 kind: composed
 status: active
 summary: ModalDialog component — the dialog frame with a titled header, a body and a footer of actions.
@@ -50,7 +50,7 @@ The dialog has a 1 px border, large rounded corners and a raised shadow.
 | variant | uniform | As separated with a larger title and no footer line: the dialog reads as one surface (JUI `UNIFORM`). |
 | type | center | The usual dialog. |
 | type | top | As center, but held near the top of the page so it does not move as its content grows (JUI `TOP`). Drawn the same in a mockup. |
-| type | slider | A side panel: square corners, full height, a slightly larger title (JUI `SLIDER`). Use a `large` dialog mockup. |
+| type | slider | A side panel: square corners, full height, a slightly larger title (JUI `SLIDER`). Put it in a dialog mockup with `placement="right"`, so the viewer draws it against the window's right edge at its full height, as JUI does; its `width` is the panel's. Its content fills the body, so a tab navigator or split panel in it takes the panel's height. |
 | title-wrap | present | For titles that carry a long name. |
 
 ## States
@@ -211,7 +211,8 @@ control needs an accessible name (`Close`).
   border-radius: var(--cpt-modaldialog-radius);
   box-shadow: var(--cpt-modaldialog-shadow);
 }
-:host([type="slider"]) .dialog { border-top: none; border-right: none; border-bottom: none; min-height: 100%; }
+:host([type="slider"]) .dialog { border-top: none; border-right: none; border-bottom: none; min-height: 100%; height: 100%; box-sizing: border-box; }
+:host([type="slider"]) .contents { height: 100%; box-sizing: border-box; }
 .header {
   position: relative; flex: none;
   background: var(--cpt-modaldialog-header-bg);

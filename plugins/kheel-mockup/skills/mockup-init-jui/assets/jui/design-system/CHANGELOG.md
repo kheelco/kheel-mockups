@@ -13,6 +13,12 @@ removing it.
 
 ## Unreleased
 
+### Slider dialogs at the right edge — Mirrors JUI
+
+`jui-modal-dialog` 1.2.0: a `slider` dialog goes in a dialog mockup with `placement="right"` (viewer 0.11.0), so it
+is drawn as JUI shows it, against the window's right edge at its full height, rather than centred. Its content fills
+the body, as in JUI, so a tab navigator or split panel in it takes the panel's height. Nothing for jui-stack.
+
 ### Design system 0.2.0
 
 The design system's version moves to 0.2.0 for the changes below: components added, and two components
