@@ -92,8 +92,10 @@ Row states (hover, selected) belong to `jui-table-row`; sort states to `jui-tabl
   quietly (`loading="quiet"`). After each page it checks again, so it keeps loading until the body overflows or the
   store is exhausted. That is why the body needs a bounded height: a table whose height isn't bounded never
   overflows, so it loads every page of the store, one after another, as soon as it is shown.
-- **Load more.** Where loading on scroll doesn't suit, a "Load more" action beside the table (in the toolbar, or
-  beneath it) loads the next page explicitly (the store's `loadNext`).
+- **Load more (the exception).** Infinite scrolling is the default and the usual choice. Only where a screen
+  needs people to ask for more explicitly, a "Load more" action beside the table (in the toolbar, or
+  beneath it) loads the next page (the store's
+  `loadNext`); JUI's own paging on scroll still runs alongside it.
 - **Selection.** Checking a row's box selects the record in the store's selection; the checkbox does not trigger
   the row click.
 - **Row click.** With `clickable`, a click anywhere on a row (outside an interactive cell) passes the record to
@@ -125,6 +127,7 @@ add a keyboard alternative where sorting matters. Selector checkboxes are native
   rest. Otherwise give it a `height`. Don't put a paginated table in a region that grows with its content and
   scrolls as a whole.
 - Use a gallery for card-like presentation; a table for comparing fields.
+- Page by infinite scrolling, the default; don't add a "Load more" action unless the screen needs one.
 
 ## Tokens
 

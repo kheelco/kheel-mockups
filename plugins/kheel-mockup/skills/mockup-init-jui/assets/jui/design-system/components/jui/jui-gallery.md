@@ -25,8 +25,8 @@ when records are compared field by field in columns.
 
 - **Items** — one gallery item per record, wrapped with a gap (grid) or stacked full width (row), inside 1em of
   padding. They scroll within the gallery's height.
-- **Last item area** — optional content after the items (JUI `lastItem(…)`): a "Load more" action, a count such
-  as "Showing 24 of 132", or an "Add" tile.
+- **Last item area** — optional content after the items (JUI `lastItem(…)`): a count such as "Showing 24 of 132",
+  an "Add" tile, or, exceptionally, a "Load more" action.
 - **Empty area** — shown instead of the items when the store is empty or in error: JUI's default notice unless
   one is placed in the `empty` slot.
 - **Mask** — while loading, the gallery fades and JUI's three-bar loader shows in the centre (omitted when quiet).
@@ -69,7 +69,7 @@ when records are compared field by field in columns.
 | Slot | Accepts | Suggests | Layout | Description |
 | --- | --- | --- | --- | --- |
 | default | any | jui-panel-gallery-item | Wrapping tiles (grid) or full-width rows (row) | The items, one per record, in store order. |
-| last | any | jui-btn | Full-width area after the items | JUI's `lastItem(…)`: "Load more", a result count, or an "Add" tile. |
+| last | any | | Full-width area after the items | JUI's `lastItem(…)`: a result count, an "Add" tile, or (exceptionally) "Load more". |
 | empty | any | jui-empty-notification | Centred column | Replaces JUI's default notice for the current `empty` state: a `jui-empty-notification`, or the application's own empty-state content (JUI's empty renderers build anything). Give it `slot="empty"`. |
 
 ## Behaviour
@@ -79,8 +79,9 @@ when records are compared field by field in columns.
   checks again, so it keeps loading until it overflows or the store is exhausted. That is why it needs a bounded
   height: a gallery whose height isn't bounded never overflows, so it loads every page of the store, one after
   another, as soon as it is shown.
-- **Load more.** Where loading on scroll doesn't suit, a "Load more" action in the `last` area loads the next
-  page explicitly (the store's `loadNext`).
+- **Load more (the exception).** Infinite scrolling is the default and the usual choice. Only where a screen
+  needs people to ask for more explicitly, a "Load more" action in the `last` area loads the next page (the store's
+  `loadNext`); JUI's own paging on scroll still runs alongside it.
 - **Filtering.** A search or filter control re-queries the store; while it reloads the gallery shows the loading
   state, then the items, or the filtered-empty notice when nothing matches.
 - **Empty and error.** After a load the gallery shows the error notice when the store is in error, the filtered
@@ -103,6 +104,7 @@ the real implementation (the mask is visual only in JUI).
 - Show the first-load, empty, filtered-empty and error states in mockups — use `loading` and `empty`.
 - Use `grid` for scanning many similar things, `row` when each item carries more text.
 - Use a table when people compare values across records.
+- Page by infinite scrolling, the default; don't add a "Load more" action unless the screen needs one.
 - Bound its height. Normally the gallery fills the height left to it: put it in a column whose height comes from
   the screen — a `jui-tab-navigator` with `root`, whose tab content fills its body, such as a `jui-title-panel`
   with `layout="column"` — and give the gallery `grow`, so the controls above keep their height and the gallery
@@ -195,10 +197,7 @@ The tokens the style uses: JUI's `--cpt-gallery-*` component tokens, and semanti
     <jui-panel-gallery-item heading="Office move" subtitle="9 tasks" title-icon="folder" title-link="" menu="" item-width="medium"/>
     <jui-panel-gallery-item heading="Security review" subtitle="Draft" title-icon="file-text" title-link="" menu="" item-width="medium"/>
     <jui-panel-gallery-item heading="Customer survey" subtitle="Completed" title-icon="folder" title-link="" menu="" item-width="medium"/>
-    <div slot="last" layout="row" gap="3" align="center" justify="center">
-      <small>Showing 8 of 27</small>
-      <jui-btn label="Load more" variant="outlined" spec="Loads the next page (the store's loadNext)."/>
-    </div>
+    <div slot="last" layout="row" justify="center"><small>Showing 8 of 27</small></div>
   </jui-gallery>
   <jui-gallery variant="row">
     <jui-panel-gallery-item heading="Ada Lovelace updated the project plan" subtitle="2 hours ago" title-icon="pencil"/>
