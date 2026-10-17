@@ -43,6 +43,7 @@ read by an agent that implements the real screen.
 | `design-system` | no | The design system version this mockup was last checked against ([versioning.md](versioning.md#mockups)). |
 | `states` | no | Page states this mockup has as sibling files, separated by spaces ([Page states](#page-states)). |
 | `width` | no | For `section` and `dialog`: `small`, `medium` (default) or `large`. |
+| `placement` | no | For `dialog`: `center` (default), or `right` for a side panel, which takes the window's full height at its right edge, at its `width`. |
 
 ### Frames
 
@@ -50,7 +51,7 @@ read by an agent that implements the real screen.
 | --- | --- | --- |
 | `page` | A whole screen. | Fills the viewport. The custom property `--viewport-height` holds the height available, for shells that fill it. |
 | `section` | A part of a page, to design in isolation or to include in pages. | On the page background, at its `width`. |
-| `dialog` | A modal surface opened from another mockup. Its content is normally a dialog component. | Centred over a scrim, at its `width`. |
+| `dialog` | A modal surface opened from another mockup. Its content is normally a dialog component. | Over a scrim, at its `width`: centred, or with `placement="right"` against the window's right edge at its full height, as a side panel slides in. |
 
 ## Content
 

@@ -59,7 +59,9 @@ suit the project:
 ```
 
 - **Frames.** `type` is `page`, `section` (a part of a page; can be included with `<include src="…"/>`) or
-  `dialog` (opened from another mockup with `opens="…"`).
+  `dialog` (opened from another mockup with `opens="…"`). A section or dialog takes `width` (`small`, `medium`,
+  `large`); a dialog takes `placement="right"` for a side panel, drawn at the window's right edge at its full
+  height.
 - **Components first.** Use the design system's components by tag, with their properties as attributes. Each
   component file lists its properties, the values they take, its states and its slots. Plain HTML (`div`, `p`,
   `strong`, `small`, `a`, `hr` …) is for text and simple wrappers only.
