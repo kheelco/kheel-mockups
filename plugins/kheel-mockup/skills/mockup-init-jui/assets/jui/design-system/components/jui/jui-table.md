@@ -1,6 +1,6 @@
 ---
 name: jui-table
-version: 1.1.0
+version: 1.2.0
 kind: composed
 status: active
 summary: Table component — a store-backed data table with declared columns, sorting, row selection, and loading, empty and error states.
@@ -14,9 +14,10 @@ Represents JUI's **Table** component (`Table` / `TableCreator`, `…client.table
 rows under declared column headers. Each column (`jui-table-column`, JUI's `Table.Config.Header`) has a title, an
 optional icon, a width and an optional sort; each row (`jui-table-row`) is one record, and each cell
 (`jui-table-cell`) is what the column's cell renderer draws for that record. The table is paginated through its
-store: it loads the first page and loads more as it is scrolled to the bottom (infinite scrolling), shows a mask
-while loading, and replaces the rows with an empty or error notice (`jui-empty-notification`) when the store holds
-nothing.
+store by infinite scrolling: it loads the first page and loads the next each time its body is scrolled to the
+bottom. So its body scrolls within a bounded height, beneath a header that stays in place — normally the table
+fills the height left to it on the screen, or it is given a fixed height. It shows a mask while loading, and
+replaces the rows with an empty or error notice (`jui-empty-notification`) when the store holds nothing.
 
 Use a table when records are compared across the same set of fields. Use the **Gallery** (`jui-gallery`) instead
 when each record is presented as a card or a stacked item rather than as columns.
@@ -26,7 +27,8 @@ when each record is presented as a card or a stacked item rather than as columns
 - **Header row** — the `jui-table-column` children, on the header surface with a divider beneath. When the table
   is `selectable` an empty selector column comes first.
 - **Body** — the `jui-table-row` children; each row holds `jui-table-cell` children in column order and, when
-  selectable, a leading checkbox cell. Rows are separated by hairline dividers; the last row has none.
+  selectable, a leading checkbox cell. Rows are separated by hairline dividers; the last row has none. The body
+  scrolls within the table's height while the header row stays at the top.
 - **Empty area** — shown in place of the body when the store is empty or in error: a `jui-empty-notification`
   (JUI's defaults unless one is placed in the `empty` slot).
 - **Mask** — while loading, the table fades and JUI's three-bar loader shows in the centre (omitted when quiet).
@@ -41,6 +43,8 @@ when each record is presented as a card or a stacked item rather than as columns
 | loading | state | none, indicator, quiet | none | Shows the loading mask; `quiet` fades the table without the loader, as when a further page is loading. |
 | empty | state | none, unfiltered, filtered, error | none | Replaces the rows with the empty notice for an empty store, an empty filtered result, or a store error. |
 | error-message | content | text | The service is currently unavailable. | The store's status message shown by the default error notice. |
+| height | variant | text | | A fixed height as a CSS length, such as `20em`. Without it the table takes the height of its container (`height: 100%`), or the space left in a column with `grow`. |
+| scrollable | variant | true, false | true | `true` (JUI's default): the body scrolls within the table's height and the next page loads at its bottom. `false` (JUI `scrollable(false)`): the table is as tall as its rows and the page scrolls instead. |
 
 ## Variants
 
@@ -50,6 +54,9 @@ when each record is presented as a card or a stacked item rather than as columns
 | variant | panel | Stand-alone table in its own rounded, bordered container (JUI `PANEL`). |
 | selectable | on | Records can be selected for a bulk action; each row gets a checkbox. |
 | clickable | on | A row opens its record. |
+| grow | present | The usual case: the table takes the height left in its column (under a toolbar, say) and scrolls within it. Needs a container whose height is bounded (see **Rules of use**). |
+| height | a CSS length | Where the table can't take its height from the screen, as in a dialog or beside other content. |
+| scrollable | false | Only for a short list whose store holds a handful of records: unbounded, JUI loads every page (see **Paging**). |
 
 ## States
 
@@ -62,6 +69,8 @@ when each record is presented as a card or a stacked item rather than as columns
 | Content | empty-unfiltered | `empty="unfiltered"` | Rows hidden; "Sorry, no results found" notice under the header. |
 | Content | empty-filtered | `empty="filtered"` | As unfiltered (JUI falls back to the unfiltered notice unless `emptyFiltered(…)` is set); put a notice with a "Clear filters" action in the `empty` slot. |
 | Content | error | `empty="error"` | Rows hidden; "Sorry, there was a problem" notice with `error-message`. |
+| Scroll | top | Default | The first rows under the header. |
+| Scroll | scrolled | Scrolling the body | The rows move beneath the header, which stays in place on the sticky header surface. |
 
 Row states (hover, selected) belong to `jui-table-row`; sort states to `jui-table-column`.
 
@@ -78,8 +87,11 @@ Row states (hover, selected) belong to `jui-table-row`; sort states to `jui-tabl
 - **Sorting.** Clicking a sortable column header activates its sort (in the column's default direction) or
   toggles the direction; the sort handler reorders the store and the table re-renders. Only one column is sorted
   at a time.
-- **Paging.** The table loads the store's first page and asks for more when scrolled to the bottom; the further
-  page loads quietly (`loading="quiet"`).
+- **Paging (infinite scrolling).** The table loads the store's first page and asks for the next whenever its body
+  is scrolled to within a few pixels of the bottom (and after a window resize leaves room); the further page loads
+  quietly (`loading="quiet"`). After each page it checks again, so it keeps loading until the body overflows or the
+  store is exhausted. That is why the body needs a bounded height: a table whose height isn't bounded never
+  overflows, so it loads every page of the store, one after another, as soon as it is shown.
 - **Selection.** Checking a row's box selects the record in the store's selection; the checkbox does not trigger
   the row click.
 - **Row click.** With `clickable`, a click anywhere on a row (outside an interactive cell) passes the record to
@@ -105,6 +117,11 @@ add a keyboard alternative where sorting matters. Selector checkboxes are native
 - Make a table `clickable` only when a row opens a record; use a link cell for a secondary destination.
 - Show the loading, empty and error states in the mockup (with `loading` and `empty`) — they are where screens
   most often go wrong.
+- Bound its height. Normally the table fills the height left to it: put it in a column whose height comes from the
+  screen — a `jui-tab-navigator` with `root`, whose tab content fills its body, such as a `jui-title-panel` with
+  `layout="column"` — and give the table `grow`, so the controls above keep their height and the table takes the
+  rest. Otherwise give it a `height`. Don't put a paginated table in a region that grows with its content and
+  scrolls as a whole.
 - Use a gallery for card-like presentation; a table for comparing fields.
 
 ## Tokens
@@ -123,7 +140,7 @@ row and cell tokens are set here and read by `jui-table-column`, `jui-table-row`
 | `--cpt-tbl-radius` | component | `--jui-comp-table-radius` | Container radius; `12px` for `panel`. |
 | `--cpt-tbl-shadow` | component | `--jui-comp-table-shadow` | Container shadow; a soft shadow for `panel`. |
 | `--cpt-tbl-header-bg` | component | `--jui-comp-table-header-surface` | Header row background. |
-| `--cpt-tbl-sticky-bg` | component | `--jui-comp-table-sticky-surface` | Sticky header background when the table scrolls (JUI `scrollable`); not drawn in a still mockup. |
+| `--cpt-tbl-sticky-bg` | component | `--jui-comp-table-sticky-surface` | Background of the header row, which stays in place as the body scrolls (JUI `scrollable`). |
 | `--cpt-tbl-hover-bg` | component | `--jui-comp-table-row-hover` | Row hover background (transparent by default). |
 | `--cpt-tbl-hover-clickable-bg` | component | `--jui-comp-table-row-hover-clickable` | Row hover background when `clickable`. |
 | `--cpt-tbl-row-hover-bg` | component | `--cpt-tbl-hover-bg` | The hover background rows use; `--cpt-tbl-hover-clickable-bg` when `clickable`. |
@@ -149,6 +166,8 @@ row and cell tokens are set here and read by `jui-table-column`, `jui-table-row`
 ## Template
 
 ```html
+<style data-if="height">:host { height: {{height}}; }</style>
+<div class="scroller">
 <div class="table">
   <div class="thead">
     <div class="tr">
@@ -157,6 +176,7 @@ row and cell tokens are set here and read by `jui-table-column`, `jui-table-row`
     </div>
   </div>
   <div class="tbody"><slot></slot></div>
+</div>
 </div>
 <div class="empty">
   <slot name="empty">
@@ -171,7 +191,11 @@ row and cell tokens are set here and read by `jui-table-column`, `jui-table-row`
 
 ```css
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
   position: relative;
   overflow: hidden;
   --cpt-tbl-selector-width: var(--jui-comp-table-selector-width);
@@ -228,8 +252,12 @@ row and cell tokens are set here and read by `jui-table-column`, `jui-table-row`
   --cpt-tbl-row-border: 1px solid #f4ede2;
   --cpt-tbl-hover-bg: #faf5ee;
 }
+.scroller { flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y: auto; }
+:host([scrollable="false"]) { height: auto; }
+:host([scrollable="false"]) .scroller { overflow: visible; }
 .table { display: table; width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
 .thead { display: table-header-group; }
+:host([scrollable="true"]) .thead { position: sticky; top: 0; z-index: 1; background: var(--cpt-tbl-sticky-bg); }
 .tr { display: table-row; background: var(--cpt-tbl-header-bg); }
 .tbody { display: table-row-group; }
 .th.selector {
@@ -238,7 +266,8 @@ row and cell tokens are set here and read by `jui-table-column`, `jui-table-row`
   padding: var(--cpt-tbl-header-padding);
   border-bottom: var(--cpt-tbl-header-border);
 }
-.empty { display: none; min-height: 12em; }
+.empty { display: none; flex: 1 0 auto; min-height: 12em; }
+:host([empty="unfiltered"]) .scroller, :host([empty="filtered"]) .scroller, :host([empty="error"]) .scroller { flex: none; }
 :host([empty="unfiltered"]) .empty, :host([empty="filtered"]) .empty, :host([empty="error"]) .empty { display: block; }
 :host([empty="unfiltered"]) .tbody, :host([empty="filtered"]) .tbody, :host([empty="error"]) .tbody { display: none; }
 .mask { display: none; position: absolute; inset: 0; z-index: 2; }
@@ -285,6 +314,51 @@ row and cell tokens are set here and read by `jui-table-column`, `jui-table-row`
       <jui-table-cell>alan@example.com</jui-table-cell>
       <jui-table-cell>Viewer</jui-table-cell>
       <jui-table-cell>3 days ago</jui-table-cell>
+    </jui-table-row>
+  </jui-table>
+  <jui-table height="16em" clickable="" spec="A bounded height: the body scrolls beneath the header, and the next page of the PaginatedStore loads on reaching its bottom.">
+    <jui-table-column label="Name" sortable="" sort="ascending"/>
+    <jui-table-column label="Role" column-width="medium"/>
+    <jui-table-column label="Last active" column-width="medium"/>
+    <jui-table-row>
+      <jui-table-cell renderer="link">Ada Lovelace</jui-table-cell>
+      <jui-table-cell>Administrator</jui-table-cell>
+      <jui-table-cell>2 hours ago</jui-table-cell>
+    </jui-table-row>
+    <jui-table-row>
+      <jui-table-cell renderer="link">Grace Hopper</jui-table-cell>
+      <jui-table-cell>Editor</jui-table-cell>
+      <jui-table-cell>Yesterday</jui-table-cell>
+    </jui-table-row>
+    <jui-table-row>
+      <jui-table-cell renderer="link">Alan Turing</jui-table-cell>
+      <jui-table-cell>Viewer</jui-table-cell>
+      <jui-table-cell>3 days ago</jui-table-cell>
+    </jui-table-row>
+    <jui-table-row>
+      <jui-table-cell renderer="link">Katherine Johnson</jui-table-cell>
+      <jui-table-cell>Editor</jui-table-cell>
+      <jui-table-cell>Last week</jui-table-cell>
+    </jui-table-row>
+    <jui-table-row>
+      <jui-table-cell renderer="link">Edsger Dijkstra</jui-table-cell>
+      <jui-table-cell>Viewer</jui-table-cell>
+      <jui-table-cell>Last week</jui-table-cell>
+    </jui-table-row>
+    <jui-table-row>
+      <jui-table-cell renderer="link">Barbara Liskov</jui-table-cell>
+      <jui-table-cell>Editor</jui-table-cell>
+      <jui-table-cell>2 weeks ago</jui-table-cell>
+    </jui-table-row>
+    <jui-table-row>
+      <jui-table-cell renderer="link">Donald Knuth</jui-table-cell>
+      <jui-table-cell>Viewer</jui-table-cell>
+      <jui-table-cell>Last month</jui-table-cell>
+    </jui-table-row>
+    <jui-table-row>
+      <jui-table-cell renderer="link">Margaret Hamilton</jui-table-cell>
+      <jui-table-cell>Administrator</jui-table-cell>
+      <jui-table-cell>Last month</jui-table-cell>
     </jui-table-row>
   </jui-table>
   <jui-table variant="panel">

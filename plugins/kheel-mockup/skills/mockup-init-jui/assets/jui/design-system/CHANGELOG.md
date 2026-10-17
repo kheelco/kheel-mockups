@@ -13,6 +13,28 @@ removing it.
 
 ## Unreleased
 
+### Tables and galleries scroll within the screen — Mirrors JUI
+
+`jui-table` and `jui-gallery` 1.2.0 page by infinite scrolling, as JUI's do: the next page loads when the body is
+scrolled to its bottom, and JUI checks again after every page, so a body whose height isn't bounded never
+overflows and loads the whole store, one page after another. The mockups now draw what that needs:
+
+- The table and gallery take the height of their container (`height: 100%`, JUI's `scrollable`, on by default) and
+  scroll within it; the table's header stays in place over its body, on `--cpt-tbl-sticky-bg`. With `grow` in a
+  column they take the height left under the controls above. New properties: `height`, a fixed height, and
+  `scrollable="false"` (JUI `scrollable(false)`) for a list that grows with its content.
+- `jui-tab-navigator` 1.1.0 has `root`, for the navigator that frames a page: it fills the window (the viewer's
+  `--viewport-height`). As in JUI, whose body fits the active tab's component to it (`CardFitLayout`), the tab's
+  content fills the body.
+- `jui-title-panel` 1.1.0: its content area takes the panel's height, so a `grow` child of a `layout="column"`
+  panel takes what is left. Where the panel fills a tab navigator's body, content taller than it is cut off, as in
+  JUI, unless the panel is `scrollable`.
+- The gallery's `last` area no longer suggests "Load more": JUI has no such action for a paginated store.
+- The examples' navigators are `root`, and their table and gallery `grow` and scroll.
+
+The mappings say how JUI does the same: a `TriSplitPanel` holding the toolbar (`addTop(…)`) and the table, fitted
+by the panels around it. Nothing for jui-stack.
+
 ### Formatted text editor and FText — Mirrors JUI
 
 Three new components for jui-text's formatted text, the first from outside jui-ui:

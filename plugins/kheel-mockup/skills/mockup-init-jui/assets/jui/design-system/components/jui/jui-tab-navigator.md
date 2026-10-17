@@ -1,6 +1,6 @@
 ---
 name: jui-tab-navigator
-version: 1.0.0
+version: 1.1.0
 kind: elemental
 status: active
 summary: TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body.
@@ -33,6 +33,7 @@ optional icon, a label, and optionally a count badge or a corner indicator.
 | --- | --- | --- | --- | --- |
 | variant | variant | horizontal, horizontal-underline, horizontal-bar, vertical, vertical-icon, vertical-alt, vertical-compact | horizontal | The tab set's presentation (JUI `TabNavigator.Config.Variant`). |
 | padding | variant | 0, 1, 2, 3, 4, 6, 8 | 0 | Space around the body's content (JUI `padding(Insets)`); `4` is 1em. |
+| root | variant | boolean | | The application's root navigator: it fills the browser window, as JUI's root does (in a page mockup, the height below the viewer's bar). Without it the navigator takes the height of its container (`height: 100%`). |
 
 ## Variants
 
@@ -45,6 +46,7 @@ optional icon, a label, and optionally a count badge or a corner indicator.
 | variant | vertical-alt | As `vertical`, with the active tab marked by a bar on its right edge (`VERTICAL_ALT`). |
 | variant | vertical-icon | A narrow icon-only menu; the label shows as a tooltip on hover in JUI (`VERTICAL_ICON`). |
 | variant | vertical-compact | A slim icon-only menu that slides out to show labels on hover (`VERTICAL_COMPACT`). |
+| root | present | On the navigator that frames a page mockup, so the page fills the window and its content — a table or gallery above all — can take its height from it. |
 
 ## States
 
@@ -60,7 +62,7 @@ The active tab is set on the tab (`active` on a `jui-tab-navigator-tab`).
 | Slot | Accepts | Suggests | Layout | Description |
 | --- | --- | --- | --- | --- |
 | tabs | jui-tab-navigator-tab | jui-tab-navigator-tab | A row (horizontal variants) or a column (vertical variants) of tabs, in order. | The tabs (JUI `tab(reference, label, component)`). Tabs are placed here without `slot`. |
-| default | any | jui-panel | configurable | The active tab's content — the component of the tab marked `active`. |
+| default | any | jui-panel | configurable | The active tab's content — the component of the tab marked `active`. As in JUI (whose body fits the tab's component to it), the content fills the body's height, so a table or gallery inside it can scroll within the screen. |
 
 ## Behaviour
 
@@ -84,6 +86,7 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
 - Put only the active tab's content in the body; other pages are their own mockups.
 - Use icon-only variants (`vertical-icon`, `vertical-compact`) only where every tab has a distinct icon.
 - Nest a horizontal navigator inside a vertical one for sub-pages, not the reverse.
+- Mark the navigator that frames a page `root`, so the page has the window's height to share out.
 
 ## Tokens
 
@@ -94,6 +97,7 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
 | `--cpt-navigator-line-color` | component | `--jui-role-border-default` | The vertical strip's right-hand line; `#e1e1e1` for `vertical-compact`. |
 | `--cpt-tabbedpanel-width` | component | `13em` | Width of a vertical strip; `4.5em` icon, `4em` compact (`15em` expanded). |
 | `--cpt-tabnavigator-body-padding` | component | `0` | Space around the body's content; `padding` sets it. |
+| `--viewport-height` | inherited | | Set by the viewer on a page mockup: the window's height below its bar, which a `root` navigator takes. |
 | `--cpt-tabnavigator-tab-display` | component | `block` | How each tab sits in the strip. |
 | `--cpt-tabnavigator-tab-top` | component | `1px` | Nudges horizontal tabs over the strip's line; `0` for bar and vertical. |
 | `--cpt-tabnavigator-tab-padding`, `--cpt-tabnavigator-tab-margin`, `--cpt-tabnavigator-tab-radius` | component | `0.5em 1em`, `0 2px 0 0`, `--jui-border-radius` top corners | A tab's box, per variant. |
@@ -128,7 +132,7 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
 
 ```css
 :host {
-  display: block; height: 100%;
+  display: flex; flex-direction: column; height: 100%;
   --cpt-navigator-bg: transparent;
   --cpt-tabbedpanel-outline: var(--jui-tabset-line);
   --cpt-navigator-line-color: var(--jui-role-border-default);
@@ -173,10 +177,14 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
 :host([padding="6"]) { --cpt-tabnavigator-body-padding: var(--jui-space-6); }
 :host([padding="8"]) { --cpt-tabnavigator-body-padding: var(--jui-space-8); }
 
-.wrap { display: flex; flex-direction: column; align-items: stretch; height: 100%; }
+.wrap { display: flex; flex-direction: column; align-items: stretch; height: 100%; flex: 1 1 auto; min-height: 0; }
 .tabs { position: relative; background: var(--cpt-navigator-bg); box-sizing: border-box; flex: none; }
 .list { display: flex; flex-direction: row; align-items: flex-end; }
-.body { flex-grow: 1; min-width: 0; overflow-y: auto; margin: var(--cpt-tabnavigator-body-padding); }
+.body { flex-grow: 1; min-width: 0; min-height: 0; overflow-y: auto; margin: var(--cpt-tabnavigator-body-padding); }
+:host([root]) { height: var(--viewport-height, 100vh); }
+/* JUI fits the active tab's component to the body (CardFitLayout): it takes the body's height. */
+:host(:not([layout])) .body { display: flex; flex-direction: column; }
+:host(:not([layout])) ::slotted(:not(jui-tab-navigator-tab)) { flex: 1 1 auto; min-height: 0; }
 
 /* HORIZONTAL */
 :host([variant="horizontal"]) .tabs { padding-top: 1em; }

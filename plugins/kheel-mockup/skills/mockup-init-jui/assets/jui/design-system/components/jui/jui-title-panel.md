@@ -1,6 +1,6 @@
 ---
 name: jui-title-panel
-version: 1.0.1
+version: 1.1.0
 kind: composed
 status: active
 summary: TitlePanel component — a panel with a title bar (icon, title and subtitle) above its content.
@@ -51,7 +51,7 @@ subtitle is present the icon is drawn large, spanning both lines.
 
 | Slot | Accepts | Suggests | Layout | Description |
 | --- | --- | --- | --- | --- |
-| default | any | | configurable | The panel's content (JUI `add(...)`). |
+| default | any | | configurable | The panel's content (JUI `add(...)`). The content area takes the panel's height, so where the panel fills its container (the body of a tab navigator), a `grow` child of a `layout="column"` panel takes the height left under the others: the way a table or gallery fills the screen. |
 
 ## Behaviour
 
@@ -70,6 +70,8 @@ The title is a level-2 heading. The icon is decorative.
 
 - Prefer a heading inside a plain panel for new work; JUI keeps TitlePanel for compatibility.
 - Don't repeat the title in the content.
+- Where the panel fills a tab navigator's body, content taller than the panel is cut off, as in JUI: make the
+  panel `scrollable`, or let a table or gallery with `grow` take the height and scroll within it.
 
 ## Tokens
 
@@ -128,7 +130,7 @@ The title is a level-2 heading. The icon is decorative.
 .text { flex-grow: 1; }
 h2 { margin: 0; font-weight: 500; font-size: 1.5em; line-height: 1.2; color: var(--titlepanel-color-title); }
 h3 { margin: 0.25em 0 0; font-weight: 400; font-size: 1.25em; line-height: 1.2; color: var(--titlepanel-color-subtitle); }
-.contents { padding: var(--cpt-titlepanel-padding); }
+.contents { flex: 1 1 auto; min-height: 0; padding: var(--cpt-titlepanel-padding); }
 :host([scrollable]) { overflow: auto; }
 :host([scrollable]) .contents { flex-grow: 1; overflow-y: auto; }
 /* JUI sets every heading in the heading family (Theme.Component.css h1–h6). */
