@@ -1,4 +1,4 @@
-<mockup type="page" title="Projects" design-system="0.1.0">
+<mockup type="page" title="Projects" design-system="0.2.0">
   <specification>
     Shown when the user has no projects at all (the store is empty and unfiltered).
   </specification>

@@ -1,6 +1,6 @@
 ---
 name: jui-title-panel
-version: 1.1.0
+version: 2.0.0
 kind: composed
 status: active
 summary: TitlePanel component — a panel with a title bar (icon, title and subtitle) above its content.

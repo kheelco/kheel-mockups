@@ -1,6 +1,6 @@
 ---
 component: jui-tab-navigator
-component-version: 1
+component-version: 2
 target: jui
 ---
 

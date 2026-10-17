@@ -3,10 +3,13 @@
 
 usage: scripts/jui-manifest.py [design-system-dir]
 Run after adding, removing or re-versioning a JUI mockup component. Component titles must read
-"# <JUI name> (control|component|fragment|layout)".
+"# <JUI name> (control|component|fragment|layout)". The design system's version is kept from the existing
+manifest; set it there (specs/versioning.md, Design system versions) and this keeps it.
 """
 import os, re, sys
 D = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'plugins/kheel-mockup/skills/mockup-init-jui/assets/jui/design-system')
+m = re.search(r'^version: (\S+)$', open(f'{D}/README.md').read(), re.M) if os.path.exists(f'{D}/README.md') else None
+VERSION = m.group(1) if m else '0.1.0'
 ORDER = {'control': 0, 'component': 1, 'layout': 2, 'fragment': 3}
 rows = []
 for f in sorted(os.listdir(f'{D}/components/jui')):
@@ -28,7 +31,7 @@ for p in patterns:
     pat_rows.append(f'| [{title}](patterns/{p}) | {summ.group(1).strip().replace(chr(10)," ") + "." if summ else ""} |')
 out = f"""---
 name: JUI
-version: 0.1.0
+version: {VERSION}
 prefix: jui
 source: local
 ---

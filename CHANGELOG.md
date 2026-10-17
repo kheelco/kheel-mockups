@@ -9,8 +9,10 @@ Each release of kheel-mockups, newest first. The release workflow uses a version
   infinite scrolling, as in JUI, which only works when their height is bounded: unbounded, JUI loads every page of
   the store at once. They now take the height of their container, or with `grow` the height left in a column, and
   scroll within it under a fixed header. They also gain a fixed `height` and `scrollable="false"`.
-  `jui-tab-navigator` (1.1.0) gains `root`, to fill the window, and fits the active tab's content to its body, and
-  `jui-title-panel` (1.1.0) passes its height on to its content. The examples show the arrangement. Bring them in
+  `jui-tab-navigator` (2.0.0) gains `root`, to fill the window, and fits the active tab's content to its body, and
+  `jui-title-panel` (2.0.0) passes its height on to its content; both are major versions because a long title
+  panel in a tab navigator is now cut to the body unless `scrollable`, as in JUI. The JUI design system's version
+  moves to 0.2.0. The examples show the arrangement. Bring them in
   with `mockup-init-jui`'s update.
 - **A rich text editor in the JUI design system.** `jui-formatted-text-editor` represents jui-text's
   `FormattedTextEditor`: an editing area with a toolbar, whose tools come from a preset (`all`, JUI's default set,

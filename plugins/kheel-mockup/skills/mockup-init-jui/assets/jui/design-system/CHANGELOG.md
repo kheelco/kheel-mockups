@@ -13,6 +13,12 @@ removing it.
 
 ## Unreleased
 
+### Design system 0.2.0
+
+The design system's version moves to 0.2.0 for the changes below: components added, and two components
+(`jui-tab-navigator`, `jui-title-panel`) changed in ways existing mockups can see. The examples are checked
+against it. Nothing for jui-stack.
+
 ### Tables and galleries scroll within the screen — Mirrors JUI
 
 `jui-table` and `jui-gallery` 1.2.0 page by infinite scrolling, as JUI's do: the next page loads when the body is
@@ -23,12 +29,13 @@ overflows and loads the whole store, one page after another. The mockups now dra
   scroll within it; the table's header stays in place over its body, on `--cpt-tbl-sticky-bg`. With `grow` in a
   column they take the height left under the controls above. New properties: `height`, a fixed height, and
   `scrollable="false"` (JUI `scrollable(false)`) for a list that grows with its content.
-- `jui-tab-navigator` 1.1.0 has `root`, for the navigator that frames a page: it fills the window (the viewer's
+- `jui-tab-navigator` 2.0.0 has `root`, for the navigator that frames a page: it fills the window (the viewer's
   `--viewport-height`). As in JUI, whose body fits the active tab's component to it (`CardFitLayout`), the tab's
-  content fills the body.
-- `jui-title-panel` 1.1.0: its content area takes the panel's height, so a `grow` child of a `layout="column"`
+  content fills the body. A major version: an existing tab's content now fills (and, where it is taller, is cut
+  to) the body, as in JUI.
+- `jui-title-panel` 2.0.0: its content area takes the panel's height, so a `grow` child of a `layout="column"`
   panel takes what is left. Where the panel fills a tab navigator's body, content taller than it is cut off, as in
-  JUI, unless the panel is `scrollable`.
+  JUI, unless the panel is `scrollable` — a major version, as existing mockups can look different.
 - Both page by infinite scrolling by default; a "Load more" action calling the store's `loadNext` is documented
   as the exception, for a screen that needs people to ask for more.
 - The examples' navigators are `root`, and their table and gallery `grow` and scroll.

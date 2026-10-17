@@ -1,6 +1,6 @@
 ---
 name: JUI
-version: 0.1.0
+version: 0.2.0
 prefix: jui
 source: local
 ---
@@ -74,13 +74,13 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-progress-sequence](components/jui/jui-progress-sequence.md) | 1.0.0 | elemental | component `ProgressSequence` | ProgressSequence component — a row of labelled steps joined by a line, showing progress through a multi-step flow. |
 | [jui-progress-sequence-step](components/jui/jui-progress-sequence-step.md) | 1.0.0 | composed | component `ProgressSequence step` | ProgressSequence step component — one labelled step of a progress sequence, done, active or pending. |
 | [jui-split-panel](components/jui/jui-split-panel.md) | 1.0.0 | elemental | component `SplitPanel` | SplitPanel component — a main content area beside or below a secondary area, such as a toolbar. |
-| [jui-tab-navigator](components/jui/jui-tab-navigator.md) | 1.1.0 | elemental | component `TabNavigator` | TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body. |
+| [jui-tab-navigator](components/jui/jui-tab-navigator.md) | 2.0.0 | elemental | component `TabNavigator` | TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body. |
 | [jui-tab-navigator-tab](components/jui/jui-tab-navigator-tab.md) | 1.0.1 | composed | component `TabNavigator tab` | TabNavigator tab component — one tab of a tab navigator, with a label, an icon, a count and an indicator. |
 | [jui-table](components/jui/jui-table.md) | 1.2.0 | composed | component `Table` | Table component — a store-backed data table with declared columns, sorting, row selection, and loading, empty and error states. |
 | [jui-table-cell](components/jui/jui-table-cell.md) | 1.0.0 | elemental | component `Table cell` | Table cell component — one cell of a Table row, as drawn by its column's cell renderer. |
 | [jui-table-column](components/jui/jui-table-column.md) | 1.0.0 | composed | component `Table column` | Table column component — one column header of a Table, with its title, icon, width and sort indicator. |
 | [jui-table-row](components/jui/jui-table-row.md) | 1.0.0 | elemental | component `Table row` | Table row component — one record of a Table, holding its cells and, when the table is selectable, a selection checkbox. |
-| [jui-title-panel](components/jui/jui-title-panel.md) | 1.1.0 | composed | component `TitlePanel` | TitlePanel component — a panel with a title bar (icon, title and subtitle) above its content. |
+| [jui-title-panel](components/jui/jui-title-panel.md) | 2.0.0 | composed | component `TitlePanel` | TitlePanel component — a panel with a title bar (icon, title and subtitle) above its content. |
 | [jui-tri-split-panel](components/jui/jui-tri-split-panel.md) | 1.0.0 | elemental | component `TriSplitPanel` | TriSplitPanel component — a top bar, a central content area and a bottom bar, stacked. |
 | [jui-action-bar-layout](components/jui/jui-action-bar-layout.md) | 1.0.0 | elemental | layout `ActionBarLayout` | ActionBarLayout layout — a horizontal bar of left, centre and right zones, generally holding buttons. |
 | [jui-control-form-cell](components/jui/jui-control-form-cell.md) | 1.0.0 | composed | layout `ControlForm cell` | ControlForm cell layout — one control in a form row with its label, help, guidance and error messages. |

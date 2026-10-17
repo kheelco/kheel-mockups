@@ -1,6 +1,6 @@
 ---
 name: jui-tab-navigator
-version: 1.1.0
+version: 2.0.0
 kind: elemental
 status: active
 summary: TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body.

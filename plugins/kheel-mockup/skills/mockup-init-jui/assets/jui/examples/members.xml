@@ -1,4 +1,4 @@
-<mockup type="page" title="Members" design-system="0.1.0">
+<mockup type="page" title="Members" design-system="0.2.0">
   <specification>
     Everyone in the workspace, as a Table backed by a PaginatedStore of members, sorted by name.
   </specification>
