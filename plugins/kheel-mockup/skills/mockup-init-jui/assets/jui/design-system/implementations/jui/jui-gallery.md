@@ -58,9 +58,8 @@ satisfies it — check (`ProviderBuilder.string ("…")` gives a constant).
 ## States
 
 The gallery pages by itself: whenever it is scrolled to the bottom (and after each page renders, and on a window
-resize) it calls `loadNext` on an `IPaginatedStore` (or `IOffsetStore`) until the store is fully loaded. There is
-no "Load more" action for a paginated store: a button in `last` that calls `loadNext (…)` would only ever be seen
-at the bottom, where the gallery loads the next page anyway.
+resize) it calls `loadNext` on an `IPaginatedStore` (or `IOffsetStore`) until the store is fully loaded. A "Load
+more" action in `last` calls the store's `loadNext (…)` itself; the gallery's own paging still runs alongside it.
 
 ## Notes
 

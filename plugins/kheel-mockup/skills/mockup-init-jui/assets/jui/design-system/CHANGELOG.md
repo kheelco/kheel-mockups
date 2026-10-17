@@ -29,7 +29,8 @@ overflows and loads the whole store, one page after another. The mockups now dra
 - `jui-title-panel` 1.1.0: its content area takes the panel's height, so a `grow` child of a `layout="column"`
   panel takes what is left. Where the panel fills a tab navigator's body, content taller than it is cut off, as in
   JUI, unless the panel is `scrollable`.
-- The gallery's `last` area no longer suggests "Load more": JUI has no such action for a paginated store.
+- Both say that a "Load more" action calling the store's `loadNext` is the alternative where loading on scroll
+  doesn't suit.
 - The examples' navigators are `root`, and their table and gallery `grow` and scroll.
 
 The mappings say how JUI does the same: a `TriSplitPanel` holding the toolbar (`addTop(…)`) and the table, fitted

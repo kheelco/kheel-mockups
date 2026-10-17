@@ -92,6 +92,8 @@ Row states (hover, selected) belong to `jui-table-row`; sort states to `jui-tabl
   quietly (`loading="quiet"`). After each page it checks again, so it keeps loading until the body overflows or the
   store is exhausted. That is why the body needs a bounded height: a table whose height isn't bounded never
   overflows, so it loads every page of the store, one after another, as soon as it is shown.
+- **Load more.** Where loading on scroll doesn't suit, a "Load more" action beside the table (in the toolbar, or
+  beneath it) loads the next page explicitly (the store's `loadNext`).
 - **Selection.** Checking a row's box selects the record in the store's selection; the checkbox does not trigger
   the row click.
 - **Row click.** With `clickable`, a click anywhere on a row (outside an interactive cell) passes the record to

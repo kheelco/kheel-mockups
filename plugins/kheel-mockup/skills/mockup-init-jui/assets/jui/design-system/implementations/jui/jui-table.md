@@ -59,7 +59,8 @@ store.load (0, 20);
 
 Loading, empty, filtered-empty and error states are driven by the store's load cycle; nothing needs wiring beyond
 supplying the store and, if the default wording is not wanted, the empty renderers. The table re-renders on store
-change and requests the next page when scrolled to the bottom (`IPaginatedStore.loadNext`).
+change and requests the next page when scrolled to the bottom (`IPaginatedStore.loadNext`). A "Load more" action
+calls the store's `loadNext (…)` itself; the table's own paging still runs alongside it.
 
 ## Notes
 
