@@ -13,6 +13,55 @@ removing it.
 
 ## Unreleased
 
+### Design system 0.2.0
+
+The design system's version moves to 0.2.0 for the changes below: components added, and two components
+(`jui-tab-navigator`, `jui-title-panel`) changed in ways existing mockups can see. The examples are checked
+against it. Nothing for jui-stack.
+
+### Tables and galleries scroll within the screen — Mirrors JUI
+
+`jui-table` and `jui-gallery` 1.2.0 page by infinite scrolling, as JUI's do: the next page loads when the body is
+scrolled to its bottom, and JUI checks again after every page, so a body whose height isn't bounded never
+overflows and loads the whole store, one page after another. The mockups now draw what that needs:
+
+- The table and gallery take the height of their container (`height: 100%`, JUI's `scrollable`, on by default) and
+  scroll within it; the table's header stays in place over its body, on `--cpt-tbl-sticky-bg`. With `grow` in a
+  column they take the height left under the controls above. New properties: `height`, a fixed height, and
+  `scrollable="false"` (JUI `scrollable(false)`) for a list that grows with its content.
+- `jui-tab-navigator` 2.0.0 has `root`, for the navigator that frames a page: it fills the window (the viewer's
+  `--viewport-height`). As in JUI, whose body fits the active tab's component to it (`CardFitLayout`), the tab's
+  content fills the body. A major version: an existing tab's content now fills (and, where it is taller, is cut
+  to) the body, as in JUI.
+- `jui-title-panel` 2.0.0: its content area takes the panel's height, so a `grow` child of a `layout="column"`
+  panel takes what is left. Where the panel fills a tab navigator's body, content taller than it is cut off, as in
+  JUI, unless the panel is `scrollable` — a major version, as existing mockups can look different.
+- Both page by infinite scrolling by default; a "Load more" action calling the store's `loadNext` is documented
+  as the exception, for a screen that needs people to ask for more.
+- The examples' navigators are `root`, and their table and gallery `grow` and scroll.
+
+The mappings say how JUI does the same: a `TriSplitPanel` holding the toolbar (`addTop(…)`) and the table, fitted
+by the panels around it. Nothing for jui-stack.
+
+### Formatted text editor and FText — Mirrors JUI
+
+Three new components for jui-text's formatted text, the first from outside jui-ui:
+
+- `jui-formatted-text-editor` 1.0.0, the `FormattedTextEditor` control: a toolbar and an editing area, with the
+  `position`s JUI offers (`TOP`, `TOP_SEPARATE`, `TOP_HOVER`, `TOP_TRANSPARENT`, `BOTTOM`, `FLOATING`), the
+  `SEAMLESS` variant, `height` and `placeholder`. Its `tools` preset is `all` (JUI's `Tools.all()`, the default) or
+  `markdown` (bold, italic, strikethrough, bullet and numbered lists, link); the `toolbar` slot takes a toolbar of
+  the project's own.
+- `jui-editor-tool` 1.0.0, one `ITool` in that toolbar (from `Tools`), or a separator, shown applied while active.
+- `jui-ftext` 1.0.0, the `FText` fragment, showing a `FormattedText` read-only with `ContentStyle.compact()` (the
+  default) or `document()`.
+
+They take jui-text's own styles, including its `--jui-formattededitor-*`, `--jui-toolbar-*` and `--jui-richtext-*`
+tokens. The document is written as plain HTML in the default slot; `tokens.md`'s base styles gain jui-text's
+`richtext` rules for what lies inside its blocks (links, code, highlight, list items), which the components' own
+styles can't reach. New icons for the tools: `underline`, `code`, `highlighter`, `subscript`, `superscript`,
+`text-quote`, `table`, `sigma` (equation) and `workflow` (diagram). Nothing for jui-stack.
+
 ### Components in `components/jui/` — Mirrors JUI
 
 The `jui-*` component files moved from `components/` into `components/jui/`, as their mappings are in

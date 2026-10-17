@@ -1,6 +1,6 @@
 ---
 component: jui-title-panel
-component-version: 1
+component-version: 2
 target: jui
 ---
 
@@ -30,7 +30,7 @@ TitlePanel panel = TitlePanelCreator.create(cfg -> cfg
 | variant | `.style(TitlePanel.Config.Style.…)` | `split` → `SPLIT` (default), `above` → `ABOVE`. |
 | scrollable | `.scrollable()` | |
 | padding | `.padding(Insets.em(…))` | |
-| layout attributes | `.layout(…)` | Default is `CardFitLayout`; see the `jui-panel` mapping. |
+| layout attributes | `.layout(…)` | Default is `CardFitLayout`, which fits a single child to the panel's height; see the `jui-panel` mapping. A `layout="column"` panel whose last child has `grow` (a toolbar over a table or gallery) is in JUI a single `TriSplitPanel` child, with the toolbar in `addTop(…)` and the table or gallery as its content, so that it fills the height left. |
 
 ## Slots
 

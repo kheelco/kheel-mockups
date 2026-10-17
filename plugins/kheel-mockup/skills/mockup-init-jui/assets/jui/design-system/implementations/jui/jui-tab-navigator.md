@@ -1,6 +1,6 @@
 ---
 component: jui-tab-navigator
-component-version: 1
+component-version: 2
 target: jui
 ---
 
@@ -32,6 +32,7 @@ public class ProjectSection extends TabNavigator {
 | --- | --- | --- |
 | variant | `.variant(TabNavigator.Config.Variant.…)` | `horizontal` → `HORIZONTAL`, `horizontal-underline` → `HORIZONTAL_UNDERLINE`, `horizontal-bar` → `HORIZONTAL_BAR`, `vertical` → `VERTICAL`, `vertical-icon` → `VERTICAL_ICON`, `vertical-alt` → `VERTICAL_ALT`, `vertical-compact` → `VERTICAL_COMPACT`. The `Style` enum of the same names is deprecated. |
 | padding | `.padding(Insets.em(…))` | Applied as a margin around the body. |
+| root | where the navigator is added | The application's root: add it to the page's root panel, which fills the window, so its `height: 100%` is the window's. The active tab's component is fitted to the body (`CardFitLayout`), which is what lets a table or gallery in it take its height from the screen. |
 
 ## Slots
 

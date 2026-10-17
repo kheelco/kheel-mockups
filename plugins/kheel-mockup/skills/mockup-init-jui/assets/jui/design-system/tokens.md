@@ -643,3 +643,24 @@ img { max-width: 100%; display: block; }
 ::placeholder { color: var(--jui-role-text-muted); }
 :focus-visible { outline: 2px solid var(--jui-role-focus-ring); outline-offset: 2px; }
 ```
+
+Formatted text — the content of `jui-ftext` and `jui-formatted-text-editor` — takes jui-text's `richtext` styles
+for what lies inside its blocks, which those components' own styles can't reach.
+
+```css
+:is(jui-ftext, jui-formatted-text-editor) li { padding: 3px 0; }
+:is(jui-ftext, jui-formatted-text-editor) strong { font-weight: 600; }
+:is(jui-ftext, jui-formatted-text-editor) mark { background: #F5EB72; color: inherit; }
+:is(jui-ftext, jui-formatted-text-editor) code {
+  font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+  font-size: 85%; line-height: normal; padding: 0.2em 0.4em; border-radius: 4px; background: rgba(135, 131, 120, 0.15); color: inherit;
+}
+:is(jui-ftext, jui-formatted-text-editor) pre code { font-size: 0.95em; line-height: 1.45; padding: 0; background: transparent; }
+:is(jui-ftext, jui-formatted-text-editor) a {
+  color: inherit; text-decoration: underline dashed 1px; text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+:is(jui-ftext, jui-formatted-text-editor) a:hover {
+  color: color-mix(in srgb, currentColor 78%, #000); text-decoration-style: solid; text-decoration-color: currentColor;
+}
+```

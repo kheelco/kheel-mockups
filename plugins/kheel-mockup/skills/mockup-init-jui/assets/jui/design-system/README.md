@@ -1,6 +1,6 @@
 ---
 name: JUI
-version: 0.1.0
+version: 0.2.0
 prefix: jui
 source: local
 ---
@@ -8,8 +8,9 @@ source: local
 # JUI design system
 
 Mockup components that represent the standard controls, components and fragments of
-[JUI](https://github.com/juiproject/jui-stack)'s `jui-ui` module, styled with JUI's own tokens so that a mockup looks
-like the JUI application it describes and can be implemented from directly. Each tag is named after the JUI class
+[JUI](https://github.com/juiproject/jui-stack)'s `jui-ui` module, and the formatted text editor and FText of its `jui-text`
+module, styled with JUI's own tokens so that a mockup looks like the JUI application it describes and can be
+implemented from directly. Each tag is named after the JUI class
 it stands for — `jui-btn` is the Btn fragment, `jui-button` the Button component, `jui-text-control` the
 TextControl. The components are kept together in `components/jui/`, and each one's implementation mapping, in
 `implementations/jui/`, says how to build it.
@@ -45,6 +46,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-calendar-control](components/jui/jui-calendar-control.md) | 1.1.1 | composed | control `CalendarControl` | CalendarControl control — a date field that opens a month calendar to pick a date. |
 | [jui-check-control](components/jui/jui-check-control.md) | 1.1.1 | composed | control `CheckControl` | CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean. |
 | [jui-file-upload-control](components/jui/jui-file-upload-control.md) | 1.0.0 | composed | control `FileUploadControl` | FileUploadControl control — a drag-and-drop region for uploading files, with the attached files listed beneath it. |
+| [jui-formatted-text-editor](components/jui/jui-formatted-text-editor.md) | 1.0.0 | composed | control `FormattedTextEditor` | FormattedTextEditor control — a rich text editor with a configurable toolbar of formatting tools, holding a formatted text document. |
 | [jui-multi-check-control](components/jui/jui-multi-check-control.md) | 1.1.0 | elemental | control `MultiCheckControl` | MultiCheckControl control — a compact pill of options, any of which can be switched on, yielding a set of values. |
 | [jui-multi-selection-control](components/jui/jui-multi-selection-control.md) | 1.1.1 | composed | control `MultiSelectionControl` | MultiSelectionControl control — a dropdown for picking several values, shown as text or as chips, with a checkbox list menu. |
 | [jui-number-control](components/jui/jui-number-control.md) | 1.1.0 | composed | control `NumberControl` | NumberControl control — a numeric input with decrement and increment steppers. |
@@ -59,7 +61,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-card-navigator-card](components/jui/jui-card-navigator-card.md) | 1.0.1 | elemental | component `CardNavigator card` | CardNavigator card component — one card in a card navigator's top level, with a label and a description. |
 | [jui-control-form](components/jui/jui-control-form.md) | 1.1.1 | composed | component `ControlForm` | ControlForm component — a form of labelled controls laid out in groups and rows, with a form-level error block. |
 | [jui-empty-notification](components/jui/jui-empty-notification.md) | 1.0.1 | elemental | component `EmptyNotification` | EmptyNotification component — the notice a Gallery or Table shows when it has no records or its store is in error. |
-| [jui-gallery](components/jui/jui-gallery.md) | 1.1.0 | composed | component `Gallery` | Gallery component — a store-backed collection of items in a grid or rows, with infinite paging and loading, empty and error states. |
+| [jui-gallery](components/jui/jui-gallery.md) | 1.2.0 | composed | component `Gallery` | Gallery component — a store-backed collection of items in a grid or rows, with infinite paging and loading, empty and error states. |
 | [jui-info-block](components/jui/jui-info-block.md) | 1.0.1 | elemental | component `InfoBlock` | InfoBlock component — a heading with a subtitle over lines of small icon-and-text facts. |
 | [jui-info-block-item](components/jui/jui-info-block-item.md) | 1.0.0 | composed | component `InfoBlock item` | InfoBlock item component — one icon-and-value fact in an info line, optionally a link. |
 | [jui-info-block-line](components/jui/jui-info-block-line.md) | 1.0.0 | elemental | component `InfoBlock line` | InfoBlock line component — one row of items in an info block. |
@@ -72,13 +74,13 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-progress-sequence](components/jui/jui-progress-sequence.md) | 1.0.0 | elemental | component `ProgressSequence` | ProgressSequence component — a row of labelled steps joined by a line, showing progress through a multi-step flow. |
 | [jui-progress-sequence-step](components/jui/jui-progress-sequence-step.md) | 1.0.0 | composed | component `ProgressSequence step` | ProgressSequence step component — one labelled step of a progress sequence, done, active or pending. |
 | [jui-split-panel](components/jui/jui-split-panel.md) | 1.0.0 | elemental | component `SplitPanel` | SplitPanel component — a main content area beside or below a secondary area, such as a toolbar. |
-| [jui-tab-navigator](components/jui/jui-tab-navigator.md) | 1.0.0 | elemental | component `TabNavigator` | TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body. |
+| [jui-tab-navigator](components/jui/jui-tab-navigator.md) | 2.0.0 | elemental | component `TabNavigator` | TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body. |
 | [jui-tab-navigator-tab](components/jui/jui-tab-navigator-tab.md) | 1.0.1 | composed | component `TabNavigator tab` | TabNavigator tab component — one tab of a tab navigator, with a label, an icon, a count and an indicator. |
-| [jui-table](components/jui/jui-table.md) | 1.1.0 | composed | component `Table` | Table component — a store-backed data table with declared columns, sorting, row selection, and loading, empty and error states. |
+| [jui-table](components/jui/jui-table.md) | 1.2.0 | composed | component `Table` | Table component — a store-backed data table with declared columns, sorting, row selection, and loading, empty and error states. |
 | [jui-table-cell](components/jui/jui-table-cell.md) | 1.0.0 | elemental | component `Table cell` | Table cell component — one cell of a Table row, as drawn by its column's cell renderer. |
 | [jui-table-column](components/jui/jui-table-column.md) | 1.0.0 | composed | component `Table column` | Table column component — one column header of a Table, with its title, icon, width and sort indicator. |
 | [jui-table-row](components/jui/jui-table-row.md) | 1.0.0 | elemental | component `Table row` | Table row component — one record of a Table, holding its cells and, when the table is selectable, a selection checkbox. |
-| [jui-title-panel](components/jui/jui-title-panel.md) | 1.0.1 | composed | component `TitlePanel` | TitlePanel component — a panel with a title bar (icon, title and subtitle) above its content. |
+| [jui-title-panel](components/jui/jui-title-panel.md) | 2.0.0 | composed | component `TitlePanel` | TitlePanel component — a panel with a title bar (icon, title and subtitle) above its content. |
 | [jui-tri-split-panel](components/jui/jui-tri-split-panel.md) | 1.0.0 | elemental | component `TriSplitPanel` | TriSplitPanel component — a top bar, a central content area and a bottom bar, stacked. |
 | [jui-action-bar-layout](components/jui/jui-action-bar-layout.md) | 1.0.0 | elemental | layout `ActionBarLayout` | ActionBarLayout layout — a horizontal bar of left, centre and right zones, generally holding buttons. |
 | [jui-control-form-cell](components/jui/jui-control-form-cell.md) | 1.0.0 | composed | layout `ControlForm cell` | ControlForm cell layout — one control in a form row with its label, help, guidance and error messages. |
@@ -97,7 +99,9 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-dialog](components/jui/jui-dialog.md) | 1.0.1 | composed | fragment `Dialog` | Dialog fragment — an inline, non-modal dialog panel with a header, contents and a footer of actions. |
 | [jui-divider](components/jui/jui-divider.md) | 1.0.0 | elemental | fragment `Divider` | Divider fragment — a horizontal rule separating groups of content. |
 | [jui-expander](components/jui/jui-expander.md) | 1.0.0 | elemental | fragment `Expander` | Expander fragment — an invisible spacer that takes up the remaining space in a row. |
+| [jui-ftext](components/jui/jui-ftext.md) | 1.0.0 | elemental | fragment `FText` | FText fragment — shows a formatted text document read-only, as the formatted text editor presents it, in compact or document spacing. |
 | [jui-file-attachment](components/jui/jui-file-attachment.md) | 1.0.0 | composed | fragment `FileAttachment` | FileAttachment fragment — one file listed in a FileUploadControl, with its upload progress, outcome and remove action. |
+| [jui-editor-tool](components/jui/jui-editor-tool.md) | 1.0.0 | elemental | fragment `ITool` | ITool fragment — one button (or separator) in the formatted text editor's toolbar, shown applied while its format or block type is active. |
 | [jui-icon](components/jui/jui-icon.md) | 1.0.0 | elemental | fragment `Icon` | Icon fragment — one icon, sized to the text around it. |
 | [jui-icon-btn](components/jui/jui-icon-btn.md) | 1.0.0 | composed | fragment `IconBtn` | IconBtn fragment — a round, borderless button showing only an icon. |
 | [jui-loading](components/jui/jui-loading.md) | 1.0.0 | elemental | fragment `Loading` | Loading fragment — a pulsing grey placeholder bar shown where content is still loading. |
@@ -137,4 +141,4 @@ None yet. Add patterns for arrangements your application repeats — a gallery w
 From [Lucide](https://lucide.dev) (ISC licence, see assets/icons/LICENSE-lucide.txt), apart from the brand logos `google` and `microsoft`, which are from [Remix Icon](https://remixicon.com) (Apache 2.0, see assets/icons/LICENSE-remixicon.txt). JUI uses FontAwesome; the
 implementation mapping for the icon fragment gives the FontAwesome equivalent of each.
 
-`archive` `arrow-down` `arrow-left` `arrow-right-left` `arrow-up` `arrow-up-right` `bell` `bold` `book` `briefcase` `building` `building-2` `calendar` `calendar-check` `chart-candlestick` `chart-pie` `check` `chevron-down` `chevron-left` `chevron-right` `chevron-up` `chevrons-left` `chevrons-right` `chevrons-up-down` `circle-alert` `circle-check` `circle-dot` `circle-help` `circle-user-round` `circle-x` `clock` `copy` `download` `ellipsis` `external-link` `eye` `eye-off` `feather` `file-pen-line` `file-text` `filter` `folder` `git-branch` `google` `grip-vertical` `hand` `heading-2` `heading-3` `history` `hourglass` `house` `image` `inbox` `info` `italic` `key` `key-round` `layout-grid` `life-buoy` `link-2` `list` `list-checks` `list-ordered` `loader-circle` `lock` `lock-open` `log-out` `mail` `mail-check` `map-pin` `maximize-2` `menu` `microsoft` `minus` `minus-circle` `paperclip` `pencil` `phone` `pilcrow` `plug` `plus` `qr-code` `refresh-cw` `save` `search` `send` `settings` `share-2` `shield` `shield-check` `smartphone` `sparkles` `square-check-big` `square-pen` `star` `strikethrough` `tag` `trash-2` `triangle-alert` `undo-2` `upload` `user` `user-check` `user-pen` `user-plus` `user-round` `user-star` `user-x` `users` `x` `zoom-in`
+`archive` `arrow-down` `arrow-left` `arrow-right-left` `arrow-up` `arrow-up-right` `bell` `bold` `book` `briefcase` `building` `building-2` `calendar` `calendar-check` `chart-candlestick` `chart-pie` `check` `chevron-down` `chevron-left` `chevron-right` `chevron-up` `chevrons-left` `chevrons-right` `chevrons-up-down` `circle-alert` `circle-check` `circle-dot` `circle-help` `circle-user-round` `circle-x` `clock` `code` `copy` `download` `ellipsis` `external-link` `eye` `eye-off` `feather` `file-pen-line` `file-text` `filter` `folder` `git-branch` `google` `grip-vertical` `hand` `heading-2` `heading-3` `highlighter` `history` `hourglass` `house` `image` `inbox` `info` `italic` `key` `key-round` `layout-grid` `life-buoy` `link-2` `list` `list-checks` `list-ordered` `loader-circle` `lock` `lock-open` `log-out` `mail` `mail-check` `map-pin` `maximize-2` `menu` `microsoft` `minus` `minus-circle` `paperclip` `pencil` `phone` `pilcrow` `plug` `plus` `qr-code` `refresh-cw` `save` `search` `send` `settings` `share-2` `shield` `shield-check` `sigma` `smartphone` `sparkles` `square-check-big` `square-pen` `star` `strikethrough` `subscript` `superscript` `table` `tag` `text-quote` `trash-2` `triangle-alert` `underline` `undo-2` `upload` `user` `user-check` `user-pen` `user-plus` `user-round` `user-star` `user-x` `users` `workflow` `x` `zoom-in`

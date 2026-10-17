@@ -1,6 +1,6 @@
 ---
 name: jui-gallery
-version: 1.1.0
+version: 1.2.0
 kind: composed
 status: active
 summary: Gallery component — a store-backed collection of items in a grid or rows, with infinite paging and loading, empty and error states.
@@ -13,9 +13,10 @@ summary: Gallery component — a store-backed collection of items in a grid or r
 Represents JUI's **Gallery** component (`Gallery` / `GalleryCreator`, `…client.gallery`): records from a store,
 each drawn by a gallery item (`IGalleryItem`, typically a `PanelGalleryItem` — `jui-panel-gallery-item` — or one
 built with `GalleryItemCreator`), laid out as a wrapping grid of tiles (`Style.GRID`) or as full-width rows
-(`Style.ROW`). The gallery is paginated through its store: it loads the first page and loads the next as it is
-scrolled to the bottom (infinite scrolling, no pager). It shows a mask while loading and replaces the items with
-an empty or error notice (`jui-empty-notification`) when the store holds nothing.
+(`Style.ROW`). The gallery is paginated through its store by infinite scrolling (no pager): it loads the first
+page and loads the next each time it is scrolled to the bottom. So it scrolls within a bounded height — normally
+it fills the height left to it on the screen, or it is given a fixed height. It shows a mask while loading and
+replaces the items with an empty or error notice (`jui-empty-notification`) when the store holds nothing.
 
 Use a gallery when each record is best seen as a card or a stacked item. Use the **Table** (`jui-table`) instead
 when records are compared field by field in columns.
@@ -23,9 +24,9 @@ when records are compared field by field in columns.
 ## Anatomy
 
 - **Items** — one gallery item per record, wrapped with a gap (grid) or stacked full width (row), inside 1em of
-  padding.
-- **Last item area** — optional content after the items (JUI `lastItem(…)`): a "Load more" action, a count such
-  as "Showing 24 of 132", or an "Add" tile.
+  padding. They scroll within the gallery's height.
+- **Last item area** — optional content after the items (JUI `lastItem(…)`): a count such as "Showing 24 of 132",
+  an "Add" tile, or, exceptionally, a "Load more" action.
 - **Empty area** — shown instead of the items when the store is empty or in error: JUI's default notice unless
   one is placed in the `empty` slot.
 - **Mask** — while loading, the gallery fades and JUI's three-bar loader shows in the centre (omitted when quiet).
@@ -38,6 +39,8 @@ when records are compared field by field in columns.
 | loading | state | none, indicator, quiet | none | Shows the loading mask; `quiet` fades the items without the loader, as while the next page loads. |
 | empty | state | none, unfiltered, filtered, error | none | Replaces the items with the empty notice for an empty store, an empty filtered result, or a store error. |
 | error-message | content | text | The service is currently unavailable. | The store's status message shown by the default error notice. |
+| height | variant | text | | A fixed height as a CSS length, such as `30em`. Without it the gallery takes the height of its container (`height: 100%`), or the space left in a column with `grow`. |
+| scrollable | variant | true, false | true | `true` (JUI's default): the items scroll within the gallery's height and the next page loads at the bottom. `false` (JUI `scrollable(false)`): the gallery is as tall as its items and the page scrolls instead. |
 
 ## Variants
 
@@ -45,6 +48,9 @@ when records are compared field by field in columns.
 | --- | --- | --- |
 | variant | grid | Tiles of a fixed width that wrap across the available width: people, projects, documents. |
 | variant | row | Full-width items stacked one per line: activity, search results, richer summaries. |
+| grow | present | The usual case: the gallery takes the height left in its column (under a toolbar, say) and scrolls within it. Needs a container whose height is bounded (see **Rules of use**). |
+| height | a CSS length | Where the gallery can't take its height from the screen, as in a dialog or beside other content. |
+| scrollable | false | Only for a store that holds a handful of records: unbounded, JUI loads every page (see **Paging**). |
 
 ## States
 
@@ -63,14 +69,19 @@ when records are compared field by field in columns.
 | Slot | Accepts | Suggests | Layout | Description |
 | --- | --- | --- | --- | --- |
 | default | any | jui-panel-gallery-item | Wrapping tiles (grid) or full-width rows (row) | The items, one per record, in store order. |
-| last | any | jui-btn | Full-width area after the items | JUI's `lastItem(…)`: "Load more", a result count, or an "Add" tile. |
+| last | any | | Full-width area after the items | JUI's `lastItem(…)`: a result count, an "Add" tile, or (exceptionally) "Load more". |
 | empty | any | jui-empty-notification | Centred column | Replaces JUI's default notice for the current `empty` state: a `jui-empty-notification`, or the application's own empty-state content (JUI's empty renderers build anything). Give it `slot="empty"`. |
 
 ## Behaviour
 
-- **Paging.** The gallery asks its store for the next page when scrolled to within a few pixels of the bottom (and
-  after a resize leaves room); the next page loads quietly. A "Load more" action in the `last` area is an
-  alternative the store can offer.
+- **Paging (infinite scrolling).** The gallery asks its store for the next page when scrolled to within a few
+  pixels of the bottom (and after a window resize leaves room); the next page loads quietly. After each page it
+  checks again, so it keeps loading until it overflows or the store is exhausted. That is why it needs a bounded
+  height: a gallery whose height isn't bounded never overflows, so it loads every page of the store, one after
+  another, as soon as it is shown.
+- **Load more (the exception).** Infinite scrolling is the default and the usual choice. Only where a screen
+  needs people to ask for more explicitly, a "Load more" action in the `last` area loads the next page (the store's
+  `loadNext`); JUI's own paging on scroll still runs alongside it.
 - **Filtering.** A search or filter control re-queries the store; while it reloads the gallery shows the loading
   state, then the items, or the filtered-empty notice when nothing matches.
 - **Empty and error.** After a load the gallery shows the error notice when the store is in error, the filtered
@@ -93,6 +104,12 @@ the real implementation (the mask is visual only in JUI).
 - Show the first-load, empty, filtered-empty and error states in mockups — use `loading` and `empty`.
 - Use `grid` for scanning many similar things, `row` when each item carries more text.
 - Use a table when people compare values across records.
+- Page by infinite scrolling, the default; don't add a "Load more" action unless the screen needs one.
+- Bound its height. Normally the gallery fills the height left to it: put it in a column whose height comes from
+  the screen — a `jui-tab-navigator` with `root`, whose tab content fills its body, such as a `jui-title-panel`
+  with `layout="column"` — and give the gallery `grow`, so the controls above keep their height and the gallery
+  takes the rest. Otherwise give it a `height`. Don't put a paginated gallery in a region that grows with its
+  content and scrolls as a whole.
 
 ## Tokens
 
@@ -108,6 +125,7 @@ The tokens the style uses: JUI's `--cpt-gallery-*` component tokens, and semanti
 ## Template
 
 ```html
+<style data-if="height">:host { height: {{height}}; }</style>
 <div class="gallery">
   <div class="target">
     <slot></slot>
@@ -127,19 +145,25 @@ The tokens the style uses: JUI's `--cpt-gallery-*` component tokens, and semanti
 
 ```css
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
   position: relative;
   overflow: hidden;
   --cpt-gallery-bg: transparent;
   --cpt-gallery-grid-padding: 1em;
   --cpt-gallery-grid-gap: 1em;
 }
-.gallery { background: var(--cpt-gallery-bg); }
+.gallery { flex: 1 1 auto; min-height: 0; overflow-y: auto; background: var(--cpt-gallery-bg); }
+:host([scrollable="false"]) { height: auto; }
+:host([scrollable="false"]) .gallery { overflow: visible; }
 .target { padding: var(--cpt-gallery-grid-padding); display: flex; flex-wrap: wrap; gap: var(--cpt-gallery-grid-gap); }
 :host([variant="row"]) ::slotted(*) { width: 100%; }
 .last { display: none; flex-basis: 100%; }
 :host([data-filled~="last"]) .last { display: block; }
-.empty { display: none; min-height: 14em; }
+.empty { display: none; flex: 1 0 auto; min-height: 14em; }
 :host([empty="unfiltered"]) .empty, :host([empty="filtered"]) .empty, :host([empty="error"]) .empty { display: block; }
 :host([empty="unfiltered"]) .gallery, :host([empty="filtered"]) .gallery, :host([empty="error"]) .gallery { display: none; }
 .mask { display: none; position: absolute; inset: 0; z-index: 2; }
@@ -164,15 +188,16 @@ The tokens the style uses: JUI's `--cpt-gallery-*` component tokens, and semanti
 
 ```xml
 <div layout="column" gap="6">
-  <jui-gallery spec="Backed by a PaginatedStore of projects, 12 per page; the next page loads on scrolling to the bottom.">
+  <jui-gallery height="15em" spec="Backed by a PaginatedStore of projects, 12 per page; the next page loads on scrolling to the bottom.">
     <jui-panel-gallery-item heading="Website refresh" subtitle="12 tasks, due Friday" title-icon="folder" title-link="" menu="" item-width="medium"/>
     <jui-panel-gallery-item heading="Mobile app" subtitle="4 tasks, due next week" title-icon="folder" title-link="" menu="" item-width="medium"/>
     <jui-panel-gallery-item heading="Brand guidelines" subtitle="Completed" title-icon="folder" title-link="" menu="" item-width="medium"/>
     <jui-panel-gallery-item heading="Quarterly report" subtitle="Draft" title-icon="file-text" title-link="" menu="" item-width="medium" state="hover"/>
-    <div slot="last" layout="row" gap="3" align="center" justify="center">
-      <span>Showing 4 of 27</span>
-      <jui-btn label="Load more" variant="outlined"/>
-    </div>
+    <jui-panel-gallery-item heading="Hiring plan" subtitle="3 tasks · due Monday" title-icon="folder" title-link="" menu="" item-width="medium"/>
+    <jui-panel-gallery-item heading="Office move" subtitle="9 tasks" title-icon="folder" title-link="" menu="" item-width="medium"/>
+    <jui-panel-gallery-item heading="Security review" subtitle="Draft" title-icon="file-text" title-link="" menu="" item-width="medium"/>
+    <jui-panel-gallery-item heading="Customer survey" subtitle="Completed" title-icon="folder" title-link="" menu="" item-width="medium"/>
+    <div slot="last" layout="row" justify="center"><small>Showing 8 of 27</small></div>
   </jui-gallery>
   <jui-gallery variant="row">
     <jui-panel-gallery-item heading="Ada Lovelace updated the project plan" subtitle="2 hours ago" title-icon="pencil"/>

@@ -43,6 +43,9 @@ store.load (0, 20);
 | loading | — | Automatic: the table listens to the store and shows the mask while it loads; `quiet` is used for loads after the first. `showLoading(boolean quiet)` / `hideLoading()` exist on `Table` if needed by hand. |
 | empty | `cfg.emptyUnfiltered (…)`, `cfg.emptyFiltered (…)`, `cfg.emptyError ((el, msg) -> …)` | The state itself is automatic from the store's status after a load (`ERROR`, empty with `FILTERED`, empty otherwise). The config methods only replace the notices. |
 | error-message | — | Comes from `IStore.getStatusMessage()`. |
+| height | the height of the table's container | Give the panel or region holding the table that height (`cfg.css ("height: …")` on it, or `adorn (…)`); the table takes `height: 100%` of it. |
+| scrollable | `cfg.scrollable (false)` | `true` is the default (no call). |
+| grow | how the table is placed | See **Notes**. |
 
 ## Slots
 
@@ -56,13 +59,22 @@ store.load (0, 20);
 
 Loading, empty, filtered-empty and error states are driven by the store's load cycle; nothing needs wiring beyond
 supplying the store and, if the default wording is not wanted, the empty renderers. The table re-renders on store
-change and requests the next page when scrolled to the bottom (`IPaginatedStore.loadNext`).
+change and requests the next page when scrolled to the bottom (`IPaginatedStore.loadNext`). A "Load more" action
+calls the store's `loadNext (…)` itself; the table's own paging still runs alongside it.
 
 ## Notes
 
 - `scrollable` is on by default: the table fills its container's height, the header is sticky
-  (`--cpt-tbl-sticky-bg`) and the body scrolls. Give the table a bounded height (e.g. add it to a panel that
-  fills the page) or call `cfg.scrollable (false)`.
+  (`--cpt-tbl-sticky-bg`) and the body scrolls. The table loads the next page whenever its body is at the bottom,
+  checking again after every page, so the height must be bounded: a table whose height follows its content is
+  always "at the bottom" and loads the whole store, page after page. The same is true of `cfg.scrollable (false)`
+  with a paginated store, so keep that for stores that hold a handful of records.
+- In JUI a table fills its container (`height: 100%`) and the containers that frame a page fit their content to
+  their own height (`CardFitLayout`, the default for panels and for a tab navigator's body). A mockup's `grow` on
+  the table, under a toolbar in a `layout="column"` title panel, is in JUI a `TriSplitPanel` with the toolbar added
+  with `addTop(…)` and the table as its content: the title panel fits the split panel to its height and the split
+  panel fits the table to what is left. Don't add the table to a `VertLayout` (or a `scrollable()` panel), which
+  leaves its height to its content.
 - Theme with the `--cpt-tbl-*` tokens (`cfg.css ("--cpt-tbl-…: …")`) or the `--jui-comp-table-*` family tokens.
 - `cfg.cellPadding (Insets)` and `cfg.color (Color)` also exist for quick adjustments.
 - Sort icons are configurable with `cfg.iconAscending (…)`, `iconDescending (…)`, `iconSortable (…)`.

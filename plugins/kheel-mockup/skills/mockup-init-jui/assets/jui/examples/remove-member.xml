@@ -1,4 +1,4 @@
-<mockup type="dialog" title="Remove member" design-system="0.1.0" width="small">
+<mockup type="dialog" title="Remove member" design-system="0.2.0" width="small">
   <specification>
     NotificationDialog.confirm(...). Removing a member takes away their access to every project; their work stays.
   </specification>

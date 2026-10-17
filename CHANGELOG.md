@@ -3,6 +3,26 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
+## Unreleased
+
+- **JUI tables and galleries scroll within the screen.** `jui-table` and `jui-gallery` (1.2.0) page by
+  infinite scrolling, as in JUI, which only works when their height is bounded: unbounded, JUI loads every page of
+  the store at once. They now take the height of their container, or with `grow` the height left in a column, and
+  scroll within it under a fixed header. They also gain a fixed `height` and `scrollable="false"`.
+  `jui-tab-navigator` (2.0.0) gains `root`, to fill the window, and fits the active tab's content to its body, and
+  `jui-title-panel` (2.0.0) passes its height on to its content; both are major versions because a long title
+  panel in a tab navigator is now cut to the body unless `scrollable`, as in JUI. The JUI design system's version
+  moves to 0.2.0. The examples show the arrangement. Bring them in
+  with `mockup-init-jui`'s update.
+- **A rich text editor in the JUI design system.** `jui-formatted-text-editor` represents jui-text's
+  `FormattedTextEditor`: an editing area with a toolbar, whose tools come from a preset (`all`, JUI's default set,
+  or `markdown`: bold, italic, strikethrough, the two lists and link) or from the `toolbar` slot, one
+  `jui-editor-tool` each. It shows JUI's toolbar positions (above, apart, on focus, below, floating over a
+  selection) and its seamless variant. `jui-ftext` represents the `FText` fragment, which shows formatted text
+  read-only in compact or document spacing. The content of both is plain HTML (`p`, headings, lists, quotes, code,
+  links). These are the first components from jui-text rather than jui-ui; the mappings say how to add the module.
+  Nine icons were added for the editor's tools. Bring them in with `mockup-init-jui`'s update.
+
 ## 0.14.0
 
 - **Floating dropdown menus in the JUI design system.** `jui-selection-control`, `jui-multi-selection-control`,

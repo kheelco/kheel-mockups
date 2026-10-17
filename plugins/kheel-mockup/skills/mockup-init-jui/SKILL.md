@@ -1,14 +1,15 @@
 ---
 name: mockup-init-jui
-description: Set up a mockup project space with a design system of the standard JUI (jui-ui) components, fragments and controls. Use when the user wants to mock up a JUI application.
+description: Set up a mockup project space with a design system of the standard JUI components, fragments and controls (jui-ui, and jui-text's editor). Use when the user wants to mock up a JUI application.
 ---
 
 # mockup-init-jui — a mockup project space for JUI applications
 
 Set up a **project space** — a folder of mockups with `design-system/` at its root — whose design system
-represents the standard building blocks of [JUI](https://github.com/juiproject/jui-stack)'s `jui-ui` module, styled
-with JUI's own tokens. Mockups built from it look like the JUI application they describe, and each component
-carries an implementation mapping to its JUI class, so an agent can build the real screens from them.
+represents the standard building blocks of [JUI](https://github.com/juiproject/jui-stack)'s `jui-ui` module, and the
+formatted text editor and FText of its `jui-text` module, styled with JUI's own tokens. Mockups built from it look
+like the JUI application they describe, and each component carries an implementation mapping to its JUI class, so
+an agent can build the real screens from them.
 
 `<skill>` below means the folder this `SKILL.md` sits in. It carries two templates under `<skill>/assets/`:
 
