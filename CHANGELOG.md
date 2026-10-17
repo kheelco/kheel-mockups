@@ -3,6 +3,17 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
+## Unreleased
+
+- **A rich text editor in the JUI design system.** `jui-formatted-text-editor` represents jui-text's
+  `FormattedTextEditor`: an editing area with a toolbar, whose tools come from a preset (`all`, JUI's default set,
+  or `markdown`: bold, italic, strikethrough, the two lists and link) or from the `toolbar` slot, one
+  `jui-editor-tool` each. It shows JUI's toolbar positions (above, apart, on focus, below, floating over a
+  selection) and its seamless variant. `jui-ftext` represents the `FText` fragment, which shows formatted text
+  read-only in compact or document spacing. The content of both is plain HTML (`p`, headings, lists, quotes, code,
+  links). These are the first components from jui-text rather than jui-ui; the mappings say how to add the module.
+  Nine icons were added for the editor's tools. Bring them in with `mockup-init-jui`'s update.
+
 ## 0.14.0
 
 - **Floating dropdown menus in the JUI design system.** `jui-selection-control`, `jui-multi-selection-control`,

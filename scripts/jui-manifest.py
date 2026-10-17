@@ -36,8 +36,9 @@ source: local
 # JUI design system
 
 Mockup components that represent the standard controls, components and fragments of
-[JUI](https://github.com/juiproject/jui-stack)'s `jui-ui` module, styled with JUI's own tokens so that a mockup looks
-like the JUI application it describes and can be implemented from directly. Each tag is named after the JUI class
+[JUI](https://github.com/juiproject/jui-stack)'s `jui-ui` module, and the formatted text editor and FText of its `jui-text`
+module, styled with JUI's own tokens so that a mockup looks like the JUI application it describes and can be
+implemented from directly. Each tag is named after the JUI class
 it stands for — `jui-btn` is the Btn fragment, `jui-button` the Button component, `jui-text-control` the
 TextControl. The components are kept together in `components/jui/`, and each one's implementation mapping, in
 `implementations/jui/`, says how to build it.

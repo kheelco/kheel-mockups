@@ -13,6 +13,25 @@ removing it.
 
 ## Unreleased
 
+### Formatted text editor and FText — Mirrors JUI
+
+Three new components for jui-text's formatted text, the first from outside jui-ui:
+
+- `jui-formatted-text-editor` 1.0.0, the `FormattedTextEditor` control: a toolbar and an editing area, with the
+  `position`s JUI offers (`TOP`, `TOP_SEPARATE`, `TOP_HOVER`, `TOP_TRANSPARENT`, `BOTTOM`, `FLOATING`), the
+  `SEAMLESS` variant, `height` and `placeholder`. Its `tools` preset is `all` (JUI's `Tools.all()`, the default) or
+  `markdown` (bold, italic, strikethrough, bullet and numbered lists, link); the `toolbar` slot takes a toolbar of
+  the project's own.
+- `jui-editor-tool` 1.0.0, one `ITool` in that toolbar (from `Tools`), or a separator, shown applied while active.
+- `jui-ftext` 1.0.0, the `FText` fragment, showing a `FormattedText` read-only with `ContentStyle.compact()` (the
+  default) or `document()`.
+
+They take jui-text's own styles, including its `--jui-formattededitor-*`, `--jui-toolbar-*` and `--jui-richtext-*`
+tokens. The document is written as plain HTML in the default slot; `tokens.md`'s base styles gain jui-text's
+`richtext` rules for what lies inside its blocks (links, code, highlight, list items), which the components' own
+styles can't reach. New icons for the tools: `underline`, `code`, `highlighter`, `subscript`, `superscript`,
+`text-quote`, `table`, `sigma` (equation) and `workflow` (diagram). Nothing for jui-stack.
+
 ### Components in `components/jui/` — Mirrors JUI
 
 The `jui-*` component files moved from `components/` into `components/jui/`, as their mappings are in

@@ -62,6 +62,7 @@ name in camel case — check it exists in `FontAwesome` for the JUI version in u
 | `circle-user-round` | `FontAwesome.circleUser()` (`fa-circle-user`) |
 | `circle-x` | `FontAwesome.circleXmark()` (`fa-circle-xmark`) |
 | `clock` | `FontAwesome.clock()` (`fa-clock`) |
+| `code` | `FontAwesome.code()` (`fa-code`) |
 | `copy` | `FontAwesome.copy()` (`fa-copy`) |
 | `download` | `FontAwesome.download()` (`fa-download`) |
 | `ellipsis` | `FontAwesome.ellipsis()` (`fa-ellipsis`) |
@@ -79,6 +80,7 @@ name in camel case — check it exists in `FontAwesome` for the JUI version in u
 | `hand` | `FontAwesome.hand()` (`fa-hand`) |
 | `heading-2` | `FontAwesome.heading()` (`fa-heading`) — no level-specific heading glyph |
 | `heading-3` | `FontAwesome.heading()` (`fa-heading`) — no level-specific heading glyph |
+| `highlighter` | `FontAwesome.highlighter()` (`fa-highlighter`) |
 | `history` | `FontAwesome.clockRotateLeft()` (`fa-clock-rotate-left`) |
 | `hourglass` | `FontAwesome.hourglass()` (`fa-hourglass`) |
 | `house` | `FontAwesome.house()` (`fa-house`) |
@@ -121,15 +123,21 @@ name in camel case — check it exists in `FontAwesome` for the JUI version in u
 | `share-2` | `FontAwesome.shareNodes()` (`fa-share-nodes`) |
 | `shield` | `FontAwesome.shield()` (`fa-shield`) |
 | `shield-check` | `FontAwesome.shieldHalved()` (`fa-shield-halved`) — no shield-with-check in FontAwesome Free |
+| `sigma` | `FontAwesome.squareRootVariable()` (`fa-square-root-variable`) — the editor's equation tool |
 | `smartphone` | `FontAwesome.mobileScreenButton()` (`fa-mobile-screen-button`) |
 | `sparkles` | `FontAwesome.wandMagicSparkles()` (`fa-wand-magic-sparkles`) — no bare sparkles in FontAwesome Free |
 | `square-check-big` | `FontAwesome.squareCheck()` (`fa-square-check`) |
 | `square-pen` | `FontAwesome.penToSquare()` (`fa-pen-to-square`) |
 | `star` | `FontAwesome.star()` (`fa-star`) |
 | `strikethrough` | `FontAwesome.strikethrough()` (`fa-strikethrough`) |
+| `subscript` | `FontAwesome.subscript()` (`fa-subscript`) |
+| `superscript` | `FontAwesome.superscript()` (`fa-superscript`) |
+| `table` | `FontAwesome.table()` (`fa-table`) |
 | `tag` | `FontAwesome.tag()` (`fa-tag`) |
+| `text-quote` | `FontAwesome.quoteLeft()` (`fa-quote-left`) |
 | `trash-2` | `FontAwesome.trashCan()` (`fa-trash-can`) |
 | `triangle-alert` | `FontAwesome.triangleExclamation()` (`fa-triangle-exclamation`) |
+| `underline` | `FontAwesome.underline()` (`fa-underline`) |
 | `undo-2` | `FontAwesome.arrowRotateLeft()` (`fa-arrow-rotate-left`) |
 | `upload` | `FontAwesome.upload()` (`fa-upload`) |
 | `user` | `FontAwesome.user()` (`fa-user`) |
@@ -140,6 +148,7 @@ name in camel case — check it exists in `FontAwesome` for the JUI version in u
 | `user-star` | `FontAwesome.userTie()` (`fa-user-tie`) — no user-star in FontAwesome |
 | `user-x` | `FontAwesome.userXmark()` (`fa-user-xmark`) |
 | `users` | `FontAwesome.users()` (`fa-users`) |
+| `workflow` | `FontAwesome.diagramProject()` (`fa-diagram-project`) — the editor's diagram tool |
 | `x` | `FontAwesome.xmark()` (`fa-xmark`) |
 | `zoom-in` | `FontAwesome.magnifyingGlassPlus()` (`fa-magnifying-glass-plus`) |
 
