@@ -1,6 +1,6 @@
 ---
 name: jui-split-panel
-version: 1.0.0
+version: 1.0.1
 kind: elemental
 status: active
 summary: SplitPanel component — a main content area beside or below a secondary area, such as a toolbar.
@@ -103,7 +103,7 @@ Plain `div`s. When the other area is a toolbar of controls, give it `role="toolb
 :host([reverse]) { flex-direction: row-reverse; }
 :host([vertical]) { flex-direction: column; }
 :host([vertical][reverse]) { flex-direction: column-reverse; }
-.contents { flex-grow: 1; min-width: 0; }
+.contents { flex-grow: 1; min-width: 0; min-height: 0; }
 .other { flex: none; }
 :host([scrollable]) { overflow: auto; }
 :host([scrollable]) .contents { overflow-y: auto; }

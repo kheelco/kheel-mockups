@@ -3,6 +3,12 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
+## 0.15.1
+
+- **Listings scroll within a split panel.** `jui-split-panel` (1.0.1) lets its main area shrink below its content,
+  so a gallery or table under a toolbar in a vertical split panel scrolls within the height left rather than
+  scrolling the page around it. Bring it in with `mockup-init-jui`'s update.
+
 ## 0.15.0
 
 - **An action link in a selector.** `jui-selection-control` (1.2.0) takes an `action` slot: the action link JUI
