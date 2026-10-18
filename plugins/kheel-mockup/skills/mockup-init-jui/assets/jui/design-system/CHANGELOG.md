@@ -13,6 +13,12 @@ removing it.
 
 ## Unreleased
 
+### A split panel's main area is bounded — Mirrors JUI
+
+`jui-split-panel` 1.0.1: its main area can shrink below its content (`min-height: 0`), so a gallery or table in a
+vertical split panel under a toolbar takes the height left and scrolls within it, as in JUI. Before this the main
+area grew to its content and the region around it scrolled instead. Nothing for jui-stack.
+
 ### An action link at the foot of a selector — Mirrors JUI
 
 `jui-selection-control` 1.2.0 gains an `action` slot: the action link JUI's selector shows at the foot of its
