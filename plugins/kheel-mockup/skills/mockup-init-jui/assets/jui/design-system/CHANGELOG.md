@@ -13,6 +13,12 @@ removing it.
 
 ## Unreleased
 
+### An action link at the foot of a selector — Mirrors JUI
+
+`jui-selection-control` 1.2.0 gains an `action` slot: the action link JUI's selector shows at the foot of its
+menu, below a rule, for an act on the list such as `+ Add customer`. It shows whatever is typed, even with no
+options, and selects nothing. Nothing for jui-stack.
+
 ### Slider dialogs at the right edge — Mirrors JUI
 
 `jui-modal-dialog` 1.2.0: a `slider` dialog goes in a dialog mockup with `placement="right"` (viewer 0.11.0), so it

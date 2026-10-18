@@ -46,6 +46,7 @@ Controls.<Person>selector(cfg -> {
 | Slot | Maps to |
 | --- | --- |
 | default | The store's items (`ListStore` for fixed values, a `PaginatedStore` / `ISearchStore` for remote ones), labelled by `labelMapper`. `data-active` is the keyboard highlight, not configuration. |
+| action | The selector's action link, configured on the control: its label, icon and the handler run when it is clicked (the handler is given the keywords typed, so a create dialog can start from them). Check the configuration method's name in this JUI version. |
 
 ## States
 
