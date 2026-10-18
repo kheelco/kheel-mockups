@@ -3,7 +3,7 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
-## Unreleased
+## 0.15.0
 
 - **Side-panel dialogs.** A dialog mockup takes `placement="right"` to be drawn as a side panel: against the
   window's right edge at its full height, over the scrim, at its `width`, whether opened from another mockup or
