@@ -1,6 +1,6 @@
 // Mockup runtime — renders XML mockups from a markdown design system, in the browser, without a build.
 // Part of the mechanism, not the project: replaced as a unit when the mechanism is updated. Do not edit.
-export const VERSION = '0.10.0';
+export const VERSION = '0.11.0';
 
 // This file lives in the design system folder; the project space is the folder above it.
 const DS_URL = new URL('./', import.meta.url);
@@ -731,6 +731,12 @@ body{min-height:100vh}
 :is(#km-canvas[data-type=section],#km-canvas[data-type=dialog],.km-overlay)>.km-frame[data-width=small]{max-width:480px}
 :is(#km-canvas[data-type=section],#km-canvas[data-type=dialog],.km-overlay)>.km-frame[data-width=medium]{max-width:800px}
 :is(#km-canvas[data-type=section],#km-canvas[data-type=dialog],.km-overlay)>.km-frame[data-width=large]{max-width:1200px}
+#km-canvas[data-type=dialog][data-placement=right]{padding:${BAR_HEIGHT}px 0 0;align-items:flex-end}
+#km-canvas[data-type=dialog][data-placement=right]>.km-frame{height:var(--viewport-height)}
+.km-overlay[data-placement=right]{justify-content:flex-end;padding:0}
+.km-overlay[data-placement=right]>.km-frame{height:100%}
+:is(#km-canvas,.km-overlay)>.km-frame[data-placement=right]{display:flex;flex-direction:column}
+:is(#km-canvas,.km-overlay)>.km-frame[data-placement=right]>*{flex:1 0 auto}
 #km-canvas.km-panel-open{margin-right:380px}
 [href],[opens],[closes]{cursor:pointer}
 .km-overlay{position:fixed;inset:${BAR_HEIGHT}px 0 0 0;display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000}
@@ -998,6 +1004,15 @@ function follow(href, base) {
   navigate(relToProject(new URL(href, base)));
 }
 
+// Where a dialog sits: centred, or a side panel at the window's right edge at its full height.
+function placementOf(root) {
+  const p = root.getAttribute('placement');
+  if (p === null) return 'center';
+  if (root.getAttribute('type') !== 'dialog') { warn('placement is only for dialog mockups'); return 'center'; }
+  if (!['center', 'right'].includes(p)) { warn(`placement="${p}" is not center or right`); return 'center'; }
+  return p;
+}
+
 async function openDialog(rel, base) {
   const run = ++renderRun;
   setStatus('loading');
@@ -1015,6 +1030,7 @@ async function openDialog(rel, base) {
   const frame = document.createElement('div');
   frame.className = 'km-frame';
   frame.dataset.width = root.getAttribute('width') || 'medium';
+  frame.dataset.placement = overlay.dataset.placement = placementOf(root);
   frame.appendChild(frag);
   overlay.appendChild(frame);
   canvas.appendChild(overlay);
@@ -1074,6 +1090,7 @@ async function showMockup(path, stName) {
   const fileUrl = stName ? new URL(path.replace(/\.xml$/, `.${stName}.xml`), PROJECT) : baseUrl;
   canvas.innerHTML = '';
   canvas.removeAttribute('data-type');
+  canvas.removeAttribute('data-placement');
   let base = null;
   if (stName) { const r = await parseMockup(baseUrl); base = r.doc?.documentElement || null; }
   const { doc, error } = await parseMockup(fileUrl);
@@ -1104,6 +1121,7 @@ async function showMockup(path, stName) {
   const frame = document.createElement('div');
   frame.className = 'km-frame';
   frame.dataset.width = root.getAttribute('width') || 'medium';
+  frame.dataset.placement = canvas.dataset.placement = placementOf(root);
   frame.appendChild(frag);
   canvas.dataset.type = state.current.type;
   canvas.appendChild(frame);
@@ -1178,6 +1196,7 @@ async function showCatalogue() {
   state.current = null;
   document.title = `${state.ds.meta.name || 'Design system'} — catalogue`;
   canvas.innerHTML = '';
+  canvas.removeAttribute('data-placement');
   canvas.dataset.type = 'catalogue';
   const ds = state.ds;
   const wrap = document.createElement('div');

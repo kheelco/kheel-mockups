@@ -79,7 +79,9 @@ Around the rendered mockup, the viewer adds a thin bar with:
 The bar and its panels are isolated from the mockup's styles and do not affect its layout.
 
 **Navigation.** `href` moves to another mockup and updates the address, so the browser's back button works.
-`opens` loads a dialog mockup into an overlay; `closes`, the scrim or the Escape key close it.
+`opens` loads a dialog mockup into an overlay; `closes`, the scrim or the Escape key close it. A dialog is centred
+in the overlay, or with `placement="right"` held against its right edge at its full height, with no gap; shown on
+its own it is placed the same way.
 
 **Inspect mode** outlines every component and labels it with its tag on hover, outlines custom regions
 ([mockups.md](mockups.md#custom-regions)) in a second colour, marks every element that has a specification with a

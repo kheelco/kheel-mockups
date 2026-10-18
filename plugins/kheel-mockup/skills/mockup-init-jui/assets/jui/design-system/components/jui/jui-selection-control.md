@@ -1,6 +1,6 @@
 ---
 name: jui-selection-control
-version: 1.1.1
+version: 1.2.0
 kind: composed
 status: active
 summary: SelectionControl control — a single-select dropdown over a fixed or store-backed list, with keyword search in its menu.
@@ -23,7 +23,9 @@ two to five options that should all be visible, and `jui-text-search-control` wh
   placeholder), a clear action (`x`) when an empty value is allowed, a lock when read-only, and the open chevron,
   which turns over while the menu is open.
 - **Menu** (JUI `SelectorMenu`) — shown while open, floating over the page beneath the box and at least as wide
-  as it: a keyword search box, the list of options (default slot) and a message when there are none.
+  as it: a keyword search box, the list of options (default slot) and a message when there are none, then,
+  optionally, an **action link** at the foot (the `action` slot), below a rule: an act that is not a choice, such
+  as adding a new item (`+ Create actor`).
 
 ## Properties
 
@@ -77,17 +79,22 @@ two to five options that should all be visible, and `jui-text-search-control` wh
 | Slot | Accepts | Suggests | Layout | Description |
 | --- | --- | --- | --- | --- |
 | default | text | | One option per line | The options shown in the open menu, as plain elements (`div`), one per option. Mark the highlighted option with `data-active=""`. |
+| action | any | `div` with a `jui-icon` and a label | One line at the foot of the menu, below a rule | The menu's action link (JUI's action link on the selector): one element, its label in the link colour, usually with a leading icon (`plus`). Always shown while the menu is open, whatever the search, even with no options. Left out, the menu has none. Put `opens` or `href` on it for what it does. |
 
 ## Behaviour
 
 Clicking the box opens the menu; typing in the search box filters the options (locally for a fixed list, through
 the store for a searchable store). Choosing an option closes the menu, shows its label and reports the change
 (**Control values**). The clear action empties the value. Escape or clicking elsewhere closes the menu without
-changing the value. Disabled and read-only selectors do not open.
+changing the value. Disabled and read-only selectors do not open. The action link, when there is one, does not
+select anything: clicking it closes the menu and runs its action (typically opening a dialog to create an item,
+which is then selected), passing it the keywords typed so far.
 
 ## Content rules
 
-Option labels are short and distinct, in sentence case. The placeholder says what to choose (`Select a role`).
+Option labels are short and distinct, in sentence case. The placeholder says what to choose (`Select a role`). An
+action link starts with a verb and names what it makes (`Create actor`, `Add customer`), with a `plus` icon for
+adding.
 
 ## Accessibility
 
@@ -100,6 +107,7 @@ selects. The label comes from the enclosing field or cell.
 - Show the menu with `state="open"` to mock the list; put the options in the default slot. The menu floats over
   the content below without moving it, so leave room for it or accept that it covers what is beneath.
 - Keep the search box unless the list is short and fixed.
+- One action link at most, for an act on the list itself (adding to it); never a way to choose a value.
 
 ## Tokens
 
@@ -124,6 +132,7 @@ selects. The label comes from the enclosing field or cell.
 | `--jui-ctl-bg-disabled`, `--jui-ctl-opacity-disabled`, `--jui-ctl-bg-readonly`, `--jui-ctl-opacity-readonly` | semantic | | Disabled and read-only surfaces. |
 | `--jui-ctl-bg-wait`, `--jui-role-surface-muted`, `--jui-role-surface-raised` | semantic | | Waiting surface and its pulse. |
 | `--jui-color-aux-white`, `--jui-color-neutral05`, `--jui-color-neutral20`, `--jui-color-neutral30` | semantic | | Menu search-box surface, list surface, divider and shadow (JUI's `#fff`, `#fcfcfc`, `#eaeaea`, `#ccc`). |
+| `--jui-ctl-text-link`, `--jui-role-text-link-hover` | semantic | | The action link and its hover. |
 
 ## Template
 
@@ -144,6 +153,7 @@ selects. The label comes from the enclosing field or cell.
       <div class="search" data-if="!hide-search"><div><jui-icon name="search"></jui-icon><input type="text" value="{{keywords}}"></div></div>
       <div class="list"><slot></slot></div>
       <div class="empty">{{empty-message}}</div>
+      <div class="action"><slot name="action"></slot></div>
     </div>
   </div>
 </div>
@@ -219,6 +229,11 @@ selects. The label comes from the enclosing field or cell.
 .empty { display: none; margin: 1em; text-align: center; color: var(--jui-ctl-text-disabled); }
 :host(:not([data-filled~="default"])) .empty, :host([state~="no-options"]) .empty { display: block; }
 :host(:not([data-filled~="default"])) .list { display: none; }
+/* The action link at the foot (JUI's selector action link). */
+.action { border-top: 1px solid var(--jui-color-neutral20); padding-top: 0.25em; }
+:host(:not([data-filled~="action"])) .action { display: none; }
+slot[name="action"]::slotted(*) { gap: 0.5em; padding: 0.35em 1em; cursor: pointer; color: var(--jui-ctl-text-link); }
+slot[name="action"]::slotted(:hover) { background: none; color: var(--jui-role-text-link-hover); }
 ```
 
 ## Example
@@ -252,7 +267,9 @@ selects. The label comes from the enclosing field or cell.
       </jui-selection-control>
     </jui-control-field>
     <jui-control-field label="Customer">
-      <jui-selection-control placeholder="Select customer" keywords="zzz" empty-message="No matching customers" state="open focus"/>
+      <jui-selection-control placeholder="Select customer" keywords="zzz" empty-message="No matching customers" state="open focus">
+        <div slot="action"><jui-icon name="plus" size="small"></jui-icon>Add customer</div>
+      </jui-selection-control>
     </jui-control-field>
   </div>
   <div mt="12" mb="12"></div>

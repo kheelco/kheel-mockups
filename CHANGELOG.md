@@ -3,8 +3,16 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
-## Unreleased
+## 0.15.0
 
+- **An action link in a selector.** `jui-selection-control` (1.2.0) takes an `action` slot: the action link JUI
+  shows at the foot of a selector's menu, below a rule, for an act on the list such as `+ Add customer`. Bring it in
+  with `mockup-init-jui`'s update.
+- **Side-panel dialogs.** A dialog mockup takes `placement="right"` to be drawn as a side panel: against the
+  window's right edge at its full height, over the scrim, at its `width`, whether opened from another mockup or
+  shown on its own. The viewer (0.11.0) warns about any other value, or about `placement` on a page or section. In
+  the JUI design system a `slider` `jui-modal-dialog` (1.2.0) is drawn this way, its content filling the panel. Bring the viewer in with
+  `mockup-init`'s or `mockup-init-jui`'s update.
 - **JUI tables and galleries scroll within the screen.** `jui-table` and `jui-gallery` (1.2.0) page by
   infinite scrolling, as in JUI, which only works when their height is bounded: unbounded, JUI loads every page of
   the store at once. They now take the height of their container, or with `grow` the height left in a column, and
