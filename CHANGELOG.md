@@ -3,6 +3,12 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
+## 0.15.2
+
+- **Side-panel dialogs scroll their body only.** A `slider` `jui-modal-dialog` (1.2.1) longer than the window now
+  scrolls its body between the fixed header and footer, as in JUI, instead of scrolling the whole panel. Bring it in
+  with `mockup-init-jui`'s update.
+
 ## 0.15.1
 
 - **Listings scroll within a split panel.** `jui-split-panel` (1.0.1) lets its main area shrink below its content,

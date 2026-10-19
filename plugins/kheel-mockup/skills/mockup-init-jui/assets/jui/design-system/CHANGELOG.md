@@ -13,6 +13,12 @@ removing it.
 
 ## Unreleased
 
+### A slider dialog's body scrolls under its header and footer — Mirrors JUI
+
+`jui-modal-dialog` 1.2.1: a `slider` dialog's host takes the panel's height (`height: 100%`, `min-height: 0`), so a
+body longer than the panel scrolls between the fixed header and footer, as in JUI. Before this the host grew to its
+content inside the viewer's frame, so the whole panel scrolled, header and footer with it. Nothing for jui-stack.
+
 ### A split panel's main area is bounded — Mirrors JUI
 
 `jui-split-panel` 1.0.1: its main area can shrink below its content (`min-height: 0`), so a gallery or table in a
