@@ -1,6 +1,6 @@
 // Mockup runtime — renders XML mockups from a markdown design system, in the browser, without a build.
 // Part of the mechanism, not the project: replaced as a unit when the mechanism is updated. Do not edit.
-export const VERSION = '0.11.0';
+export const VERSION = '0.11.1';
 
 // This file lives in the design system folder; the project space is the folder above it.
 const DS_URL = new URL('./', import.meta.url);
@@ -731,9 +731,9 @@ body{min-height:100vh}
 :is(#km-canvas[data-type=section],#km-canvas[data-type=dialog],.km-overlay)>.km-frame[data-width=small]{max-width:480px}
 :is(#km-canvas[data-type=section],#km-canvas[data-type=dialog],.km-overlay)>.km-frame[data-width=medium]{max-width:800px}
 :is(#km-canvas[data-type=section],#km-canvas[data-type=dialog],.km-overlay)>.km-frame[data-width=large]{max-width:1200px}
-#km-canvas[data-type=dialog][data-placement=right]{padding:${BAR_HEIGHT}px 0 0;align-items:flex-end}
+#km-canvas[data-type=dialog][data-placement=right]{padding:${BAR_HEIGHT}px 0 0 48px;align-items:flex-end}
 #km-canvas[data-type=dialog][data-placement=right]>.km-frame{height:var(--viewport-height)}
-.km-overlay[data-placement=right]{justify-content:flex-end;padding:0}
+.km-overlay[data-placement=right]{justify-content:flex-end;padding:0 0 0 48px}
 .km-overlay[data-placement=right]>.km-frame{height:100%}
 :is(#km-canvas,.km-overlay)>.km-frame[data-placement=right]{display:flex;flex-direction:column}
 :is(#km-canvas,.km-overlay)>.km-frame[data-placement=right]>*{flex:1 0 auto}
