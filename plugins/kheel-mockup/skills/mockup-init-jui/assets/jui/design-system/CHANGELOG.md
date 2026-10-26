@@ -13,6 +13,13 @@ removing it.
 
 ## Unreleased
 
+### A centred dialog's body scrolls under its header and footer — Mirrors JUI
+
+`jui-modal-dialog` 1.2.2: the host is a column that can shrink (`display: flex`, `min-height: 0`) and the dialog
+shrinks with it (`flex: 0 1 auto`), so a centred dialog held to the window's height by the viewer (0.11.2) scrolls
+its body between the fixed header and footer, as in JUI. Before this the dialog grew to its content and the frame
+around it scrolled, header and footer with it. Nothing for jui-stack.
+
 ### A slider dialog's body scrolls under its header and footer — Mirrors JUI
 
 `jui-modal-dialog` 1.2.1: a `slider` dialog's host takes the panel's height (`height: 100%`, `min-height: 0`), so a

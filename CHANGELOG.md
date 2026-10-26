@@ -3,6 +3,14 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
+## 0.15.3
+
+- **Tall dialogs scroll their body only.** A centred dialog taller than the window is held to the window's height,
+  whether opened over a page or shown on its own, and a `jui-modal-dialog` (1.2.2) shrinks with it, so only its body
+  scrolls between the fixed header and footer, as in JUI; before this the whole dialog scrolled, header and footer
+  with it. A dialog whose design system can't scroll its body still scrolls as a whole. Bring the viewer (0.11.2) in
+  with `mockup-init`'s or `mockup-init-jui`'s update, and the dialog with `mockup-init-jui`'s.
+
 ## 0.15.2
 
 - **Side-panel dialogs scroll their body only.** A `slider` `jui-modal-dialog` (1.2.1) longer than the window now

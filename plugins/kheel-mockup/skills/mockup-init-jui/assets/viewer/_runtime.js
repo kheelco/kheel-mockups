@@ -1,6 +1,6 @@
 // Mockup runtime — renders XML mockups from a markdown design system, in the browser, without a build.
 // Part of the mechanism, not the project: replaced as a unit when the mechanism is updated. Do not edit.
-export const VERSION = '0.11.1';
+export const VERSION = '0.11.2';
 
 // This file lives in the design system folder; the project space is the folder above it.
 const DS_URL = new URL('./', import.meta.url);
@@ -728,6 +728,8 @@ body{min-height:100vh}
 #km-canvas[data-type=section],#km-canvas[data-type=dialog]{padding:${BAR_HEIGHT + 32}px 24px 32px;align-items:center}
 #km-canvas[data-type=dialog]{background:var(--color-scrim,rgba(15,23,42,.45))}
 #km-canvas[data-type=section]>.km-frame,#km-canvas[data-type=dialog]>.km-frame{width:100%;flex:none}
+#km-canvas[data-type=dialog]:not([data-placement=right])>.km-frame{max-height:calc(var(--viewport-height) - 64px);overflow:auto}
+:is(#km-canvas[data-type=dialog]:not([data-placement=right]),.km-overlay:not([data-placement=right]))>.km-frame>*{flex:0 1 auto;min-height:0}
 :is(#km-canvas[data-type=section],#km-canvas[data-type=dialog],.km-overlay)>.km-frame[data-width=small]{max-width:480px}
 :is(#km-canvas[data-type=section],#km-canvas[data-type=dialog],.km-overlay)>.km-frame[data-width=medium]{max-width:800px}
 :is(#km-canvas[data-type=section],#km-canvas[data-type=dialog],.km-overlay)>.km-frame[data-width=large]{max-width:1200px}
@@ -742,7 +744,7 @@ body{min-height:100vh}
 .km-overlay{position:fixed;inset:${BAR_HEIGHT}px 0 0 0;display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000}
 #km-canvas.km-panel-open .km-overlay{right:380px}
 .km-overlay>.km-scrim{position:absolute;inset:0;background:var(--color-scrim,rgba(15,23,42,.45))}
-.km-overlay>.km-frame{position:relative;width:100%;max-width:800px;max-height:100%;overflow:auto}
+.km-overlay>.km-frame{position:relative;width:100%;max-width:800px;max-height:100%;overflow:auto;display:flex;flex-direction:column}
 .km-inspect-outline{outline:1px dashed #8b5cf6!important;outline-offset:-1px}
 .km-inspect-custom{outline:2px dashed #f97316!important;outline-offset:2px}
 .km-highlight{outline:2px solid #f59e0b!important;outline-offset:2px}
