@@ -65,7 +65,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-info-block](components/jui/jui-info-block.md) | 1.0.1 | elemental | component `InfoBlock` | InfoBlock component — a heading with a subtitle over lines of small icon-and-text facts. |
 | [jui-info-block-item](components/jui/jui-info-block-item.md) | 1.0.0 | composed | component `InfoBlock item` | InfoBlock item component — one icon-and-value fact in an info line, optionally a link. |
 | [jui-info-block-line](components/jui/jui-info-block-line.md) | 1.0.0 | elemental | component `InfoBlock line` | InfoBlock line component — one row of items in an info block. |
-| [jui-modal-dialog](components/jui/jui-modal-dialog.md) | 1.2.1 | composed | component `ModalDialog` | ModalDialog component — the dialog frame with a titled header, a body and a footer of actions. |
+| [jui-modal-dialog](components/jui/jui-modal-dialog.md) | 1.2.2 | composed | component `ModalDialog` | ModalDialog component — the dialog frame with a titled header, a body and a footer of actions. |
 | [jui-notification-block](components/jui/jui-notification-block.md) | 1.0.1 | composed | component `NotificationBlock` | NotificationBlock component — an inline notice, success or error message with a coloured side bar. |
 | [jui-notification-dialog](components/jui/jui-notification-dialog.md) | 1.0.2 | composed | component `NotificationDialog` | NotificationDialog component — a ready-made confirm, alert, error or save-changes dialog. |
 | [jui-notifier](components/jui/jui-notifier.md) | 1.0.0 | elemental | component `Notifier` | Notifier component — a transient toast message in the bottom-left corner of the screen. |

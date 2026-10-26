@@ -1,6 +1,6 @@
 ---
 name: jui-modal-dialog
-version: 1.2.1
+version: 1.2.2
 kind: composed
 status: active
 summary: ModalDialog component — the dialog frame with a titled header, a body and a footer of actions.
@@ -148,7 +148,7 @@ control needs an accessible name (`Close`).
 
 ```css
 :host {
-  display: block;
+  display: flex; flex-direction: column; min-height: 0;
   --cpt-modaldialog-surface: var(--jui-comp-dialog-surface);
   --cpt-modaldialog-border: var(--jui-comp-dialog-border);
   --cpt-modaldialog-border-width: 1px;
@@ -205,7 +205,7 @@ control needs an accessible name (`Close`).
 :host([type="slider"]) { height: 100%; min-height: 0; --cpt-modaldialog-radius: 0; --cpt-modaldialog-heading-size: 1.4em; --cpt-modaldialog-heading-margin-left: var(--jui-space-4); --cpt-modaldialog-heading-margin-top: 12px; }
 
 .dialog {
-  display: flex; flex-direction: column; max-height: 100%; width: 100%; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; flex: 0 1 auto; min-height: 0; max-height: 100%; width: 100%; position: relative; overflow: hidden;
   background: var(--cpt-modaldialog-surface);
   border: var(--cpt-modaldialog-border-width) solid var(--cpt-modaldialog-border);
   border-radius: var(--cpt-modaldialog-radius);

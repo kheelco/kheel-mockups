@@ -82,7 +82,10 @@ The bar and its panels are isolated from the mockup's styles and do not affect i
 `opens` loads a dialog mockup into an overlay; `closes`, the scrim or the Escape key close it. A dialog is centred
 in the overlay, or with `placement="right"` held against its right edge at its full height, with no gap there; shown on
 its own it is placed the same way. A dialog never fills the window: a centred one keeps 24px around it, and a side
-panel at least 48px of the page showing to its left, however wide its `width`.
+panel at least 48px of the page showing to its left, however wide its `width`. A centred dialog taller than the window
+is held to the window's height, less that margin, and offered the height as its own: one whose design system's dialog
+scrolls its body (as the JUI dialog does, between its fixed header and footer) scrolls only that; any other scrolls as
+a whole.
 
 **Inspect mode** outlines every component and labels it with its tag on hover, outlines custom regions
 ([mockups.md](mockups.md#custom-regions)) in a second colour, marks every element that has a specification with a
