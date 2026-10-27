@@ -2,7 +2,7 @@
   "name": "kheel-mockup-preview",
   "displayName": "Kheel Mockup Preview",
   "description": "Shows a mockup project space's viewer beside the mockup you are editing, reloading as files change.",
-  "version": "0.15.3",
+  "version": "0.16.0",
   "publisher": "kheel",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {

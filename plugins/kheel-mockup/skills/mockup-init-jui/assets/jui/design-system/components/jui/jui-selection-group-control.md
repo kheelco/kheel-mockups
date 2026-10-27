@@ -1,6 +1,6 @@
 ---
 name: jui-selection-group-control
-version: 1.1.0
+version: 1.1.1
 kind: elemental
 status: active
 summary: SelectionGroupControl control — a laid-out group of checkbox or radio options, each with a label and optional description.
@@ -14,8 +14,9 @@ Represents JUI's **SelectionGroupControl**: all the options visible at once, eac
 (`Controls.checkGroup`, pick any) or a radio button (`Controls.radioGroup`, pick one). The value is the list of
 selected option values. Use it when there are two to about six options that people should compare, especially
 when each needs a description. Use `jui-selection-control` or `jui-multi-selection-control` for longer lists,
-`jui-check-control` for a single yes/no, and `jui-multi-check-control` for a compact pill of short options. The
-group's own label comes from the enclosing `jui-control-form-cell` or `jui-control-field`.
+`jui-check-control` for a single yes/no, and `jui-multi-check-control` for a compact pill of short options, one of
+which is on (it has no pick-any form). The group's own label comes from the enclosing `jui-control-form-cell` or
+`jui-control-field`.
 
 ## Anatomy
 

@@ -1,4 +1,4 @@
-<mockup type="dialog" title="New project" design-system="0.2.0" width="medium">
+<mockup type="dialog" title="New project" design-system="0.3.0" width="medium">
   <specification>
     ModalDialogCreator.dialog(...) around a ControlForm; returns the created project (IProcessable). Follows
     **Control values**: the name is required and validated on Create.

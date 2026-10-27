@@ -3,6 +3,15 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
+## 0.16.0
+
+- **The JUI multi-check pill holds one value, as in JUI.** `jui-multi-check-control` (2.0.0) and its mapping
+  described a pill of options any of which could be on, holding a list; JUI's MultiCheckControl switches one on at a
+  time and holds one value. They now say so, and the mapping puts the label on the side JUI does. A mockup with
+  several options on should become a checkbox `jui-selection-group-control`, a `jui-multi-selection-control`, or a
+  component of the project's own. The JUI design system's version moves to 0.3.0. Bring it in with
+  `mockup-init-jui`'s update.
+
 ## 0.15.3
 
 - **Tall dialogs scroll their body only.** A centred dialog taller than the window is held to the window's height,
