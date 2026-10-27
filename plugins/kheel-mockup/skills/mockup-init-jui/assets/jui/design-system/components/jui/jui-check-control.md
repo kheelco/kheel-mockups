@@ -1,6 +1,6 @@
 ---
 name: jui-check-control
-version: 1.1.1
+version: 1.1.2
 kind: composed
 status: active
 summary: CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean.
@@ -14,7 +14,8 @@ Represents JUI's **CheckControl**: one on/off choice (value type `Boolean`), dra
 toggle variant, as a slider switch. Unlike other controls it carries its own option label (and an optional
 description) beside the box, because that text *is* the choice — `I agree to the terms`, `Send me updates`. In a
 form it usually sits in a cell with no label. Use a checkbox `jui-selection-group-control` for several
-independent options shown together, and `jui-multi-check-control` for a compact segmented set.
+independent options shown together, and `jui-multi-check-control` for a compact pill of short options, one of
+which is on.
 
 ## Anatomy
 

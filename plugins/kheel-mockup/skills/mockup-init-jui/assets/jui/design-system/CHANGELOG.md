@@ -13,6 +13,21 @@ removing it.
 
 ## Unreleased
 
+### MultiCheckControl holds one value — Mirrors JUI
+
+`jui-multi-check-control` 2.0.0 and its mapping now say what JUI's MultiCheckControl does: a pill of options of
+which exactly one is on, its options radio inputs and its value one `V` (the first option until a value is set).
+They had described a pill of independent toggles holding `List<V>`, which JUI can't build. A mockup with several
+segments `data-selected` is redrawn as a checkbox `jui-selection-group-control` or `jui-multi-selection-control`,
+or, where the pill is wanted, as an application component mapped to the application's own control. The mapping
+also corrects the label's side (JUI puts the pill first unless `cfg.left()`) and names `labelBold()` and
+`expand()`. `jui-check-control`, `jui-multi-selection-control` (1.1.2) and `jui-selection-group-control` (1.1.1)
+point to it accordingly. The design system moves to 0.3.0.
+
+Nothing to change in JUI's control, but jui-stack's own catalogue (`jui-skills/jui-ui/catalogue.md`) describes
+`MultiCheckControl<V>` as "a group of checkboxes yielding a set of values"; it needs the same correction. If
+jui-stack later gives the control a multi-select mode, the mapping should name it.
+
 ### A centred dialog's body scrolls under its header and footer — Mirrors JUI
 
 `jui-modal-dialog` 1.2.2: the host is a column that can shrink (`display: flex`, `min-height: 0`) and the dialog

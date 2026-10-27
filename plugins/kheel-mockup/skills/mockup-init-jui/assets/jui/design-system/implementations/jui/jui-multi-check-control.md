@@ -1,6 +1,6 @@
 ---
 component: jui-multi-check-control
-component-version: 1
+component-version: 2
 target: jui
 ---
 
@@ -8,14 +8,14 @@ target: jui
 
 ## Maps to
 
-The **MultiCheckControl** control, `com.effacy.jui.ui.client.control.MultiCheckControl<V>` (value type
-`List<V>`), a pill of independently toggled options.
+The **MultiCheckControl** control, `com.effacy.jui.ui.client.control.MultiCheckControl<V>` (value type `V`), a
+pill of options exactly one of which is on. Despite the name, its options are radio inputs sharing one name.
 
 ```java
 Controls.<String>checkMulti(cfg -> {
-    cfg.option("mon", "Mon");
-    cfg.option("tue", "Tue");
-    cfg.option("wed", "Wed");
+    cfg.option("day", "Day");
+    cfg.option("week", "Week");
+    cfg.option("month", "Month");
 });
 ```
 
@@ -23,9 +23,11 @@ Controls.<String>checkMulti(cfg -> {
 
 | Property | Maps to | Notes |
 | --- | --- | --- |
-| (default slot) | `cfg.option(value, label)` per option | `data-selected` options are those in the value: `ctl.setValue(List.of("mon", "wed"))`. |
-| label | `cfg.label(…)` | Check for this control. |
-| bold, reverse, expand | `.item.bold`, `.item.reverse`, `.item.expand` presentation | Check the configuration methods. |
+| (default slot) | `cfg.option(value, label)` per option | The `data-selected` option is the value: `ctl.setValue("week")`. A `null` value, or none set, selects the first option. |
+| label | `cfg.label(…)` | |
+| bold | `cfg.labelBold()` | |
+| reverse | (no `cfg.left()`) | JUI puts the pill first and the label after it unless `cfg.left()`, so the mockup's default (label first) is `cfg.left()` and `reverse` is JUI's default. |
+| expand | `cfg.expand()` | |
 | disabled, read-only, invalid, waiting | as for `jui-text-control` | |
 
 ## Slots
@@ -46,6 +48,11 @@ Controls.<String>checkMulti(cfg -> {
 | empty / filled | Follows the value: `setValue(…)` assigns it without dirtying; `value()` reads it. |
 
 ## Notes
+
+JUI has no multi-select pill. A mockup with several segments `data-selected` can't be built with this control:
+redraw it as a checkbox `jui-selection-group-control` (`Controls.checkGroup`) or a `jui-multi-selection-control`,
+or, if the pill is wanted, as an application component mapped to a control of the application's own (one drawn
+with the `--jui-multicheckctl-*` variables matches this look).
 
 JUI has no token for the inline label's size: it inherits the surrounding text. Until JUI adds `--jui-multicheckctl-label-size` (see `CHANGELOG.md`), size it with CSS on the control (`.css("font-size: …")`) where it must differ from the surrounding text.
 

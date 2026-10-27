@@ -1,4 +1,4 @@
-<mockup type="page" title="Projects" design-system="0.2.0" states="empty">
+<mockup type="page" title="Projects" design-system="0.3.0" states="empty">
   <specification>
     The projects the signed-in user can see, as a gallery. The page is a TabNavigator (VERTICAL) whose active tab
     holds a TitlePanel; the toolbar is an ActionBarLayout; the gallery is backed by a PaginatedStore of projects.

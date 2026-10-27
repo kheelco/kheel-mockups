@@ -1,6 +1,6 @@
 ---
 name: jui-multi-selection-control
-version: 1.1.1
+version: 1.1.2
 kind: composed
 status: active
 summary: MultiSelectionControl control — a dropdown for picking several values, shown as text or as chips, with a checkbox list menu.
@@ -14,7 +14,7 @@ Represents JUI's **MultiSelectionControl**: pick any number of values from a fix
 type `List<V>`). The selection shows in the box as text or as removable chips; the menu lists the options with a
 checkbox each. Use it for tags, assignees, categories. Use `jui-selection-control` for exactly one value, a
 checkbox `jui-selection-group-control` when there are only a few options that should all be visible, and
-`jui-multi-check-control` for a compact segmented on/off set. The control draws no label; the enclosing
+`jui-check-control` for a single on/off choice. The control draws no label; the enclosing
 `jui-control-form-cell` or `jui-control-field` does.
 
 ## Anatomy

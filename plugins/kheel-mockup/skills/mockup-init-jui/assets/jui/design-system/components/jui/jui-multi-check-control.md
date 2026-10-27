@@ -1,26 +1,28 @@
 ---
 name: jui-multi-check-control
-version: 1.1.0
+version: 2.0.0
 kind: elemental
 status: active
-summary: MultiCheckControl control — a compact pill of options, any of which can be switched on, yielding a set of values.
+summary: MultiCheckControl control — a compact pill of short options, exactly one of which is switched on, yielding one value.
 ---
 
 # MultiCheckControl (control)
 
 ## Purpose
 
-Represents JUI's **MultiCheckControl**: a set of options drawn as one rounded pill of segments, each switched on
-or off independently, so the value is the set of options switched on (`List<V>`). It is a compact alternative to a
-list of checkboxes for short, related options — days of the week, channels, sizes. Use a checkbox
-`jui-selection-group-control` when options need descriptions or are long, `jui-multi-selection-control` when
-there are many, and `jui-check-control` for a single on/off choice. As a control it takes its field label from
-the enclosing `jui-control-form-cell` or `jui-control-field`; it may also carry a short inline label of its own.
+Represents JUI's **MultiCheckControl**: a few options drawn as one rounded pill of segments, exactly one of which
+is switched on, so the value is that option's value (`V`). Despite its name it is a segmented control: its options
+are radio buttons, and switching one on switches the others off. It is a compact alternative to a radio group for
+short, related options — a period, a view, a size. Use a radio `jui-selection-group-control` when options need
+descriptions or are long, `jui-selection-control` when there are many, and `jui-check-control` for a single on/off
+choice. JUI has no pill that switches several options on at once: see *Rules of use*. As a control it takes its
+field label from the enclosing `jui-control-form-cell` or `jui-control-field`; it may also carry a short inline
+label of its own.
 
 ## Anatomy
 
 An item (JUI `.item`) with an optional inline label, a spacer and the toggle pill (JUI `div.toggle`): a rounded
-grey track holding one segment per option (default slot). Segments that are on are filled in the active colour
+grey track holding one segment per option (default slot). The segment that is on is filled in the active colour
 with semibold white text.
 
 ## Properties
@@ -33,7 +35,7 @@ with semibold white text.
 | expand | variant | boolean | | The spacer grows so label and pill sit at opposite edges (JUI `expand`). |
 | disabled | state | boolean | | Disabled (JUI `disable()`). |
 | read-only | state | boolean | | Read-only (JUI `readOnly`). |
-| invalid | state | boolean | | Failed validation, such as none selected when one is required. |
+| invalid | state | boolean | | Failed validation. |
 | waiting | state | boolean | | Waiting for its value: contents hidden. |
 
 ## Variants
@@ -61,12 +63,13 @@ them.
 
 | Slot | Accepts | Suggests | Layout | Description |
 | --- | --- | --- | --- | --- |
-| default | text | | Segments side by side in the pill | One plain element (`span`) per option. Mark options that are on with `data-selected=""`. |
+| default | text | | Segments side by side in the pill | One plain element (`span`) per option. Mark the one option that is on with `data-selected=""`. |
 
 ## Behaviour
 
-Clicking a segment switches that option on or off and reports the new set (**Control values**). Any number of
-options may be on, including none.
+Clicking a segment switches that option on, and the one that was on off, and reports the new value (**Control
+values**). Exactly one option is always on: until a value is set JUI switches the first on, and clicking the
+segment that is already on changes nothing.
 
 ## Content rules
 
@@ -74,12 +77,16 @@ Option labels are one short word or abbreviation (`Mon`, `Email`, `S`, `M`, `L`)
 
 ## Accessibility
 
-Each segment is a checkbox (JUI hides the input under the label) and is announced with its label and state;
-Space toggles the focused one.
+The segments are a radio group (JUI hides each radio input under its label), each announced with its label and
+whether it is selected; the arrow keys move the selection from one to the next.
 
 ## Rules of use
 
-- For one-of-several choices this is the wrong control: use a radio `jui-selection-group-control`.
+- Mark exactly one option `data-selected`, never several or none.
+- For several options on at once this is the wrong control, whatever its name: JUI's MultiCheckControl holds one
+  value. Use a checkbox `jui-selection-group-control`, or `jui-multi-selection-control` when there are many. If the
+  design needs a pill of independent toggles, add it to the project's design system as a component of its own,
+  mapped to the application's control, rather than marking several segments here.
 - Don't use it for long labels; the pill doesn't wrap.
 
 ## Tokens
@@ -191,10 +198,10 @@ Space toggles the focused one.
 <div layout="column" gap="4">
   <div layout="row" gap="6" wrap="" align="center">
     <jui-multi-check-control>
-      <span data-selected="">Mon</span><span>Tue</span><span data-selected="">Wed</span><span>Thu</span><span data-selected="">Fri</span>
+      <span>Day</span><span data-selected="">Week</span><span>Month</span><span>Year</span>
     </jui-multi-check-control>
-    <jui-multi-check-control label="Notify by" bold="">
-      <span data-selected="">Email</span><span>SMS</span><span>Push</span>
+    <jui-multi-check-control label="View" bold="">
+      <span data-selected="">List</span><span>Board</span><span>Calendar</span>
     </jui-multi-check-control>
     <jui-multi-check-control state="focus">
       <span>S</span><span data-selected="">M</span><span>L</span>
@@ -202,7 +209,7 @@ Space toggles the focused one.
   </div>
   <div layout="row" gap="6" wrap="" align="center">
     <jui-multi-check-control invalid="">
-      <span>Email</span><span>SMS</span><span>Push</span>
+      <span data-selected="">Email</span><span>SMS</span><span>Push</span>
     </jui-multi-check-control>
     <jui-multi-check-control disabled="">
       <span data-selected="">Email</span><span>SMS</span><span>Push</span>
@@ -211,9 +218,9 @@ Space toggles the focused one.
       <span data-selected="">Email</span><span>SMS</span><span>Push</span>
     </jui-multi-check-control>
   </div>
-  <jui-control-field label="Working days" description="The days reminders may be sent.">
+  <jui-control-field label="Reminders" description="How often reminders are sent.">
     <jui-multi-check-control>
-      <span data-selected="">Mon</span><span data-selected="">Tue</span><span data-selected="">Wed</span><span data-selected="">Thu</span><span>Fri</span>
+      <span>Daily</span><span data-selected="">Weekly</span><span>Monthly</span>
     </jui-multi-check-control>
   </jui-control-field>
 </div>

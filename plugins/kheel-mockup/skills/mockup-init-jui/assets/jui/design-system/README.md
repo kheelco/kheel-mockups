@@ -1,6 +1,6 @@
 ---
 name: JUI
-version: 0.2.0
+version: 0.3.0
 prefix: jui
 source: local
 ---
@@ -44,15 +44,15 @@ This file is the manifest: it lists everything the design system contains. `inde
 | --- | --- | --- | --- | --- |
 | [jui-avatar-selector-control](components/jui/jui-avatar-selector-control.md) | 1.0.1 | composed | control `AvatarSelectorControl` | AvatarSelectorControl control — shows the current avatar with change and remove actions, and a panel to pick a stock avatar or upload and crop an image. |
 | [jui-calendar-control](components/jui/jui-calendar-control.md) | 1.1.1 | composed | control `CalendarControl` | CalendarControl control — a date field that opens a month calendar to pick a date. |
-| [jui-check-control](components/jui/jui-check-control.md) | 1.1.1 | composed | control `CheckControl` | CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean. |
+| [jui-check-control](components/jui/jui-check-control.md) | 1.1.2 | composed | control `CheckControl` | CheckControl control — a single checkbox (or toggle slider) with its own label and description, holding a boolean. |
 | [jui-file-upload-control](components/jui/jui-file-upload-control.md) | 1.0.0 | composed | control `FileUploadControl` | FileUploadControl control — a drag-and-drop region for uploading files, with the attached files listed beneath it. |
 | [jui-formatted-text-editor](components/jui/jui-formatted-text-editor.md) | 1.0.0 | composed | control `FormattedTextEditor` | FormattedTextEditor control — a rich text editor with a configurable toolbar of formatting tools, holding a formatted text document. |
-| [jui-multi-check-control](components/jui/jui-multi-check-control.md) | 1.1.0 | elemental | control `MultiCheckControl` | MultiCheckControl control — a compact pill of options, any of which can be switched on, yielding a set of values. |
-| [jui-multi-selection-control](components/jui/jui-multi-selection-control.md) | 1.1.1 | composed | control `MultiSelectionControl` | MultiSelectionControl control — a dropdown for picking several values, shown as text or as chips, with a checkbox list menu. |
+| [jui-multi-check-control](components/jui/jui-multi-check-control.md) | 2.0.0 | elemental | control `MultiCheckControl` | MultiCheckControl control — a compact pill of short options, exactly one of which is switched on, yielding one value. |
+| [jui-multi-selection-control](components/jui/jui-multi-selection-control.md) | 1.1.2 | composed | control `MultiSelectionControl` | MultiSelectionControl control — a dropdown for picking several values, shown as text or as chips, with a checkbox list menu. |
 | [jui-number-control](components/jui/jui-number-control.md) | 1.1.0 | composed | control `NumberControl` | NumberControl control — a numeric input with decrement and increment steppers. |
 | [jui-panel-selection-control](components/jui/jui-panel-selection-control.md) | 1.0.0 | elemental | control `PanelSelectionControl` | PanelSelectionControl control — a multi-selection drawn as a grid of selectable tiles. |
 | [jui-selection-control](components/jui/jui-selection-control.md) | 1.2.0 | composed | control `SelectionControl` | SelectionControl control — a single-select dropdown over a fixed or store-backed list, with keyword search in its menu. |
-| [jui-selection-group-control](components/jui/jui-selection-group-control.md) | 1.1.0 | elemental | control `SelectionGroupControl` | SelectionGroupControl control — a laid-out group of checkbox or radio options, each with a label and optional description. |
+| [jui-selection-group-control](components/jui/jui-selection-group-control.md) | 1.1.1 | elemental | control `SelectionGroupControl` | SelectionGroupControl control — a laid-out group of checkbox or radio options, each with a label and optional description. |
 | [jui-text-area-control](components/jui/jui-text-area-control.md) | 1.1.0 | composed | control `TextAreaControl` | TextAreaControl control — a multi-line text input with a configurable number of rows and an optional character counter. |
 | [jui-text-control](components/jui/jui-text-control.md) | 1.1.0 | composed | control `TextControl` | TextControl control — a single-line text input with optional icons, clear action and the standard control states. |
 | [jui-text-search-control](components/jui/jui-text-search-control.md) | 1.1.1 | composed | control `TextSearchControl` | TextSearchControl control — a text input that offers matching values from a list or store as you type. |
