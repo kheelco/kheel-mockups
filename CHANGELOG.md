@@ -3,6 +3,16 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
+## 0.17.0
+
+- **Publish one folder of mockups, with what it needs.** `mockup-publish` stages the folders you name and now
+  brings in, file by file, what their mockups need from elsewhere: sections they include (a shared app shell),
+  dialogs they open, state files and images. So "publish the mockups in billing" publishes billing and works,
+  without the agent adding whole folders to make it work or publishing everything. The catalogue lists only the
+  named folders' mockups. Links to mockups outside the published set are listed for you rather than followed;
+  `--follow-links` stages them too, one step. The script also stops when the staged copy is over the artifact's
+  255-file limit.
+
 ## 0.16.0
 
 - **The JUI multi-check pill holds one value, as in JUI.** `jui-multi-check-control` (2.0.0) and its mapping
