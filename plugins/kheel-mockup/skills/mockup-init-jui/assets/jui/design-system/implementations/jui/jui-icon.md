@@ -64,6 +64,7 @@ name in camel case — check it exists in `FontAwesome` for the JUI version in u
 | `clock` | `FontAwesome.clock()` (`fa-clock`) |
 | `code` | `FontAwesome.code()` (`fa-code`) |
 | `copy` | `FontAwesome.copy()` (`fa-copy`) |
+| `credit-card` | `FontAwesome.creditCard()` (`fa-credit-card`) |
 | `download` | `FontAwesome.download()` (`fa-download`) |
 | `ellipsis` | `FontAwesome.ellipsis()` (`fa-ellipsis`) |
 | `external-link` | `FontAwesome.arrowUpRightFromSquare()` (`fa-arrow-up-right-from-square`) |

@@ -3,6 +3,11 @@
 Each release of kheel-mockups, newest first. The release workflow uses a version's section as its release notes
 (see [README.md](README.md#releasing)).
 
+## Unreleased
+
+- **A credit card icon.** The JUI design system's icons gain `credit-card`, for pages about payment, with its
+  FontAwesome equivalent in the `jui-icon` mapping. Bring it in with `mockup-init-jui`'s update.
+
 ## 0.17.0
 
 - **Publish one folder of mockups, with what it needs.** `mockup-publish` stages the folders you name and now
