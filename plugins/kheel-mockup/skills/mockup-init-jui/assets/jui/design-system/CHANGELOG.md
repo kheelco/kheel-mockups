@@ -13,6 +13,12 @@ removing it.
 
 ## Unreleased
 
+### Credit card icon — Mirrors JUI
+
+`credit-card` (Lucide) added to the icons, for a page about payment such as an organisation's billing, with its
+FontAwesome equivalent, `FontAwesome.creditCard()` (`fa-credit-card`), in the `jui-icon` mapping. Nothing for
+jui-stack.
+
 ### MultiCheckControl holds one value — Mirrors JUI
 
 `jui-multi-check-control` 2.0.0 and its mapping now say what JUI's MultiCheckControl does: a pill of options of
