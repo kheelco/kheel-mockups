@@ -1,6 +1,6 @@
 ---
 name: JUI
-version: 0.3.0
+version: 0.4.0
 prefix: jui
 source: local
 ---
@@ -56,7 +56,8 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-text-area-control](components/jui/jui-text-area-control.md) | 1.1.0 | composed | control `TextAreaControl` | TextAreaControl control — a multi-line text input with a configurable number of rows and an optional character counter. |
 | [jui-text-control](components/jui/jui-text-control.md) | 1.1.0 | composed | control `TextControl` | TextControl control — a single-line text input with optional icons, clear action and the standard control states. |
 | [jui-text-search-control](components/jui/jui-text-search-control.md) | 1.1.1 | composed | control `TextSearchControl` | TextSearchControl control — a text input that offers matching values from a list or store as you type. |
-| [jui-button](components/jui/jui-button.md) | 1.0.0 | composed | component `Button` | Button component — a stand-alone button component with a label, an icon, a variant and an asynchronous click handler. |
+| [jui-button](components/jui/jui-button.md) | 1.1.0 | composed | component `Button` | Button component — a stand-alone button with a label, an icon, a variant, an asynchronous click handler and optional options in a menu. |
+| [jui-button-option](components/jui/jui-button-option.md) | 1.0.0 | composed | component `Button.Config.Option` | Button.Config.Option — one option of a button with options, with a label, an optional code or icon and a line. |
 | [jui-card-navigator](components/jui/jui-card-navigator.md) | 1.1.0 | composed | component `CardNavigator` | CardNavigator component — a grid of cards leading to sections, each shown under a breadcrumb back to the grid. |
 | [jui-card-navigator-card](components/jui/jui-card-navigator-card.md) | 1.0.1 | elemental | component `CardNavigator card` | CardNavigator card component — one card in a card navigator's top level, with a label and a description. |
 | [jui-control-form](components/jui/jui-control-form.md) | 1.1.1 | composed | component `ControlForm` | ControlForm component — a form of labelled controls laid out in groups and rows, with a form-level error block. |
@@ -74,7 +75,7 @@ This file is the manifest: it lists everything the design system contains. `inde
 | [jui-progress-sequence](components/jui/jui-progress-sequence.md) | 1.0.0 | elemental | component `ProgressSequence` | ProgressSequence component — a row of labelled steps joined by a line, showing progress through a multi-step flow. |
 | [jui-progress-sequence-step](components/jui/jui-progress-sequence-step.md) | 1.0.0 | composed | component `ProgressSequence step` | ProgressSequence step component — one labelled step of a progress sequence, done, active or pending. |
 | [jui-split-panel](components/jui/jui-split-panel.md) | 1.0.1 | elemental | component `SplitPanel` | SplitPanel component — a main content area beside or below a secondary area, such as a toolbar. |
-| [jui-tab-navigator](components/jui/jui-tab-navigator.md) | 2.0.0 | elemental | component `TabNavigator` | TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body. |
+| [jui-tab-navigator](components/jui/jui-tab-navigator.md) | 2.1.0 | elemental | component `TabNavigator` | TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body. |
 | [jui-tab-navigator-tab](components/jui/jui-tab-navigator-tab.md) | 1.0.1 | composed | component `TabNavigator tab` | TabNavigator tab component — one tab of a tab navigator, with a label, an icon, a count and an indicator. |
 | [jui-table](components/jui/jui-table.md) | 1.2.0 | composed | component `Table` | Table component — a store-backed data table with declared columns, sorting, row selection, and loading, empty and error states. |
 | [jui-table-cell](components/jui/jui-table-cell.md) | 1.0.0 | elemental | component `Table cell` | Table cell component — one cell of a Table row, as drawn by its column's cell renderer. |
