@@ -5,6 +5,13 @@ Each release of kheel-mockups, newest first. The release workflow uses a version
 
 ## Unreleased
 
+- **Tools at the far end of a tab strip.** The JUI design system's `jui-tab-navigator` gains a `tools` slot for a
+  selector, a button or a count at the strip's far end (the foot of a vertical strip), with a menu they open
+  dropping over the page, and describes hidden tab groups: pages that are tabs of the navigator but not drawn,
+  reached from the tools. Bring it in with `mockup-init-jui`'s update.
+- **Buttons with options.** `jui-button` gains options (`jui-button-option`: a label, an optional code or icon and
+  a line), opened from the whole button or, with `split`, from a chevron beside its action. The JUI design system's
+  version moves to 0.4.0.
 - **A credit card icon.** The JUI design system's icons gain `credit-card`, for pages about payment, with its
   FontAwesome equivalent in the `jui-icon` mapping. Bring it in with `mockup-init-jui`'s update.
 

@@ -1,6 +1,6 @@
 ---
 name: jui-tab-navigator
-version: 2.0.0
+version: 2.1.0
 kind: elemental
 status: active
 summary: TabNavigator component — tabs (horizontal or vertical) that switch the page shown in its body.
@@ -26,6 +26,11 @@ only the **active tab's content** — the other tabs' pages are separate mockups
 A tab strip and a body. Horizontal variants put the strip above the body; vertical variants put it to the left
 as a menu, where tabs can be grouped under small uppercase headings. Each tab (`jui-tab-navigator-tab`) has an
 optional icon, a label, and optionally a count badge or a corner indicator.
+
+Optionally, **tools** sit at the strip's far end: components such as a selector, a button or a count, drawn over
+the right of a horizontal strip (centred in its height) or at the foot of a vertical one (JUI `tools(...)`). They
+stand beside the tab list rather than in it, so the variant never styles them as tabs or clips them, and a menu
+they open drops over the body.
 
 ## Properties
 
@@ -62,6 +67,7 @@ The active tab is set on the tab (`active` on a `jui-tab-navigator-tab`).
 | Slot | Accepts | Suggests | Layout | Description |
 | --- | --- | --- | --- | --- |
 | tabs | jui-tab-navigator-tab | jui-tab-navigator-tab | A row (horizontal variants) or a column (vertical variants) of tabs, in order. | The tabs (JUI `tab(reference, label, component)`). Tabs are placed here without `slot`. |
+| tools | any | jui-button, jui-menu-activator, jui-btn | A row at the strip's far end, centred in its height; a column at the foot of a vertical strip. | Components at the far end of the strip (JUI `Config.tools(...)`), such as a selector whose menu reaches pages that aren't tabs. Write `slot="tools"` on each. The strip keeps its size: tools never make it taller or wider. |
 | default | any | jui-panel | configurable | The active tab's content — the component of the tab marked `active`. As in JUI (whose body fits the tab's component to it), the content fills the body's height, so a table or gallery inside it can scroll within the screen. |
 
 ## Behaviour
@@ -69,6 +75,11 @@ The active tab is set on the tab (`active` on a `jui-tab-navigator-tab`).
 Clicking a tab activates it: the tab is highlighted and its component shown in the body, and a navigation event
 updates the path. A component can block leaving its tab (unsaved changes) through JUI's `INavigationAware`. In a
 mockup give each tab an `href` to the mockup of its page, and mark the current one `active`.
+
+A page can be a tab of the navigator without being drawn in the strip: a tab in a **hidden group** (JUI
+`group(...).hidden()`) is navigable by reference, deep link and `activate`, but has no tab. It is usually reached
+from the tools, for example a selector whose menu lists such pages. In a mockup of a page reached that way, leave
+its tab out of the strip, as for a disabled tab, and mark no tab `active`.
 
 ## Content rules
 
@@ -82,7 +93,9 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
 
 ## Rules of use
 
-- One tab is always active.
+- One tab is always active, unless the page shown is a tab in a hidden group (see **Behaviour**): then no tab
+  is drawn active.
+- Keep tools few and small (one selector or button); they share the strip with the tabs, and the tabs come first.
 - Put only the active tab's content in the body; other pages are their own mockups.
 - Use icon-only variants (`vertical-icon`, `vertical-compact`) only where every tab has a distinct icon.
 - Nest a horizontal navigator inside a vertical one for sub-pages, not the reverse.
@@ -97,6 +110,7 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
 | `--cpt-navigator-line-color` | component | `--jui-role-border-default` | The vertical strip's right-hand line; `#e1e1e1` for `vertical-compact`. |
 | `--cpt-tabbedpanel-width` | component | `13em` | Width of a vertical strip; `4.5em` icon, `4em` compact (`15em` expanded). |
 | `--cpt-tabnavigator-body-padding` | component | `0` | Space around the body's content; `padding` sets it. |
+| `--cpt-tabnavigator-tools-inset` | component | `--jui-space-5` | Space between the tools and the strip's far end (its right, or its foot when vertical). |
 | `--viewport-height` | inherited | | Set by the viewer on a page mockup: the window's height below its bar, which a `root` navigator takes. |
 | `--cpt-tabnavigator-tab-display` | component | `block` | How each tab sits in the strip. |
 | `--cpt-tabnavigator-tab-top` | component | `1px` | Nudges horizontal tabs over the strip's line; `0` for bar and vertical. |
@@ -117,13 +131,16 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
 | `--jui-tabset-line`, `--jui-tabset-line-light`, `--jui-tabset-text`, `--jui-tabset-icon`, `--jui-tabset-bg-01`, `--jui-tabset-bg-03`, `--jui-tabset-bg-05`, `--jui-tabset-shadow`, `--jui-border-radius` | semantic | | The folder tabs (JUI's legacy tab-set tokens). |
 | `--jui-comp-tabset-surface`, `--jui-comp-tabset-surface-hover`, `--jui-comp-tabset-surface-active`, `--jui-comp-tabset-border`, `--jui-comp-tabset-text`, `--jui-comp-tabset-text-muted`, `--jui-comp-tabset-text-active` | semantic | | Underline and bar tabs. |
 | `--jui-role-interactive-primary`, `--jui-role-border-default`, `--jui-role-text-default`, `--jui-role-text-muted`, `--jui-role-text-inverse`, `--jui-color-secondary30`, `--jui-color-aux-white` | semantic | | Active underline, lines, text and badges. |
-| `--jui-radius-sm`, `--jui-radius-lg`, `--jui-space-1`, `--jui-space-2`, `--jui-space-3`, `--jui-space-4`, `--jui-space-6`, `--jui-space-8` | semantic | | Radii, tab spacing and body padding. |
+| `--jui-radius-sm`, `--jui-radius-lg`, `--jui-space-1`, `--jui-space-2`, `--jui-space-3`, `--jui-space-4`, `--jui-space-5`, `--jui-space-6`, `--jui-space-8` | semantic | | Radii, tab spacing, body padding, and the tools' gap and inset. |
 
 ## Template
 
 ```html
 <div class="wrap">
-  <header class="tabs"><div class="list"><slot name="tabs"></slot></div></header>
+  <div class="strip">
+    <header class="tabs"><div class="list"><slot name="tabs"></slot></div></header>
+    <div class="tools"><slot name="tools"></slot></div>
+  </div>
   <div class="body" data-layout><slot></slot></div>
 </div>
 ```
@@ -138,6 +155,7 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
   --cpt-navigator-line-color: var(--jui-role-border-default);
   --cpt-tabbedpanel-width: 13em;
   --cpt-tabnavigator-body-padding: 0;
+  --cpt-tabnavigator-tools-inset: var(--jui-space-5);
   --cpt-tabnavigator-count-bg: var(--jui-color-secondary30);
   --cpt-tabnavigator-count-color: var(--jui-role-text-inverse);
   --cpt-tabnavigator-indicator-top: 4px;
@@ -178,7 +196,13 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
 :host([padding="8"]) { --cpt-tabnavigator-body-padding: var(--jui-space-8); }
 
 .wrap { display: flex; flex-direction: column; align-items: stretch; height: 100%; flex: 1 1 auto; min-height: 0; }
-.tabs { position: relative; background: var(--cpt-navigator-bg); box-sizing: border-box; flex: none; }
+/* The strip and the tools share one grid cell (JUI's TabNavigator_Tools.css): the tools are laid over the strip's
+   far end, not placed in it, so the variant's rules for the strip never style or clip them. */
+.strip { position: relative; z-index: 1; flex: none; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+.tabs { grid-row: 1; grid-column: 1; position: relative; z-index: 0; background: var(--cpt-navigator-bg); box-sizing: border-box; }
+/* At the right of a horizontal strip, centred in its height; it takes the strip's height without adding to it. */
+.tools { grid-row: 1; grid-column: 1; justify-self: end; align-self: start; box-sizing: border-box; height: 0; min-height: 100%; position: relative; z-index: 1; display: flex; flex-direction: row; align-items: center; gap: var(--jui-space-3); padding-right: var(--cpt-tabnavigator-tools-inset); }
+:host(:not([data-filled~="tools"])) .tools { display: none; }
 .list { display: flex; flex-direction: row; align-items: flex-end; }
 .body { flex-grow: 1; min-width: 0; min-height: 0; overflow-y: auto; margin: var(--cpt-tabnavigator-body-padding); }
 :host([root]) { height: var(--viewport-height, 100vh); }
@@ -266,6 +290,8 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
 :host([variant^="vertical"]) .wrap { flex-direction: row; }
 :host([variant^="vertical"]) .tabs { width: var(--cpt-tabbedpanel-width); border-right: 1px solid var(--cpt-navigator-line-color); padding: 1em 0.5em; overflow-y: auto; }
 :host([variant^="vertical"]) .list { flex-direction: column; align-items: stretch; padding-top: 0.5em; }
+/* At the foot of a vertical strip; it takes the strip's width without adding to it. */
+:host([variant^="vertical"]) .tools { justify-self: start; align-self: end; width: 0; min-width: 100%; height: auto; min-height: 0; flex-direction: column; align-items: stretch; padding: var(--cpt-tabnavigator-tools-inset); }
 
 :host([variant="vertical-alt"]) {
   --cpt-tabnavigator-tab-radius: var(--jui-border-radius) 0 0 var(--jui-border-radius);
@@ -330,6 +356,17 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
     <jui-tab-navigator-tab label="Billing" indicator="New"/>
     <jui-panel padding="4">HORIZONTAL_UNDERLINE.</jui-panel>
   </jui-tab-navigator>
+  <jui-tab-navigator variant="horizontal-underline">
+    <jui-tab-navigator-tab label="Overview"/>
+    <jui-tab-navigator-tab label="Competitors"/>
+    <jui-button slot="tools" label="Moves" variant="outlined" state="open">
+      <jui-button-option label="Comparison" text="Side by side, dimension by dimension"/>
+      <jui-button-option label="Moves" text="What each competitor has done lately" state="active"/>
+      <jui-button-option label="Threats" text="Where each competitor could hurt us"/>
+    </jui-button>
+    <jui-panel padding="4">Tools at the strip's far end: a selector whose menu reaches pages in a hidden group, so no tab is active. Its menu drops over the body.</jui-panel>
+  </jui-tab-navigator>
+  <div mt="12"></div>
   <jui-tab-navigator variant="horizontal-bar">
     <jui-tab-navigator-tab label="Day"/>
     <jui-tab-navigator-tab label="Week" active=""/>
@@ -347,7 +384,8 @@ the body `role="tabpanel"`. Icon-only variants rely on the label as the accessib
     <jui-tab-navigator variant="vertical-alt" grow="">
       <jui-tab-navigator-tab label="Profile" icon="user" active=""/>
       <jui-tab-navigator-tab label="Members" icon="users"/>
-      <jui-panel padding="4">VERTICAL_ALT.</jui-panel>
+      <jui-button slot="tools" label="Invite" icon="plus" variant="outlined"/>
+      <jui-panel padding="4">VERTICAL_ALT, with a tool at the foot.</jui-panel>
     </jui-tab-navigator>
   </div>
   <div layout="row" gap="4" align="stretch">

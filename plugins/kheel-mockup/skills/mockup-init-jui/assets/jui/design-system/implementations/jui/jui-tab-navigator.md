@@ -39,12 +39,37 @@ public class ProjectSection extends TabNavigator {
 | Slot | Maps to |
 | --- | --- |
 | tabs | One `tab(reference, label, component)` per `jui-tab-navigator-tab`, in order (see its mapping). A tab's `group` starts `group(label)` before it. |
+| tools | `Config.tools(IComponent...)`, or `navigator.tools(...)` before it renders: the components at the strip's far end, in order. They are inserted with `Cpt`, so they render and are disposed of with the navigator. A navigator without tools is built exactly as before. Theme the inset with `--cpt-tabnavigator-tools-inset`. |
 | default | The active tab's component. Build each tab's page as its own component. |
 
 ## States
 
 The active tab follows navigation: the first tab (or the one named by the navigation path) is active on
 render; `navigate(...)` or a tab click changes it. The `vertical-compact` expansion on hover is pure CSS.
+
+## Hidden groups
+
+A page reached from the tools rather than a tab (the mockup draws no tab for it and marks no tab `active`) is a
+tab in a hidden group: `group(label).hidden()`, then its `tab(...)`. Its tabs are registered and navigable
+(reference, deep link, `activate`, the navigation handler) but not drawn, so a selector in the tools can
+`navigate(...)` to them.
+
+```java
+public class LandscapeSection extends TabNavigator {
+    public LandscapeSection() {
+        super(new TabNavigator.Config()
+            .variant(TabNavigator.Config.Variant.HORIZONTAL_UNDERLINE));
+        tools(ButtonCreator.build(cfg -> cfg.label("Analysis")
+            .variant(Button.Config.Variant.OUTLINED)
+            .option("Comparison", "Side by side, dimension by dimension", null, () -> navigate("analysis", "comparison"))
+            .option("Moves", "What each competitor has done lately", null, () -> navigate("analysis", "moves"))));
+        tab("overview", "Overview", new LandscapeOverview());
+        tab("competitors", "Competitors", new Competitors());
+        group("Analysis").hidden();
+        tab("analysis", "Analysis", new AnalysisNavigator());
+    }
+}
+```
 
 ## Notes
 
@@ -53,4 +78,6 @@ render; `navigate(...)` or a tab click changes it. The `vertical-compact` expans
 - To intercept leaving a tab (unsaved changes) implement `INavigationAware.onNavigateFrom(...)` on the tab's
   component or use `ITabConfig.navigationHandler(...)`.
 - `minHeight(Length)`, `effect(Effect)`, `color(String)` and a custom `presenter(INavigationPresenter)` have no
-  mockup property.
+  mockup property. Tools hide with the strip, under `hideNavigation()` or a configured presenter.
+- Tools and hidden groups need jui-stack with juiproject/jui-stack#132 (merged into `develop`, in the release after
+  0.4.4).

@@ -36,7 +36,9 @@ None.
 
 Hover and active styling are the navigator's. The active tab is changed with `navigator.activate(ref)` or
 `navigate(...)`. `navigator.disable(ref…)` hides a tab entirely (JUI draws disabled tabs as `display: none`) and
-`enable(ref…)` shows it again, so a disabled tab is simply left out of the mockup. `updateTabCount(ref, n)`,
+`enable(ref…)` shows it again, so a disabled tab is simply left out of the mockup. So is a tab in a hidden group
+(`group(label).hidden()`): navigable but never drawn, typically reached from the navigator's tools; when its page
+is the one shown, no tab is `active`. `updateTabCount(ref, n)`,
 `updateTabLabel(ref, label)` and `updateTabIcon(ref, icon)` change a tab after render.
 
 ## Notes

@@ -13,6 +13,34 @@ removing it.
 
 ## Unreleased
 
+### TabNavigator tools and hidden groups — Mirrors JUI
+
+`jui-tab-navigator` 2.1.0 gains a `tools` slot: components at the strip's far end, over the right of a horizontal
+strip and centred in its height, or at the foot of a vertical one (JUI `TabNavigator.Config.tools(...)`). As in
+JUI, the tools share the strip's grid cell rather than sitting in it, so a variant never styles them as tabs or
+clips them (`horizontal-underline` clips its strip), a menu they open drops over the body, and they never change
+the strip's size. A new token, `--cpt-tabnavigator-tools-inset` (default `--jui-space-5`), sets their distance
+from the strip's far end. The component and its mapping also describe **hidden groups**
+(`group(label).hidden()`): tabs that are navigable but not drawn, typically reached from the tools; in a mockup of
+such a page, no tab is drawn and none is `active`. This replaces the stand-in of a last tab drawn as a menu.
+
+Merged into jui-stack's `develop` (juiproject/jui-stack#132, JUI-28); in the release after 0.4.4.
+
+### Button options, split or opening a menu — Mirrors JUI
+
+`jui-button` 1.1.0 gains an `options` slot, a `split` property and an `open` state, with a new component for the
+slot, `jui-button-option` 1.0.0 (a label, an optional code or icon, and a line). Without `split` the whole button
+opens the options, with a chevron after its label; with `split` a chevron divided from the action by a hairline
+opens them. While open, a menu card floats beneath the button, right edges aligned; a click elsewhere or Escape
+closes it, and choosing an option closes it. The look follows JUI's `ButtonOptions.css`: a split button keeps its
+height, each part hovers on its own, and the code tag takes the button's variant colours. The mappings name
+`Button.Config.option(...)`, `iconOption(...)` and `split()`. This replaces stand-ins such as a `ui-button` with
+`ui-button-option`.
+
+Merged into jui-stack's `develop` (juiproject/jui-stack#131, JUI-30); in the release after 0.4.4.
+
+The design system moves to 0.4.0.
+
 ### Credit card icon — Mirrors JUI
 
 `credit-card` (Lucide) added to the icons, for a page about payment such as an organisation's billing, with its
