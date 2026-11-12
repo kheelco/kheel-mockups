@@ -50,6 +50,7 @@ kheel-mockups/
 ├── extensions/
 │   └── vscode/                 # Kheel Mockup Preview: the viewer beside the editor in VS Code (not a skill)
 ├── specs/                      # how the mockup mechanism works — not shipped with the skills
+├── tutorial/                   # a step-by-step tutorial, in Claude Code in the cloud, with screenshots
 └── scripts/
     ├── package-skills.sh       # builds uploadable skill zips into dist/
     ├── package-extension.sh    # builds the VS Code extension's .vsix into extensions/vscode/dist/
@@ -70,6 +71,12 @@ kheel-mockups/
 | `mockup-init-jui` | Initialises a project space with a design system of the standard [JUI](https://github.com/juiproject/jui-stack) (`jui-ui`) controls, components and fragments, and its formatted text editor (`jui-text`), styled with JUI's tokens, each with an implementation mapping to its JUI class. |
 | `mockup-explore` | Shows options for one design decision as a page of variants drawn in place in the product, for the user to compare and pick, then applies the pick (extensions for components the project doesn't own). |
 | `mockup-publish` | Publishes chosen mockup folders, with the files they need from elsewhere, as a private claude.ai artifact (or updates one), staging the viewer with the design system packed into a single `_bundle.json` so it fits the host's file limit. |
+
+## Tutorial
+
+[tutorial/](tutorial/README.md) walks through the skills in a Claude Code session in the cloud: adding the plugin,
+setting up a project space, comparing options, creating and publishing mockups, and adding a component of your
+own, with screenshots of each step.
 
 ## Trying it without an agent
 
