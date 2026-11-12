@@ -5,6 +5,8 @@ Each release of kheel-mockups, newest first. The release workflow uses a version
 
 ## Unreleased
 
+- **A tutorial.** `tutorial/README.md` walks through every skill in a Claude Code session in the cloud, from adding
+  the plugin to publishing mockups and adding a component of your own, with screenshots of each step.
 - **Tools at the far end of a tab strip.** The JUI design system's `jui-tab-navigator` gains a `tools` slot for a
   selector, a button or a count at the strip's far end (the foot of a vertical strip), with a menu they open
   dropping over the page, and describes hidden tab groups: pages that are tabs of the navigator but not drawn,
