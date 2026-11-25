@@ -107,6 +107,18 @@ aside.panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px);
 .conn button { font: inherit; text-align: left; border: 0; background: var(--sunk); color: var(--ink); border-radius: 6px; padding: 5px 8px; cursor: pointer; display: grid; gap: 1px; }
 .conn button:hover { background: var(--accent-soft); }
 .conn button small { color: var(--ink-3); font-size: 11.5px; }
+.conn .via { background: var(--sunk); border-radius: 6px; padding: 5px 8px; display: grid; gap: 1px; }
+.conn .via small { color: var(--ink-3); font-size: 11.5px; }
+.menus { display: flex; flex-wrap: wrap; gap: 14px; }
+.menu { flex: 1 1 220px; display: grid; gap: 6px; align-content: start; background: var(--sunk); border-radius: 10px; padding: 10px; min-width: 0; }
+.menu h3 { margin: 0; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.menu .note { margin: 0 0 2px; font-size: 12px; color: var(--ink-3); }
+.mi { position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; width: 100%; font: inherit; font-size: 13px; text-align: left; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; cursor: pointer; transition: opacity 0.15s, border-color 0.15s; }
+.mi:hover { border-color: var(--accent); }
+.mi small { color: var(--ink-3); font-size: 11.5px; }
+.mi:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.map.focus .mi { opacity: 0.32; }
+.map.focus .mi.rel { opacity: 1; border-color: var(--accent); }
 .close { justify-self: start; font: inherit; font-size: 12px; border: 1px solid var(--line); background: transparent; color: var(--ink-2); border-radius: 6px; padding: 2px 8px; cursor: pointer; }
 .empty p + p { margin-top: 8px; }
 .empty strong { color: var(--ink); font-weight: 500; }
@@ -136,6 +148,9 @@ marker path { fill: var(--accent); }
     "admins": "Workspace administrators"
   },
   "viewer": "design-system/",
+  "menus": [
+    { "id": "account", "name": "Account menu", "note": "In the top bar of every signed-in page.", "items": [{ "page": "home", "label": "My workspaces" }, { "page": "sign-in", "label": "Sign out" }] }
+  ],
   "zones": [
     { "id": "public", "name": "Public pages", "row": 1, "note": "Before signing in.", "groups": [{ "pages": [
       { "id": "sign-in", "name": "Sign in", "status": "live", "who": "anyone", "desc": "Sign in with an email address and password.", "links": ["home"] }
@@ -207,6 +222,12 @@ marker path { fill: var(--accent); }
     out.forEach(id => { if (PAGES[id] && id !== p.id) { OUT[p.id].add(id); IN[id].add(p.id); } });
   });
   const related = id => new Set([...OUT[id], ...IN[id]]);
+  // Menus available across pages (a top bar's menus): each item reaches a page from wherever the menu is.
+  const MENUS = DATA.menus || [], VIA = {};
+  MENUS.forEach(m => (m.items || []).forEach(it => {
+    const item = typeof it === 'string' ? { page: it } : it;
+    if (PAGES[item.page]) (VIA[item.page] = VIA[item.page] || []).push({ menu: m, label: item.label || PAGES[item.page].name });
+  }));
 
   document.getElementById('product').textContent = DATA.product || '';
   document.getElementById('updated').textContent = DATA.updated ? 'updated ' + DATA.updated : '';
@@ -280,6 +301,32 @@ marker path { fill: var(--accent); }
     s.append(gs);
     return s;
   }
+  if (MENUS.length) {
+    const s = el('section', 'zone'), h = el('div', 'zh'), ms = el('div', 'menus');
+    h.append(el('h2', null, 'Menus'));
+    s.append(h, el('p', 'note', 'Reached from wherever the menu is shown, rather than from any one page.'));
+    MENUS.forEach(m => {
+      const md = el('div', 'menu');
+      md.append(el('h3', null, m.name));
+      if (m.note) md.append(el('p', 'note', m.note));
+      (m.items || []).forEach(it => {
+        const item = typeof it === 'string' ? { page: it } : it, target = PAGES[item.page];
+        if (!target) return;
+        const b = el('button', 'mi');
+        b.type = 'button';
+        b.dataset.item = item.page;
+        b.append(el('span', null, item.label || target.name));
+        if (item.label && item.label !== target.name) b.append(el('small', null, target.name));
+        b.addEventListener('click', () => select(item.page));
+        md.append(b);
+      });
+      ms.append(md);
+    });
+    s.append(ms);
+    const row = el('div', 'row');
+    row.append(s);
+    map.append(row);
+  }
   [...new Set(DATA.zones.map(z => z.row || 1))].sort((a, b) => a - b).forEach(r => {
     const row = el('div', 'row');
     DATA.zones.filter(z => (z.row || 1) === r).forEach(z => row.append(zoneBlock(z)));
@@ -343,10 +390,16 @@ marker path { fill: var(--accent); }
     panel.append(close, top);
     if (p.desc) panel.append(el('p', null, p.desc));
     panel.append(dl);
-    [['Leads to', OUT[p.id]], ['Reached from', IN[p.id]]].forEach(([label, set]) => {
-      if (!set.size) return;
-      panel.append(el('h4', null, label + ' (' + set.size + ')'));
+    const via = VIA[p.id] || [];
+    [['Leads to', OUT[p.id], []], ['Reached from', IN[p.id], via]].forEach(([label, set, menus]) => {
+      if (!set.size && !menus.length) return;
+      panel.append(el('h4', null, label + ' (' + (set.size + menus.length) + ')'));
       const c = el('div', 'conn');
+      menus.forEach(v => {
+        const d = el('div', 'via');
+        d.append(el('span', null, v.menu.name + ': ' + v.label), el('small', null, v.menu.note || 'Menu'));
+        c.append(d);
+      });
       [...set].map(id => PAGES[id]).sort((a, b) => a.name.localeCompare(b.name)).forEach(q => {
         const b = el('button');
         b.type = 'button';
@@ -370,8 +423,9 @@ marker path { fill: var(--accent); }
     marker.setAttribute('markerWidth', '7'); marker.setAttribute('markerHeight', '7'); marker.setAttribute('orient', 'auto-start-reverse');
     head.setAttribute('d', 'M0 0 L10 5 L0 10 z');
     marker.append(head); defs.append(marker); svg.append(defs);
-    related(selected).forEach(id => {
-      const to = map.querySelector('.node[data-id="' + id + '"]');
+    const targets = [...related(selected)].map(id => ({ to: map.querySelector('.node[data-id="' + id + '"]'), leads: OUT[selected].has(id), reached: IN[selected].has(id) }))
+      .concat([...map.querySelectorAll('.mi[data-item="' + selected + '"]')].map(to => ({ to: to, leads: false, reached: true })));
+    targets.forEach(({ to, leads, reached }) => {
       if (!to || to.hidden) return;
       const b = to.getBoundingClientRect();
       const right = b.left > a.right - 4, left = b.right < a.left + 4;
@@ -389,7 +443,6 @@ marker path { fill: var(--accent); }
         c1x = x1 + off; c1y = y1 + (down ? off : -off); c2x = x2 + off; c2y = y2 + (down ? -off : off);
       }
       // Drawn from the chosen page to the other: the arrowhead sits where the flow arrives.
-      const leads = OUT[selected].has(id), reached = IN[selected].has(id);
       const path = document.createElementNS(ns, 'path');
       path.setAttribute('class', 'link' + (leads ? '' : ' in'));
       path.setAttribute('d', 'M' + x1 + ' ' + y1 + ' C' + c1x + ' ' + c1y + ' ' + c2x + ' ' + c2y + ' ' + x2 + ' ' + y2);
@@ -407,6 +460,10 @@ marker path { fill: var(--accent); }
       n.classList.toggle('rel', !!selected && related(selected).has(id));
       n.setAttribute('aria-pressed', id === selected ? 'true' : 'false');
       n.hidden = !shown.has(PAGES[id].status);
+    });
+    map.querySelectorAll('.mi').forEach(n => {
+      n.classList.toggle('rel', n.dataset.item === selected);
+      n.hidden = !shown.has(PAGES[n.dataset.item].status);
     });
     renderPanel();
     drawLinks();

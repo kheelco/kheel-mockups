@@ -67,6 +67,15 @@ function walk(p, where, parent) {
 });
 
 const connected = new Map([...pages.keys()].map(id => [id, new Set()]));
+const viaMenu = new Set();
+for (const m of data.menus || []) {
+  if (!m.name) errors.push(`menu "${m.id}": no name`);
+  for (const it of m.items || []) {
+    const page = typeof it === 'string' ? it : it.page;
+    if (!pages.has(page)) errors.push(`menu "${m.name || m.id}": item "${page}" is not a page`);
+    else viaMenu.add(page);
+  }
+}
 for (const [id, { page, parent }] of pages) {
   for (const l of page.links || []) {
     if (!pages.has(l)) { errors.push(`${pages.get(id).at}: links to "${l}", which is not a page`); continue; }
@@ -79,7 +88,7 @@ for (const [id, { page, parent }] of pages) {
 for (const [id, set] of connected) {
   const { parent, page } = pages.get(id);
   const others = [...set].filter(x => x !== parent && !(page.kids || []).some(k => k.id === x));
-  if (!others.length) notes.push(`${pages.get(id).at}: connected to nothing but its own parent and kids`);
+  if (!others.length && !viaMenu.has(id)) notes.push(`${pages.get(id).at}: connected to nothing but its own parent and kids`);
 }
 
 const counts = [...statuses.values()].map(s => `${[...pages.values()].filter(p => p.page.status === s.id).length} ${s.label.toLowerCase()}`);

@@ -22,7 +22,7 @@ fonts, so that sitemaps read alike from one project to the next.
    If there is no project space, save it where the user asks, or in a scratch folder.
 2. If `sitemap.html` already exists, read its data block and change that, keeping its page ids; don't start again.
 3. Find the pages that **exist today**, from the application's source where it is to hand rather than guessing: its
-   navigation (side navigation, tabs, menus), its routes and pages, its dialogs large enough to count as places. The
+   navigation (side navigation, tabs, the menus of its top bar), its routes and pages, its dialogs large enough to count as places. The
    source is only where you find them: the map records the flow people follow, not how it is wired up. The mockups in the project space are pages too; note each page's mockup.
 4. Find the pages **proposed**, from the specifications the user points to (capabilities, use cases, a brief): each
    area of the product usually becomes a navigation group; each main thing it manages, a list page with a detail
@@ -43,7 +43,9 @@ Arrange the pages as people travel the application, not as the code is organised
 - **Links** are where a person can go from a page: a record's page to the records it shows from another area, a
   dashboard to what it summarises. They run one way, so record each on the page people start from, and only where
   they can actually go (a button, a link, a row to open); that two pages are related is not a link, and going back
-  is not recorded. A parent leads to its kids without listing them. Links are what the map is for: the chosen page
+  is not recorded. A parent leads to its kids without listing them. Check what is actually on a page: an item in
+  a top bar or menu shown on every page is not a link from the page it happens to sit above, so record it as a
+  **menu** instead. Links are what the map is for: the chosen page
   shows what it leads to and what it is reached from.
 - Note the questions the structure raises (where something belongs, whether a list is a page or a view) for your
   report (step 5). They don't go in the file: the sitemap shows the structure as it stands, and changes when a
@@ -61,6 +63,7 @@ Copy `assets/sitemap.html` to the sitemap's location (or edit the existing sitem
    | `statuses` | In order, each `{ "id", "label", "tone" }`, tone one of `done`, `planned`, `future` (drawn dashed), `retired` (struck through). Usually *Exists today*, *Proposed*, *To follow*. |
    | `roles` | Optional: `{ "id": "who that is" }`. |
    | `viewer` | `"design-system/"` when the sitemap sits at the project space's root, so pages' mockups link to the viewer; `null` otherwise. |
+   | `menus` | Optional: menus shown across pages (a top bar's organisation or account menu), each `{ "id", "name", "note", "items" }`: `note` where it is shown (*the top bar of every signed-in page*); `items` page ids, or `{ "page", "label" }` where the menu's wording differs (*Sign out* reaching *Sign in*). |
    | `zones` | Each `{ "id", "name", "row", "note", "groups" }`; a zone with one unnamed group lists its pages directly. |
    | groups | Each `{ "name", "note", "column", "pages" }`. |
    | pages | Each `{ "id", "name", "status", "who", "refs", "desc", "tabs", "mockup", "links", "kids" }`: `id` unique, of letters, digits and hyphens (never `settings`, `sidebar`, `customize`, `upgrade`, `downloads` or `comment-…`, which some hosts reserve); `refs` what it serves; `desc` one or two sentences; `tabs` its tabs; `mockup` a path, or a list of paths, relative to the project space; `links` the ids it leads to; `kids` the pages it opens. Only `id`, `name`, `status` and `desc` are needed. |

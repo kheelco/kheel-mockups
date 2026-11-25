@@ -39,6 +39,7 @@ single file or published.
 | `statuses` | The statuses a page can have, in order, each with an `id`, a `label` and a `tone`: `done` (exists), `planned` (proposed), `future` (to follow later) or `retired` (to be removed). Typically *Exists today*, *Proposed*, *To follow*. |
 | `roles` | Optional: who can reach pages, as `id` → description (*Anyone*, *Members*, *Administrators*). |
 | `viewer` | Optional: the path from the sitemap to the design system's viewer (`design-system/`), so that pages naming a mockup link to it. Absent or `null` where the mockups are not beside the sitemap (a published copy). |
+| `menus` | Optional: menus available across pages, outside any one page (a top bar's menus), each with an `id`, a `name`, a `note` saying where it is shown, and its `items`: the pages it reaches, each a page id or `{ "page", "label" }` where the menu's wording differs from the page's name (*Sign out* reaching *Sign in*). |
 | `zones` | The parts of the application, in rows. |
 
 A **zone** is a part of the application people reach in one way: the public pages before signing in, the signed-in
@@ -74,15 +75,17 @@ place.
 Links run one way, in the direction people move: a page **leads to** the pages in its `links` and to its kids, and
 each of those is **reached from** it. A link is recorded on the page people start from, and only where they can
 actually go from one to the other; that two pages are related is not a link. Going back (from a record to its list)
-is not recorded.
+is not recorded. Where a page is reached from a menu shown across pages, the menu records it, not every page the menu
+appears on.
 
 ### Presentation
 
 - Zones are cards in their rows; a zone's groups are columns; a group's pages are cards with their kids indented
   below them. Each page card shows its name, its status and its tabs.
+- Menus, if any, are a card above the zones, each listing its items; choosing an item chooses its page.
 - A legend shows the statuses; each status can be shown or hidden.
 - Choosing a page shows a panel with where it sits, who can reach it, what it serves, its tabs, its mockups, the
-  pages it leads to and the pages it is reached from, and draws arrows to the pages it leads to and dashed arrows
+  pages it leads to and the pages and menus it is reached from, and draws arrows to the pages it leads to and dashed arrows
   from the pages it is reached from, dimming the rest. Links are drawn only for the chosen page, so that the map
   stays readable however many there are.
 - The chosen page is kept in the address's hash (`#<id>`), so a link can open the map at a page.
