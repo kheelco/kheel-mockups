@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Example Sitemap</title>
+<style>
+/* The sitemap's own look: neutral and the same for every project, whatever the application's design.
+   Don't change anything outside the DATA block below. System fonts only, so the file needs nothing else. */
+:root {
+  --bg: #F7F8FA; --surface: #FFFFFF; --sunk: #EFF2F6; --line: #DBE1EA;
+  --ink: #1B2533; --ink-2: #4A5668; --ink-3: #6E7A8C;
+  --accent: #2F6FB0; --accent-ink: #245A91; --accent-soft: #EAF2FA;
+  --done: #2F7D5B; --done-soft: #E6F4EC; --planned: #2F6FB0; --planned-soft: #EAF2FA;
+  --future: #8A6A1F; --future-soft: #FBF3E0; --retired: #6E7A8C; --retired-soft: #EEF0F3;
+  --shadow: 0 1px 2px rgba(20, 30, 45, 0.06), 0 4px 14px rgba(20, 30, 45, 0.06);
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161E; --surface: #19212C; --sunk: #151C25; --line: #2E3A4A;
+    --ink: #E8EDF4; --ink-2: #B5BFCD; --ink-3: #8794A6;
+    --accent: #6AA6E0; --accent-ink: #9CC4EC; --accent-soft: #1C3046;
+    --done: #6FCB9F; --done-soft: #173528; --planned: #6AA6E0; --planned-soft: #1C3046;
+    --future: #E3BE63; --future-soft: #3A2F14; --retired: #8794A6; --retired-soft: #232C38;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11161E; --surface: #19212C; --sunk: #151C25; --line: #2E3A4A;
+  --ink: #E8EDF4; --ink-2: #B5BFCD; --ink-3: #8794A6;
+  --accent: #6AA6E0; --accent-ink: #9CC4EC; --accent-soft: #1C3046;
+  --done: #6FCB9F; --done-soft: #173528; --planned: #6AA6E0; --planned-soft: #1C3046;
+  --future: #E3BE63; --future-soft: #3A2F14; --retired: #8794A6; --retired-soft: #232C38;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-ui); font-size: 14px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 48px;
+}
+.wrap { max-width: 1480px; margin: 0 auto; display: grid; gap: 20px; }
+header.top { display: grid; gap: 10px; }
+.brand { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.brand b { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); font-weight: 600; }
+.brand span { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); }
+h1 { margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
+.lede { margin: 0; max-width: 72ch; color: var(--ink-2); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 12.5px; color: var(--ink-2); }
+.legend button { font: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
+.legend button[aria-pressed="false"] .pill { opacity: 0.4; text-decoration: line-through; }
+.legend button:focus-visible, .node:focus-visible, .conn button:focus-visible, .close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.done { color: var(--done); background: var(--done-soft); }
+.pill.planned { color: var(--planned); background: var(--planned-soft); }
+.pill.future { color: var(--future); background: var(--future-soft); }
+.pill.retired { color: var(--retired); background: var(--retired-soft); }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+@media (max-width: 1100px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+.map { position: relative; display: grid; gap: 18px; }
+.map svg.links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 2; }
+.row { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.zone { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); padding: 14px; display: grid; gap: 12px; min-width: 0; align-content: start; }
+.zone > .zh { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.zone h2 { margin: 0; font-size: 15px; font-weight: 600; }
+.zone .note { margin: -6px 0 0; font-size: 12.5px; color: var(--ink-3); }
+.groups { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.col { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.group { display: grid; gap: 6px; align-content: start; background: var(--sunk); border-radius: 10px; padding: 10px; min-width: 0; }
+.group h3 { margin: 0 0 2px; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.group h3 small { text-transform: none; letter-spacing: 0; font-weight: 400; }
+.flat { display: grid; gap: 6px; align-content: start; }
+.node {
+  position: relative; z-index: 3; display: grid; gap: 4px; text-align: left; width: 100%; font: inherit; color: inherit;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; cursor: pointer;
+  transition: opacity 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.node:hover { border-color: var(--accent); }
+.node .nt { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.node .nn { font-weight: 500; font-size: 13.5px; }
+.node .tabs { display: flex; flex-wrap: wrap; gap: 3px; }
+.node .tabs span { font-size: 10.5px; color: var(--ink-2); background: var(--sunk); border-radius: 4px; padding: 0 5px; }
+.node.future { border-style: dashed; background: transparent; }
+.node.future .nn, .node.retired .nn { color: var(--ink-2); }
+.node.retired .nn { text-decoration: line-through; }
+.kids { display: grid; gap: 6px; margin-left: 12px; padding-left: 10px; border-left: 2px solid var(--line); }
+.map.focus .node { opacity: 0.32; }
+.map.focus .node.on, .map.focus .node.rel { opacity: 1; }
+.node.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.node.rel { border-color: var(--accent); }
+aside.panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); padding: 16px; display: grid; gap: 12px; min-width: 0; }
+@media (max-width: 1100px) { aside.panel { position: static; } }
+.panel h2 { margin: 0; font-size: 18px; font-weight: 600; }
+.panel p { margin: 0; color: var(--ink-2); }
+.panel dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 12.5px; }
+.panel dt { color: var(--ink-3); }
+.panel dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.panel dd a { color: var(--accent-ink); }
+.panel h4 { margin: 4px 0 0; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.conn { display: grid; gap: 4px; }
+.conn button { font: inherit; text-align: left; border: 0; background: var(--sunk); color: var(--ink); border-radius: 6px; padding: 5px 8px; cursor: pointer; display: grid; gap: 1px; }
+.conn button:hover { background: var(--accent-soft); }
+.conn button small { color: var(--ink-3); font-size: 11.5px; }
+.conn .via { background: var(--sunk); border-radius: 6px; padding: 5px 8px; display: grid; gap: 1px; }
+.conn .via small { color: var(--ink-3); font-size: 11.5px; }
+.menus { display: flex; flex-wrap: wrap; gap: 14px; }
+.menu { flex: 1 1 220px; display: grid; gap: 6px; align-content: start; background: var(--sunk); border-radius: 10px; padding: 10px; min-width: 0; }
+.menu h3 { margin: 0; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.menu .note { margin: 0 0 2px; font-size: 12px; color: var(--ink-3); }
+.mi { position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; width: 100%; font: inherit; font-size: 13px; text-align: left; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; cursor: pointer; transition: opacity 0.15s, border-color 0.15s; }
+.mi:hover { border-color: var(--accent); }
+.mi small { color: var(--ink-3); font-size: 11.5px; }
+.mi:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.map.focus .mi { opacity: 0.32; }
+.map.focus .mi.rel { opacity: 1; border-color: var(--accent); }
+.close { justify-self: start; font: inherit; font-size: 12px; border: 1px solid var(--line); background: transparent; color: var(--ink-2); border-radius: 6px; padding: 2px 8px; cursor: pointer; }
+.empty p + p { margin-top: 8px; }
+.empty strong { color: var(--ink); font-weight: 500; }
+path.link { fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0.8; }
+path.link.in { stroke-dasharray: 5 4; }
+marker path { fill: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .node { transition: none; } }
+</style>
+</head>
+<body>
+
+<!-- ==== DATA: the sitemap. Change this block only (see the skill for its fields). ==================== -->
+<script type="application/json" id="sitemap">
+{
+  "product": "Example",
+  "title": "Sitemap",
+  "intro": "Every page of the application, grouped as people reach them. Choose a page to see what it is for and the pages it connects with.",
+  "updated": "2026-01-01",
+  "statuses": [
+    { "id": "live", "label": "Exists today", "tone": "done" },
+    { "id": "new", "label": "Proposed", "tone": "planned" },
+    { "id": "later", "label": "To follow", "tone": "future" }
+  ],
+  "roles": {
+    "anyone": "Anyone",
+    "members": "Members of the workspace",
+    "admins": "Workspace administrators"
+  },
+  "viewer": "design-system/",
+  "menus": [
+    { "id": "account", "name": "Account menu", "note": "In the top bar of every signed-in page.", "items": [{ "page": "home", "label": "My workspaces" }, { "page": "sign-in", "label": "Sign out" }] }
+  ],
+  "zones": [
+    { "id": "public", "name": "Public pages", "row": 1, "note": "Before signing in.", "groups": [{ "pages": [
+      { "id": "sign-in", "name": "Sign in", "status": "live", "who": "anyone", "desc": "Sign in with an email address and password.", "links": ["home"] }
+    ] }] },
+    { "id": "personal", "name": "Personal", "row": 1, "note": "Before choosing a workspace.", "groups": [{ "pages": [
+      { "id": "home", "name": "Home", "status": "live", "who": "members", "desc": "The workspaces the person belongs to.", "links": ["projects"] }
+    ] }] },
+    { "id": "workspace", "name": "Workspace", "row": 2, "note": "The side navigation once a workspace is chosen.", "groups": [
+      { "name": "Work", "column": 1, "pages": [
+        { "id": "projects", "name": "Projects", "status": "new", "who": "members", "refs": "UC1", "desc": "The workspace's projects.", "links": [], "kids": [
+          { "id": "project", "name": "Project", "status": "new", "who": "members", "refs": "UC2", "tabs": ["Overview", "Tasks", "Files"], "desc": "One project, its tasks and files.", "links": ["members"] }
+        ] }
+      ] },
+      { "name": "Settings", "column": 2, "pages": [
+        { "id": "members", "name": "Members", "status": "live", "who": "admins", "desc": "Who belongs to the workspace.", "links": [] },
+        { "id": "reports", "name": "Reports", "status": "later", "who": "admins", "desc": "Usage reports.", "links": ["projects"] }
+      ] }
+    ] }
+  ]
+}
+</script>
+<!-- ==== END DATA ===================================================================================== -->
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><b id="product"></b><span id="updated"></span></div>
+    <h1 id="title"></h1>
+    <p class="lede" id="intro"></p>
+    <div class="legend" id="legend" role="group" aria-label="Show pages by status"></div>
+  </header>
+  <div class="layout">
+    <div class="map" id="map"><svg class="links" id="links" aria-hidden="true"></svg></div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+</div>
+
+<script>
+(function () {
+  const DATA = JSON.parse(document.getElementById('sitemap').textContent);
+  const STATUS = {};
+  (DATA.statuses || []).forEach(s => { STATUS[s.id] = s; });
+  const ROLES = DATA.roles || {};
+  const shown = new Set(Object.keys(STATUS));
+  const PAGES = {}, OUT = {}, IN = {};
+  const map = document.getElementById('map'), svg = document.getElementById('links'), panel = document.getElementById('panel');
+  let selected = null;
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function tone(p) { return (STATUS[p.status] || {}).tone || 'planned'; }
+  function pill(p) { return el('span', 'pill ' + tone(p), (STATUS[p.status] || { label: p.status }).label); }
+
+  // Index pages; a parent and its kids are connected, and every link is shown from both ends.
+  function index(p, zone, group, parent) {
+    PAGES[p.id] = Object.assign(p, { zone: zone, group: group, parent: parent });
+    (p.kids || []).forEach(k => index(k, zone, group, p));
+  }
+  DATA.zones.forEach(z => z.groups.forEach(g => g.pages.forEach(p => index(p, z, g, null))));
+  // Links run one way: a page leads to the pages it links to and the pages it opens (its kids); each of those is
+  // reached from it.
+  Object.keys(PAGES).forEach(id => { OUT[id] = new Set(); IN[id] = new Set(); });
+  Object.values(PAGES).forEach(p => {
+    const out = new Set(p.links || []);
+    (p.kids || []).forEach(k => out.add(k.id));
+    out.forEach(id => { if (PAGES[id] && id !== p.id) { OUT[p.id].add(id); IN[id].add(p.id); } });
+  });
+  const related = id => new Set([...OUT[id], ...IN[id]]);
+  // Menus available across pages (a top bar's menus): each item reaches a page from wherever the menu is.
+  const MENUS = DATA.menus || [], VIA = {};
+  MENUS.forEach(m => (m.items || []).forEach(it => {
+    const item = typeof it === 'string' ? { page: it } : it;
+    if (PAGES[item.page]) (VIA[item.page] = VIA[item.page] || []).push({ menu: m, label: item.label || PAGES[item.page].name });
+  }));
+
+  document.getElementById('product').textContent = DATA.product || '';
+  document.getElementById('updated').textContent = DATA.updated ? 'updated ' + DATA.updated : '';
+  document.getElementById('title').textContent = DATA.title || 'Sitemap';
+  document.getElementById('intro').textContent = DATA.intro || '';
+
+  const legend = document.getElementById('legend');
+  (DATA.statuses || []).forEach(s => {
+    const b = el('button');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', 'true');
+    b.title = 'Show or hide pages: ' + s.label;
+    b.append(el('span', 'pill ' + s.tone, s.label));
+    b.addEventListener('click', () => {
+      if (shown.has(s.id)) shown.delete(s.id); else shown.add(s.id);
+      b.setAttribute('aria-pressed', shown.has(s.id) ? 'true' : 'false');
+      apply();
+    });
+    legend.append(b);
+  });
+  legend.append(el('span', null, 'Indented pages open from the one above; chips are a page’s tabs.'));
+
+  function nodeFor(p) {
+    const b = el('button', 'node ' + tone(p));
+    b.type = 'button';
+    b.dataset.id = p.id;
+    const t = el('span', 'nt');
+    t.append(el('span', 'nn', p.name), pill(p));
+    b.append(t);
+    if (p.tabs && p.tabs.length) {
+      const tabs = el('span', 'tabs');
+      p.tabs.forEach(x => tabs.append(el('span', null, x)));
+      b.append(tabs);
+    }
+    b.addEventListener('click', () => select(selected === p.id ? null : p.id));
+    return b;
+  }
+  function pageBlock(p) {
+    const f = document.createDocumentFragment();
+    f.append(nodeFor(p));
+    if (p.kids && p.kids.length) {
+      const k = el('div', 'kids');
+      p.kids.forEach(c => k.append(pageBlock(c)));
+      f.append(k);
+    }
+    return f;
+  }
+  function zoneBlock(z) {
+    const named = z.groups.length > 1 || (z.groups[0] && z.groups[0].name);
+    const s = el('section', 'zone');
+    const h = el('div', 'zh');
+    h.append(el('h2', null, z.name));
+    s.append(h);
+    if (z.note) s.append(el('p', 'note', z.note));
+    if (!named) {
+      const f = el('div', 'flat');
+      z.groups[0].pages.forEach(p => f.append(pageBlock(p)));
+      s.append(f);
+      return s;
+    }
+    const gs = el('div', 'groups'), cols = {};
+    z.groups.forEach((g, i) => {
+      const gd = el('div', 'group'), h3 = el('h3', null, g.name || '');
+      if (g.note) h3.append(' ', el('small', null, '(' + g.note + ')'));
+      gd.append(h3);
+      g.pages.forEach(p => gd.append(pageBlock(p)));
+      const key = g.column != null ? 'c' + g.column : 'g' + i;
+      if (!cols[key]) { cols[key] = el('div', 'col'); gs.append(cols[key]); }
+      cols[key].append(gd);
+    });
+    s.append(gs);
+    return s;
+  }
+  if (MENUS.length) {
+    const s = el('section', 'zone'), h = el('div', 'zh'), ms = el('div', 'menus');
+    h.append(el('h2', null, 'Menus'));
+    s.append(h, el('p', 'note', 'Reached from wherever the menu is shown, rather than from any one page.'));
+    MENUS.forEach(m => {
+      const md = el('div', 'menu');
+      md.append(el('h3', null, m.name));
+      if (m.note) md.append(el('p', 'note', m.note));
+      (m.items || []).forEach(it => {
+        const item = typeof it === 'string' ? { page: it } : it, target = PAGES[item.page];
+        if (!target) return;
+        const b = el('button', 'mi');
+        b.type = 'button';
+        b.dataset.item = item.page;
+        b.append(el('span', null, item.label || target.name));
+        if (item.label && item.label !== target.name) b.append(el('small', null, target.name));
+        b.addEventListener('click', () => select(item.page));
+        md.append(b);
+      });
+      ms.append(md);
+    });
+    s.append(ms);
+    const row = el('div', 'row');
+    row.append(s);
+    map.append(row);
+  }
+  [...new Set(DATA.zones.map(z => z.row || 1))].sort((a, b) => a - b).forEach(r => {
+    const row = el('div', 'row');
+    DATA.zones.filter(z => (z.row || 1) === r).forEach(z => row.append(zoneBlock(z)));
+    map.append(row);
+  });
+
+  function where(p) {
+    const parts = [p.zone.name];
+    if (p.group && p.group.name) parts.push(p.group.name);
+    if (p.parent) parts.push(p.parent.name);
+    return parts.join(' › ');
+  }
+  function mockupLinks(p) {
+    const list = [].concat(p.mockup || []);
+    if (!list.length) return null;
+    const dd = el('dd');
+    list.forEach((m, i) => {
+      if (i) dd.append(', ');
+      if (DATA.viewer) {
+        const a = el('a', null, m);
+        a.href = DATA.viewer + '?m=' + encodeURIComponent(m);
+        a.target = '_blank';
+        a.rel = 'noopener';
+        dd.append(a);
+      } else {
+        dd.append(el('code', null, m));
+      }
+    });
+    return dd;
+  }
+  function renderPanel() {
+    panel.replaceChildren();
+    if (!selected) {
+      const all = Object.values(PAGES), d = el('div', 'empty');
+      d.append(el('h2', null, 'Choose a page'));
+      const p = el('p');
+      p.append('The map has ', el('strong', null, String(all.length)), ' pages');
+      (DATA.statuses || []).forEach((s, i) => {
+        p.append(i ? ', ' : ': ', el('strong', null, String(all.filter(x => x.status === s.id).length)), ' ' + s.label.toLowerCase());
+      });
+      p.append('.');
+      d.append(p, el('p', null, 'Choosing a page draws arrows to the pages it leads to, and dashed arrows from the pages it is reached from.'));
+      panel.append(d);
+      return;
+    }
+    const p = PAGES[selected];
+    const close = el('button', 'close', 'Clear selection');
+    close.type = 'button';
+    close.addEventListener('click', () => select(null));
+    const top = el('div');
+    top.style.cssText = 'display:grid;gap:6px;justify-items:start';
+    top.append(pill(p), el('h2', null, p.name));
+    const dl = el('dl');
+    const row = (k, v) => { dl.append(el('dt', null, k), typeof v === 'string' ? el('dd', null, v) : v); };
+    row('Where', where(p));
+    if (p.who) row('Who', ROLES[p.who] || p.who);
+    if (p.refs) row('Serves', p.refs);
+    if (p.tabs && p.tabs.length) row('Tabs', p.tabs.join(' · '));
+    const ml = mockupLinks(p);
+    if (ml) row('Mockup', ml);
+    panel.append(close, top);
+    if (p.desc) panel.append(el('p', null, p.desc));
+    panel.append(dl);
+    const via = VIA[p.id] || [];
+    [['Leads to', OUT[p.id], []], ['Reached from', IN[p.id], via]].forEach(([label, set, menus]) => {
+      if (!set.size && !menus.length) return;
+      panel.append(el('h4', null, label + ' (' + (set.size + menus.length) + ')'));
+      const c = el('div', 'conn');
+      menus.forEach(v => {
+        const d = el('div', 'via');
+        d.append(el('span', null, v.menu.name + ': ' + v.label), el('small', null, v.menu.note || 'Menu'));
+        c.append(d);
+      });
+      [...set].map(id => PAGES[id]).sort((a, b) => a.name.localeCompare(b.name)).forEach(q => {
+        const b = el('button');
+        b.type = 'button';
+        b.append(el('span', null, q.name), el('small', null, where(q)));
+        b.addEventListener('click', () => select(q.id));
+        c.append(b);
+      });
+      panel.append(c);
+    });
+  }
+  function drawLinks() {
+    svg.replaceChildren();
+    if (!selected) return;
+    const box = map.getBoundingClientRect();
+    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    const from = map.querySelector('.node[data-id="' + selected + '"]');
+    if (!from || from.hidden) return;
+    const a = from.getBoundingClientRect(), ns = 'http://www.w3.org/2000/svg';
+    const defs = document.createElementNS(ns, 'defs'), marker = document.createElementNS(ns, 'marker'), head = document.createElementNS(ns, 'path');
+    marker.setAttribute('id', 'arrow'); marker.setAttribute('viewBox', '0 0 10 10'); marker.setAttribute('refX', '9'); marker.setAttribute('refY', '5');
+    marker.setAttribute('markerWidth', '7'); marker.setAttribute('markerHeight', '7'); marker.setAttribute('orient', 'auto-start-reverse');
+    head.setAttribute('d', 'M0 0 L10 5 L0 10 z');
+    marker.append(head); defs.append(marker); svg.append(defs);
+    const targets = [...related(selected)].map(id => ({ to: map.querySelector('.node[data-id="' + id + '"]'), leads: OUT[selected].has(id), reached: IN[selected].has(id) }))
+      .concat([...map.querySelectorAll('.mi[data-item="' + selected + '"]')].map(to => ({ to: to, leads: false, reached: true })));
+    targets.forEach(({ to, leads, reached }) => {
+      if (!to || to.hidden) return;
+      const b = to.getBoundingClientRect();
+      const right = b.left > a.right - 4, left = b.right < a.left + 4;
+      let x1, y1, x2, y2, c1x, c1y, c2x, c2y;
+      if (right || left) {
+        x1 = (right ? a.right : a.left) - box.left; y1 = a.top + a.height / 2 - box.top;
+        x2 = (right ? b.left : b.right) - box.left; y2 = b.top + b.height / 2 - box.top;
+        const dx = Math.max(30, Math.abs(x2 - x1) / 2) * (right ? 1 : -1);
+        c1x = x1 + dx; c1y = y1; c2x = x2 - dx; c2y = y2;
+      } else {
+        const down = b.top > a.top;
+        x1 = a.right - 14 - box.left; y1 = (down ? a.bottom : a.top) - box.top;
+        x2 = b.right - 14 - box.left; y2 = (down ? b.top : b.bottom) - box.top;
+        const off = Math.min(60, Math.abs(y2 - y1) / 2 + 12);
+        c1x = x1 + off; c1y = y1 + (down ? off : -off); c2x = x2 + off; c2y = y2 + (down ? -off : off);
+      }
+      // Drawn from the chosen page to the other: the arrowhead sits where the flow arrives.
+      const path = document.createElementNS(ns, 'path');
+      path.setAttribute('class', 'link' + (leads ? '' : ' in'));
+      path.setAttribute('d', 'M' + x1 + ' ' + y1 + ' C' + c1x + ' ' + c1y + ' ' + c2x + ' ' + c2y + ' ' + x2 + ' ' + y2);
+      if (leads) path.setAttribute('marker-end', 'url(#arrow)');
+      if (reached) path.setAttribute('marker-start', 'url(#arrow)');
+      svg.append(path);
+    });
+  }
+  function apply() {
+    if (selected && !shown.has(PAGES[selected].status)) selected = null;
+    map.classList.toggle('focus', !!selected);
+    map.querySelectorAll('.node').forEach(n => {
+      const id = n.dataset.id;
+      n.classList.toggle('on', id === selected);
+      n.classList.toggle('rel', !!selected && related(selected).has(id));
+      n.setAttribute('aria-pressed', id === selected ? 'true' : 'false');
+      n.hidden = !shown.has(PAGES[id].status);
+    });
+    map.querySelectorAll('.mi').forEach(n => {
+      n.classList.toggle('rel', n.dataset.item === selected);
+      n.hidden = !shown.has(PAGES[n.dataset.item].status);
+    });
+    renderPanel();
+    drawLinks();
+  }
+  function select(id) {
+    selected = (id && PAGES[id]) ? id : null;
+    try {
+      if (selected) history.replaceState(null, '', '#' + selected);
+      else history.replaceState(null, '', location.pathname + location.search);
+    } catch (e) { /* some hosts refuse; the page works without it */ }
+    apply();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && selected) select(null); });
+  window.addEventListener('resize', () => requestAnimationFrame(drawLinks));
+  window.addEventListener('hashchange', () => { const id = location.hash.slice(1); if (id !== (selected || '')) select(id || null); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLinks);
+  select(location.hash.slice(1) || null);
+})();
+</script>
+</body>
+</html>

@@ -43,6 +43,12 @@ kheel-mockups/
 │           │       └── jui/      #   the JUI design-system/ (with implementations/jui/) and examples/
 │           ├── mockup-explore/
 │           │   └── SKILL.md  # pages of options for a design decision
+│           ├── mockup-sitemap/
+│           │   ├── SKILL.md
+│           │   ├── assets/
+│           │   │   └── sitemap.html     # the sitemap template: data and presentation
+│           │   └── scripts/
+│           │       └── sitemap-check.mjs  # checks a sitemap's data
 │           └── mockup-publish/
 │               ├── SKILL.md
 │               └── scripts/
@@ -70,6 +76,7 @@ kheel-mockups/
 | `mockup-create` | Creates or revises a mockup from the project's design system: components first, layout attributes, variants and states, page states, dialogs, specifications — and marked custom regions where the design system falls short. Carries the full mockup format in `reference.md`, and `scripts/mockup-check.mjs`, which checks mockups in a browser and saves screenshots. |
 | `mockup-init-jui` | Initialises a project space with a design system of the standard [JUI](https://github.com/juiproject/jui-stack) (`jui-ui`) controls, components and fragments, and its formatted text editor (`jui-text`), styled with JUI's tokens, each with an implementation mapping to its JUI class. |
 | `mockup-explore` | Shows options for one design decision as a page of variants drawn in place in the product, for the user to compare and pick, then applies the pick (extensions for components the project doesn't own). |
+| `mockup-sitemap` | Draws the application's pages as one interactive sitemap kept in the project space: grouped as people reach them, with each page's status, who can reach it, what it serves, its mockups and the pages it links to, drawn on choosing it. |
 | `mockup-publish` | Publishes chosen mockup folders, with the files they need from elsewhere, as a private claude.ai artifact (or updates one), staging the viewer with the design system packed into a single `_bundle.json` so it fits the host's file limit. |
 
 ## Tutorial
@@ -142,7 +149,7 @@ build them, then upload each one as a skill in the app's settings (**Settings �
 
 ```
 ./scripts/package-skills.sh
-# → dist/mockup-init.zip, dist/mockup-init-jui.zip, dist/mockup-create.zip, dist/mockup-explore.zip, dist/mockup-publish.zip
+# → dist/mockup-init.zip, dist/mockup-init-jui.zip, dist/mockup-create.zip, dist/mockup-explore.zip, dist/mockup-sitemap.zip, dist/mockup-publish.zip
 ```
 
 Each zip holds a single skill folder with its `SKILL.md` at the top, which is the shape the upload expects.
