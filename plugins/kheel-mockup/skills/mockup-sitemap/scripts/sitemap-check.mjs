@@ -39,6 +39,7 @@ for (const s of statuses.values()) {
   if (!TONES.has(s.tone)) errors.push(`status "${s.id}" has tone "${s.tone}"; use done, planned, future or retired`);
 }
 if (!Array.isArray(data.zones) || !data.zones.length) errors.push('no zones');
+if (data.questions) notes.push('the data carries "questions": report open questions to the user instead, and remove the field');
 
 const pages = new Map();
 function walk(p, where, parent) {
@@ -52,6 +53,7 @@ function walk(p, where, parent) {
   if (!statuses.has(p.status)) errors.push(`${at}: status "${p.status}" is not one of the statuses`);
   if (p.who && roles && !(p.who in roles)) errors.push(`${at}: who "${p.who}" is not one of the roles`);
   if (!p.desc) notes.push(`${at}: no description`);
+  if (p.route) notes.push(`${at}: has a route; the sitemap shows the flow, not addresses, so remove it`);
   for (const mk of [].concat(p.mockup || [])) {
     if (!existsSync(join(root, mk))) errors.push(`${at}: mockup "${mk}" not found under ${root}`);
   }
@@ -59,6 +61,7 @@ function walk(p, where, parent) {
 }
 (data.zones || []).forEach(z => {
   if (!z.name) errors.push(`zone "${z.id}": no name`);
+  if (z.route) notes.push(`zone "${z.name || z.id}": has a route; the sitemap shows the flow, not addresses, so remove it`);
   if (!Array.isArray(z.groups) || !z.groups.length) { errors.push(`zone "${z.name || z.id}": no groups`); return; }
   z.groups.forEach(g => (g.pages || []).forEach(p => walk(p, z.name + (g.name ? ' › ' + g.name : ''), null)));
 });

@@ -11,8 +11,9 @@ when the user asks for a sitemap, a site map, an information architecture, or ho
 or before mocking up a new area, to agree where its pages go. To build a screen, use `mockup-create`.
 
 The sitemap is one self-contained HTML file. [`assets/sitemap.html`](assets/sitemap.html) is its template: a block of
-theme values, a block of data (JSON), and the presentation, which is the same in every sitemap. You write the theme
-and the data; you don't change the presentation.
+data (JSON) and the presentation. You write the data; you never change the presentation. Every sitemap looks the
+same, clean and neutral, whatever the application's design: don't restyle it in the application's theme, colours or
+fonts, so that sitemaps read alike from one project to the next.
 
 ## 1. Gather what the application has, and will have
 
@@ -21,8 +22,8 @@ and the data; you don't change the presentation.
    If there is no project space, save it where the user asks, or in a scratch folder.
 2. If `sitemap.html` already exists, read its data block and change that, keeping its page ids; don't start again.
 3. Find the pages that **exist today**, from the application's source where it is to hand rather than guessing: its
-   routes, its navigation (side navigation, tabs, menus), its server-rendered pages, its dialogs large enough to
-   count as places. The mockups in the project space are pages too; note each page's mockup.
+   navigation (side navigation, tabs, menus), its routes and pages, its dialogs large enough to count as places. The
+   source is only where you find them: the map records the flow people follow, not how it is wired up. The mockups in the project space are pages too; note each page's mockup.
 4. Find the pages **proposed**, from the specifications the user points to (capabilities, use cases, a brief): each
    area of the product usually becomes a navigation group; each main thing it manages, a list page with a detail
    page under it; each detail page's tabs, what that thing relates to. Note what each page serves (use case and
@@ -39,38 +40,38 @@ Arrange the pages as people travel the application, not as the code is organised
 - A zone's **groups** are its navigation headings (side-navigation groups, top-level tabs). Use `column` to stack
   groups that sit together, such as *Settings* under *Overview*, so the map has as few columns as the navigation.
 - A group's **pages** are its places; pages opened from another (a record from its list) are its `kids`.
-- **Links** are the cross-links between parts: a record's page linking to the records it relates to in another
-  area, a dashboard linking to what it summarises. They are what the map is for, so record them carefully; a parent
-  and its kids are connected without listing them.
-- Collect the questions the structure raises (where something belongs, whether a list is a page or a view) as
-  `questions`, each a short title and one sentence.
+- **Links** are where a person can go from a page: a record's page to the records it shows from another area, a
+  dashboard to what it summarises. They run one way, so record each on the page people start from, and only where
+  they can actually go (a button, a link, a row to open); that two pages are related is not a link, and going back
+  is not recorded. A parent leads to its kids without listing them. Links are what the map is for: the chosen page
+  shows what it leads to and what it is reached from.
+- Note the questions the structure raises (where something belongs, whether a list is a page or a view) for your
+  report (step 5). They don't go in the file: the sitemap shows the structure as it stands, and changes when a
+  question is answered.
 
 ## 3. Write the file
 
 Copy `assets/sitemap.html` to the sitemap's location (or edit the existing sitemap), then:
 
-1. **Theme.** Replace the values in the block marked `THEME` with the design system's: read its token files
-   (`design-system/tokens*.md`, as `design-system/README.md` lists them) for the canvas, surface, border, text,
-   accent and brand colours, and the fonts; replace the font link in the head with the design system's web fonts,
-   keeping fallbacks. Keep the dark values in step, or make them the design system's dark theme if it has one. The
-   status tones (`--done`, `--planned`, `--future`, `--retired`) may take the design system's success, info and
-   warning colours.
-2. **Data.** Replace the block marked `DATA` with the sitemap, in this shape:
+1. **Data.** Replace the block marked `DATA` with the sitemap, in this shape:
 
    | Field | Holds |
    | --- | --- |
-   | `product`, `title`, `intro`, `updated` | The application's name, the heading (default *Sitemap*), one paragraph on what the map covers, and today's date (`yyyy-mm-dd`). |
+   | `product`, `title`, `intro`, `updated` | The application's name; the heading, saying what this sitemap covers (*How the application hangs together*, *Customer onboarding*, *Administration*; default *Sitemap*); one paragraph on what the map covers; and today's date (`yyyy-mm-dd`). |
    | `statuses` | In order, each `{ "id", "label", "tone" }`, tone one of `done`, `planned`, `future` (drawn dashed), `retired` (struck through). Usually *Exists today*, *Proposed*, *To follow*. |
    | `roles` | Optional: `{ "id": "who that is" }`. |
    | `viewer` | `"design-system/"` when the sitemap sits at the project space's root, so pages' mockups link to the viewer; `null` otherwise. |
-   | `zones` | Each `{ "id", "name", "row", "route", "note", "groups" }`; a zone with one unnamed group lists its pages directly. |
+   | `zones` | Each `{ "id", "name", "row", "note", "groups" }`; a zone with one unnamed group lists its pages directly. |
    | groups | Each `{ "name", "note", "column", "pages" }`. |
-   | pages | Each `{ "id", "name", "route", "status", "who", "refs", "desc", "tabs", "mockup", "links", "kids" }`: `id` unique, of letters, digits and hyphens (never `settings`, `sidebar`, `customize`, `upgrade`, `downloads` or `comment-…`, which some hosts reserve); `refs` what it serves; `desc` one or two sentences; `tabs` its tabs; `mockup` a path, or a list of paths, relative to the project space; `links` the ids it leads to; `kids` the pages it opens. Only `id`, `name`, `status` and `desc` are needed. |
-   | `questions` | Optional: each `{ "title", "text" }`. |
+   | pages | Each `{ "id", "name", "status", "who", "refs", "desc", "tabs", "mockup", "links", "kids" }`: `id` unique, of letters, digits and hyphens (never `settings`, `sidebar`, `customize`, `upgrade`, `downloads` or `comment-…`, which some hosts reserve); `refs` what it serves; `desc` one or two sentences; `tabs` its tabs; `mockup` a path, or a list of paths, relative to the project space; `links` the ids it leads to; `kids` the pages it opens. Only `id`, `name`, `status` and `desc` are needed. |
 
-   Write real content throughout: real page names, routes and descriptions, never placeholders. Describe each page
-   by what people do there, in their words.
-3. Leave everything else in the file as it is.
+   Write real content throughout: real page names and descriptions, never placeholders. Describe each page by what
+   people do there, in their words, and how they get there where that matters (*opened from the profile menu*).
+   Leave out everything that is design: addresses and routes, server or client rendering, component, class and
+   table names.
+2. **Title.** Set the `<title>` in the head, the name hosts and browser tabs show: the product's name and *Sitemap*
+   (`Acme Sitemap`), or for a second sitemap its name as well (`Acme Administration Sitemap`), so no two share one.
+3. Leave everything else in the file as it is: its styles and script.
 
 ## 4. Check it
 
@@ -92,5 +93,6 @@ sitemap changes, publish it again to the same place, and if the project keeps a 
 add or update its entry there.
 
 Then, briefly: how the map is laid out (its zones and groups), the pages where its areas meet (the ones with the
-most links), the questions it raises, and where the file is. The sitemap is part of the project space: commit it
+most links), and where the file is. End with the questions the structure raises, as a numbered list, each a short
+title and one sentence, so the user can answer them by number; apply the answers to the data and share it again. The sitemap is part of the project space: commit it
 with the mockups when the user asks for commits.

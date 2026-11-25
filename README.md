@@ -46,7 +46,7 @@ kheel-mockups/
 │           ├── mockup-sitemap/
 │           │   ├── SKILL.md
 │           │   ├── assets/
-│           │   │   └── sitemap.html     # the sitemap template: theme, data and presentation
+│           │   │   └── sitemap.html     # the sitemap template: data and presentation
 │           │   └── scripts/
 │           │       └── sitemap-check.mjs  # checks a sitemap's data
 │           └── mockup-publish/
