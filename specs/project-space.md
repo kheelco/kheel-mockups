@@ -25,6 +25,7 @@ design system, and the viewer inside it renders them.
 │   └── implementations/<target>/<tag>.md   # optional
 ├── <name>.xml                      # mockups, anywhere …
 ├── <folder>/…/<name>.xml           # … at any depth
+├── sitemap.html                    # optional — the sitemap (sitemap.md)
 └── examples/                       # the example mockups, when initialised with the starter set
 ```
 

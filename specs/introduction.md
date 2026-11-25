@@ -64,6 +64,7 @@ one.
 | Renderer and viewer | A browser runtime that renders mockups straight from source, with navigation, dialogs, inspection and checks. | [rendering.md](rendering.md) |
 | Versioning | How design systems, components and mockups record versions and what counts as a breaking change. | [versioning.md](versioning.md) |
 | Implementation mapping | Per-component guidance on how a component maps to a target codebase (React, Vue, …). | [implementation-mapping.md](implementation-mapping.md) |
+| Sitemap | One page showing every page of the application, how they are grouped as people reach them and linked, with their mockups. | [sitemap.md](sitemap.md) |
 
 How they relate:
 

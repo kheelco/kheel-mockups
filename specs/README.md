@@ -25,6 +25,7 @@ Read the introduction first.
 | [versioning.md](versioning.md) | Versions of design systems and components, breaking changes, and the design system's source. |
 | [implementation-mapping.md](implementation-mapping.md) | Per-target guidance for turning components into real code. |
 | [exploring.md](exploring.md) | Pages of options for a design decision, and how the chosen one goes into the design system. |
+| [sitemap.md](sitemap.md) | The sitemap: every page of the application, how they are grouped and linked, and its checks. |
 
 ## Conventions
 

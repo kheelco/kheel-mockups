@@ -5,6 +5,12 @@ Each release of kheel-mockups, newest first. The release workflow uses a version
 
 ## Unreleased
 
+- **Sitemaps.** A new skill, `mockup-sitemap`, draws every page of an application as one interactive page kept in the
+  project space (`sitemap.html`): pages grouped as people reach them (public pages, home, the workspace's navigation,
+  staff sections), each with its status (exists today, proposed, to follow), who can reach it, what it serves, its
+  tabs and its mockups. Choosing a page draws its links to pages elsewhere in the application. The sitemap's data is
+  one JSON block in a template themed from the design system, and `scripts/sitemap-check.mjs` checks it (ids, links,
+  statuses, roles, mockups).
 - **A tutorial.** `tutorial/README.md` walks through every skill in a Claude Code session in the cloud, from adding
   the plugin to publishing mockups and adding a component of your own, with screenshots of each step.
 - **Tools at the far end of a tab strip.** The JUI design system's `jui-tab-navigator` gains a `tools` slot for a
